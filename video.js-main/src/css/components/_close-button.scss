@@ -1,6 +1,6 @@
 .video-js .vjs-control.vjs-close-button {
   & .vjs-icon-placeholder {
-    @extend .vjs-icon-cancel;
+    //@extend .vjs-icon-cancel;
   }
 
   cursor: pointer;

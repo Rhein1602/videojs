@@ -134,7 +134,8 @@ class VolumeBar extends Slider {
 
   /**
    * Returns the current value of the player volume as a percentage
-   *
+   *  @return {Integer}
+   *      zzf add
    * @private
    */
   volumeAsPercentage_() {

@@ -135,6 +135,8 @@ QUnit.test('should remove old event listeners when the menu item adds to the new
 
   /**
    * A reusable collection of assertions.
+   * @param {any} watchedMenu
+   *      zzf add
    */
   function validateMenuEventListeners(watchedMenu) {
     const eventData = DomData.get(menuItem.eventBusEl_);

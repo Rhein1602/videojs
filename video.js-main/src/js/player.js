@@ -49,6 +49,7 @@ import './error-display.js';
 import './tracks/text-track-settings.js';
 import './resize-manager.js';
 import './live-tracker.js';
+import './title-bar.js';
 
 // Import Html5 tech, at least for disposing the original video tag.
 import './tech/html5.js';
@@ -440,7 +441,6 @@ class Player extends Component {
       // set the correct value.
       this.autoplay(this.options_.autoplay);
     }
-
     // check plugins
     if (options.plugins) {
       Object.keys(options.plugins).forEach((name) => {
@@ -1406,6 +1406,9 @@ class Player extends Component {
    * values that should be handled by the tech. Note that this is not
    * part of any specification. Valid values and what they do can be
    * found on the autoplay getter at Player#autoplay()
+   * @param {any} type zzf add
+   * @return {any} zzf add
+   *
    */
   manualAutoplay_(type) {
     if (!this.tech_ || typeof type !== 'string') {
@@ -1553,6 +1556,7 @@ class Player extends Component {
    */
   /**
    * Retrigger the `sourceset` event that was triggered by the {@link Tech}.
+   * @param {any} event zzf add
    *
    * @fires Player#sourceset
    * @listens Tech#sourceset
@@ -2049,6 +2053,7 @@ class Player extends Component {
 
   /**
    * when the document fschange event triggers it calls this
+   * @param {any} e zzf add
    */
   documentFullscreenChange_(e) {
     const targetPlayer = e.target.player;
@@ -2398,8 +2403,6 @@ class Player extends Component {
   /**
    * Pause the video playback
    *
-   * @return {Player}
-   *         A reference to the player object this function was called on
    */
   pause() {
     this.techCall_('pause');
@@ -2792,7 +2795,7 @@ class Player extends Component {
    *
    * @param  {Object} [fullscreenOptions]
    *         Override the player fullscreen options
-   *
+   *@return {any} zzf add
    * @fires Player#fullscreenchange
    */
   requestFullscreen(fullscreenOptions) {
@@ -2870,7 +2873,7 @@ class Player extends Component {
 
   /**
    * Return the video to its normal size after having been in full screen mode
-   *
+   * @return {any} zzf add
    * @fires Player#fullscreenchange
    */
   exitFullscreen() {
@@ -3001,6 +3004,7 @@ class Player extends Component {
    * @param {boolean} value
    *                  - true will disable Picture-in-Picture mode
    *                  - false will enable Picture-in-Picture mode
+   * @return {any} zzf add
    */
   disablePictureInPicture(value) {
     if (value === undefined) {
@@ -4113,6 +4117,7 @@ class Player extends Component {
       // NOTE: this.cache_.lastPlaybackRate is set from the tech handler
       // that is registered above
       this.techCall_('setPlaybackRate', rate);
+      // this.selectSource(1);
       return;
     }
 
@@ -4224,7 +4229,7 @@ class Player extends Component {
    * Remove a remote {@link TextTrack} from the respective
    * {@link TextTrackList} and {@link HtmlTrackElementList}.
    *
-   * @param {Object} track
+   * @param {Object} obj
    *        Remote {@link TextTrack} to remove
    *
    * @return {undefined}
@@ -4653,7 +4658,7 @@ class Player extends Component {
    * If the `loadMedia` method has not been used, will attempt to return a
    * {@link Player~MediaObject} based on the current state of the player.
    *
-   * @return {Player~MediaObject}
+   * @return {Player~MediaObject} zzf add
    */
   getMedia() {
     if (!this.cache_.media) {
@@ -4765,7 +4770,8 @@ class Player extends Component {
   /**
    * Set debug mode to enable/disable logs at info level.
    *
-   * @param {boolean} enabled
+   * @param {boolean} enabled zzf add
+   * @return {any} zzf add
    * @fires Player#debugon
    * @fires Player#debugoff
    */

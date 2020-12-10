@@ -344,6 +344,8 @@ class LiveTracker extends Component {
 
   /**
    * Wether live tracker is currently tracking or not.
+   * @return {boolean}
+   *        zzf add
    */
   isTracking() {
     return typeof this.trackingInterval_ === 'number';

@@ -11,11 +11,13 @@ let history = [];
  * Log messages to the console and history based on the type of message
  *
  * @private
- * @param  {string} type
+ * @param  {string} name
  *         The name of the console method to use.
  *
- * @param  {Array} args
+ * @param  {Array} log
  *         The arguments to be passed to the matching console method.
+ *
+ * @return {any} zzf add
  */
 const LogByTypeFactory = (name, log) => (type, level, args) => {
   const lvl = log.levels[level];
@@ -110,9 +112,9 @@ export default function createLogger(name) {
    *  // > VIDEOJS: player: foo
    * ```
    *
-   * @param {string} name
+   * @param {String} subname
    *        The name to add call the new logger
-   * @return {Object}
+   * @return {Object}  zzf add
    */
   log.createLogger = (subname) => createLogger(name + ': ' + subname);
 
@@ -174,7 +176,7 @@ export default function createLogger(name) {
    * contents are _not_ cloned; so, mutating objects inside this array will
    * mutate them in history.
    *
-   * @return {Array}
+   * @return {Array} zzf add
    */
   log.history = () => history ? [].concat(history) : [];
 
@@ -228,6 +230,7 @@ export default function createLogger(name) {
    *
    * @param {Mixed[]} args
    *        One or more messages or objects that should be logged as an error
+   *  @return {any} zzf add
    */
   log.error = (...args) => logByType('error', level, args);
 
@@ -236,6 +239,7 @@ export default function createLogger(name) {
    *
    * @param {Mixed[]} args
    *        One or more messages or objects that should be logged as a warning.
+   * @return {any} zzf add
    */
   log.warn = (...args) => logByType('warn', level, args);
 
@@ -245,6 +249,8 @@ export default function createLogger(name) {
    *
    * @param {Mixed[]} args
    *        One or more messages or objects that should be logged as debug.
+   *
+   *  @return {any} zzf add
    */
   log.debug = (...args) => logByType('debug', level, args);
 

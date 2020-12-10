@@ -50,6 +50,8 @@ class TimeTooltip extends Component {
    * @param {number} seekBarPoint
    *        A number from 0 to 1, representing a horizontal reference point
    *        from the left edge of the {@link SeekBar}
+   * @param {String} content
+   *        the content
    */
   update(seekBarRect, seekBarPoint, content) {
     const tooltipRect = Dom.findPosition(this.el_);

@@ -441,6 +441,9 @@ class Html5 extends Tech {
    *
    * This function will fire another loadstart so that videojs can catchup.
    *
+   * @param {Element} el
+   *      zzf add
+   *
    * @fires Tech#loadstart
    *
    * @return {undefined}

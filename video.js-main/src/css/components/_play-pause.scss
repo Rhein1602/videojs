@@ -3,11 +3,16 @@
 }
 .video-js .vjs-play-control .vjs-icon-placeholder {
   @include flex(none);
-  @extend .vjs-icon-play;
+  //background: url(C:\Users\rhein\Desktop\icon\audio.png) no-repeat;
+  //@extend .vjs-icon-play !optional;
 }
 .video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder {
-  @extend .vjs-icon-pause;
+  background: url(C:\Users\rhein\Desktop\icon\audio.png) no-repeat;
+ // @extend .vjs-icon-pause;
+// @extend .vjs-icon-play !optional;
 }
 .video-js .vjs-play-control.vjs-ended .vjs-icon-placeholder {
-  @extend .vjs-icon-replay;
+  background: url(C:\Users\rhein\Desktop\icon\audio.png) no-repeat;
+  //@extend .vjs-icon-replay;
+  //@extend .vjs-icon-play !optional;
 }

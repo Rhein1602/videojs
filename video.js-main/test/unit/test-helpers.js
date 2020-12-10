@@ -36,7 +36,9 @@ const TestHelpers = {
    * Runs a range of assertions on a DOM element.
    *
    * @param  {QUnit.Assert} assert
+   *          zzf add
    * @param  {Element} el
+   *          zzf add
    * @param  {Object} spec
    *         An object from which assertions are generated.
    *
@@ -126,8 +128,10 @@ const TestHelpers = {
 
   /**
    * Creates an event.
-   *
+   * @return {any}
+   *        zzf add
    * @param {string} eventType
+   *        zzf add
    */
   createEvent(eventType) {
     let event;
@@ -149,7 +153,9 @@ const TestHelpers = {
    * Triggers an event on a DOM node natively.
    *
    * @param  {Element} element
+   *           zzf add
    * @param  {string} eventType
+   *            zzf add
    */
   triggerDomEvent(element, eventType) {
     const event = TestHelpers.createEvent(eventType);

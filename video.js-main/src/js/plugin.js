@@ -150,7 +150,7 @@ const createBasicPlugin = function(name, plugin) {
  * @param   {Plugin} PluginSubClass
  *          The advanced plugin.
  *
- * @return {Function}
+ * @return {Function} zzf add
  */
 const createPluginFactory = (name, PluginSubClass) => {
 
@@ -225,6 +225,7 @@ class Plugin {
 
   /**
    * Get the version of the plugin that was set on <pluginName>.VERSION
+   * @return {String} zzf add
    */
   version() {
     return this.constructor.VERSION;
@@ -461,7 +462,8 @@ Plugin.registerPlugin(BASE_PLUGIN_NAME, Plugin);
 
 /**
  * Documented in player.js
- *
+ *  @param {String} name zzf add
+ *  @return {boolean} zzf add
  * @ignore
  */
 Player.prototype.usingPlugin = function(name) {
@@ -470,7 +472,8 @@ Player.prototype.usingPlugin = function(name) {
 
 /**
  * Documented in player.js
- *
+ * @param {String} name zzf add
+ *  @return {boolean} zzf add
  * @ignore
  */
 Player.prototype.hasPlugin = function(name) {

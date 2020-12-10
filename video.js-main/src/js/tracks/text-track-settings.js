@@ -304,6 +304,12 @@ class TextTrackSettings extends ModalDialog {
    * @param {string} key
    *        Configuration key to use during creation.
    *
+   * @param {String} legendId
+   *        zzf add
+   *
+   *  @param {String} type
+   *        zzf add
+   *
    * @return {string}
    *         An HTML string.
    *

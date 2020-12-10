@@ -1,7 +1,7 @@
 // North America uses 'CC' icon
 .video-js:lang(en) .vjs-subs-caps-button .vjs-icon-placeholder,
 .video-js:lang(fr-CA) .vjs-subs-caps-button .vjs-icon-placeholder {
-  @extend .vjs-icon-captions;
+  //@extend .vjs-icon-captions;
 }
 
 // ROW uses 'subtitles'
@@ -11,7 +11,7 @@
 .video-js.video-js:lang(en-IE) .vjs-subs-caps-button .vjs-icon-placeholder,
 .video-js.video-js:lang(en-AU) .vjs-subs-caps-button .vjs-icon-placeholder,
 .video-js.video-js:lang(en-NZ) .vjs-subs-caps-button .vjs-icon-placeholder {
-  @extend .vjs-icon-subtitles;
+  //@extend .vjs-icon-subtitles;
 }
 
 .video-js .vjs-subs-caps-button + .vjs-menu .vjs-captions-menu-item .vjs-menu-item-text .vjs-icon-placeholder {

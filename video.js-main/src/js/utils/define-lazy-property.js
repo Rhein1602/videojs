@@ -6,6 +6,7 @@
  * @param {string} key the key for the property to set
  * @param {Function} getValue the function used to get the value when it is needed.
  * @param {boolean} setter wether a setter shoould be allowed or not
+ * @return {any} zzf add
  */
 const defineLazyProperty = function(obj, key, getValue, setter = true) {
   const set = (value) =>

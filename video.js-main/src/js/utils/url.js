@@ -37,7 +37,7 @@ import window from 'global/window';
  * @param    {String} url
  *           The url to parse
  *
- * @return   {url:URLObject}
+ * @return   {any}
  *           An object of url details
  */
 export const parseUrl = function(url) {

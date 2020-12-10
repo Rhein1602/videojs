@@ -76,7 +76,7 @@ export function getMiddleware(type) {
  * @param  {Tech~SourceObject} src
  *         A source object.
  *
- * @param  {Function}
+ * @param  {Function} next
  *         The next middleware to run.
  */
 export function setSource(player, src, next) {
@@ -251,7 +251,9 @@ export function clearCacheForPlayer(player) {
  * {
  *  [playerId]: [[mwFactory, mwInstance], ...]
  * }
- *
+ *@param {player} player zzf add
+ * @param {any} mwFactory zzf add
+ * @return {any} zzf add
  * @private
  */
 function getOrCreateFactory(player, mwFactory) {

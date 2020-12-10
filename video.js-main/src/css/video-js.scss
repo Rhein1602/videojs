@@ -2,7 +2,7 @@
 @import "private-variables";
 @import "utilities";
 
-@import "node_modules/videojs-font/scss/icons";
+//@import "node_modules/videojs-font/scss/icons";
 
 @import "components/layout";
 @import "components/big-play";
@@ -64,4 +64,21 @@
 .video-js .vjs-menu *:focus:not(:focus-visible) {
   outline: none;
   background: none;
+}
+
+.video-js .vjs-title-bar {
+  color: red;
+
+  /*
+    By default, do not show the title bar.
+  */
+  display: none;
+  font-size: 2em;
+  padding: .5em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 80px;
+  height: 40px;
+  line-height: 40px;
 }

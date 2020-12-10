@@ -211,7 +211,7 @@ videojs.hooks = function(type, fn) {
  * @param {string} type
  *        the lifecycle to hook the function to.
  *
- * @param {Function|Function[]}
+ * @param {Function|Function[]} fn
  *        The function or array of functions to attach.
  */
 videojs.hook = function(type, fn) {
@@ -224,7 +224,7 @@ videojs.hook = function(type, fn) {
  * @param {string} type
  *        the lifecycle to hook the function to.
  *
- * @param {Function|Function[]}
+ * @param {Function|Function[]} fn
  *        The function or array of functions to attach.
  */
 videojs.hookOnce = function(type, fn) {
@@ -389,8 +389,7 @@ videojs.getComponent = Component.getComponent;
  * @param {Component} comp
  *        The component class
  *
- * @return {Component}
- *         The newly registered component
+ *
  */
 videojs.registerComponent = (name, comp) => {
   if (Tech.isTech(comp)) {
@@ -456,6 +455,9 @@ videojs.deregisterPlugin = Plugin.deregisterPlugin;
  *
  * @param {Plugin|Function} plugin
  *         The plugin sub-class or function
+ *
+ * @return {any}
+ * zzf add
  */
 videojs.plugin = (name, plugin) => {
   log.warn('videojs.plugin() is deprecated; use videojs.registerPlugin() instead');

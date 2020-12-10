@@ -109,6 +109,9 @@ const innerHTMLDescriptorPolyfill = Object.defineProperty({}, 'innerHTML', {
 /**
  * Get a property descriptor given a list of priorities and the
  * property to get.
+ * @param {any} priority zzf add
+ * @param {any} prop zzf add
+ * @return {any} zzf add
  */
 const getDescriptor = (priority, prop) => {
   let descriptor = {};

@@ -147,7 +147,7 @@ class TrackList extends EventTarget {
    *
    * @param {string} id - the id of the track to get
    * @method getTrackById
-   * @return {Track}
+   * @return {Track} zzf add
    * @private
    */
   getTrackById(id) {

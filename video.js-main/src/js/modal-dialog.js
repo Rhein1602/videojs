@@ -441,7 +441,8 @@ class ModalDialog extends Component {
 
   /**
    * Keydown handler. Attached when modal is focused.
-   *
+   *@param {Event} event
+   *      zzf add
    * @listens keydown
    */
   handleKeyDown(event) {
@@ -486,7 +487,8 @@ class ModalDialog extends Component {
 
   /**
    * get all focusable elements
-   *
+   *  @return {Array}
+   *      zzf add
    * @private
    */
   focusableEls_() {

@@ -8,8 +8,11 @@ const isModernBrowser = window.MediaError && Object.create && Object.definePrope
  * Creates a real native MediaError object.
  *
  * @param  {number} code
+ *          zzf add
  * @param  {string} [message]
+ *          zzf add
  * @return {MediaError}
+ *          zzf add
  */
 const createNativeMediaError = (code, message) => {
   const err = Object.create(window.MediaError);

@@ -82,6 +82,7 @@ const textTracksToJson = function(tech) {
  *
  * @param {Tech} tech
  *        The `Tech` to create the `TextTrack`s on.
+ * @return {Function} zzf add
  */
 const jsonToTextTracks = function(json, tech) {
   json.forEach(function(track) {

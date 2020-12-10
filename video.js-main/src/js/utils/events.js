@@ -64,7 +64,7 @@ function _cleanUpEvents(elem, type) {
  * @param {Element|Object} elem
  *        Element or object to bind listeners to
  *
- * @param {string} type
+ * @param {string} types
  *        Type of event to bind to.
  *
  * @param {EventTarget~EventListener} callback
@@ -256,6 +256,8 @@ const passiveEvents = [
  *
  * @param {EventTarget~EventListener} fn
  *        Event listener.
+ *
+ *  @return {any} zzf add
  */
 export function on(elem, type, fn) {
   if (Array.isArray(type)) {
@@ -342,6 +344,8 @@ export function on(elem, type, fn) {
  * @param {EventTarget~EventListener} [fn]
  *        Specific listener to remove. Don't include to remove listeners for an event
  *        type.
+ *
+ * @return {any} zzf add
  */
 export function off(elem, type, fn) {
   // Don't want to add a cache object through getElData if not needed
@@ -481,6 +485,8 @@ export function trigger(elem, event, hash) {
  *
  * @param {Event~EventListener} fn
  *        Event listener function
+ *
+ * @return {function} zzf add
  */
 export function one(elem, type, fn) {
   if (Array.isArray(type)) {

@@ -72,7 +72,7 @@
 
 .video-js .vjs-play-progress {
   background-color: $primary-foreground-color;
-  @extend .vjs-icon-circle;
+  //@extend .vjs-icon-circle;
 
   // Progress handle
   &:before {

@@ -33,7 +33,7 @@ const toString = Object.prototype.toString;
 /**
  * Get the keys of an Object
  *
- * @param {Object}
+ * @param {Object} object
  *        The Object to get the keys from
  *
  * @return {string[]}
@@ -52,7 +52,7 @@ const keys = function(object) {
  * @param {Object} object
  *        The object to iterate over
  *
- * @param {obj:EachCallback} fn
+ * @param {any} fn
  *        The callback function which is called for each key in the object.
  */
 export function each(object, fn) {
@@ -83,9 +83,9 @@ export function reduce(object, fn, initial = 0) {
 /**
  * Object.assign-style object shallow merge/extend.
  *
- * @param  {Object} target
- * @param  {Object} ...sources
- * @return {Object}
+ * @param  {Object} target  zzf add
+ * @param  {Object} ...sources   zzf add
+ * @return {Object} zzf add
  */
 export function assign(target, ...sources) {
   if (Object.assign) {
@@ -112,8 +112,8 @@ export function assign(target, ...sources) {
  * This avoids the gotcha where using `typeof` on a `null` value
  * results in `'object'`.
  *
- * @param  {Object} value
- * @return {boolean}
+ * @param  {Object} value zzf add
+ * @return {boolean}  zzf add
  */
 export function isObject(value) {
   return !!value && typeof value === 'object';
@@ -123,8 +123,8 @@ export function isObject(value) {
  * Returns whether an object appears to be a "plain" object - that is, a
  * direct instance of `Object`.
  *
- * @param  {Object} value
- * @return {boolean}
+ * @param  {Object} value zzf add
+ * @return {boolean}   zzf add
  */
 export function isPlain(value) {
   return isObject(value) &&

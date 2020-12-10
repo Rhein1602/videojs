@@ -4,8 +4,10 @@ import TechFaker from '../tech/tech-faker';
 /**
  * Tests baseline functionality for all tracks
  *
- # @param {Track} TrackClass the track class object to use for testing
- # @param {Object} options the options to setup a track with
+ * @param {Track} TrackClass
+ *           the track class object to use for testing
+ * @param {Object} options
+ *          the options to setup a track with
  */
 const TrackBaseline = function(TrackClass, options) {
 

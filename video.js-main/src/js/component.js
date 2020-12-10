@@ -15,6 +15,7 @@ import mergeOptions from './utils/merge-options.js';
 import computedStyle from './utils/computed-style';
 import Map from './utils/map.js';
 import Set from './utils/set.js';
+import console from 'global/console';
 
 /**
  * Base class for all UI Components.
@@ -409,7 +410,7 @@ class Component {
    * component and 'baz' on the 'bar' component and return undefined
    * if any of those don't exist.
    *
-   * @param {...string[]|...string} names
+   * @param {...string} names
    *        The name of the child `Component` to get.
    *
    * @return {Component|undefined}
@@ -452,6 +453,8 @@ class Component {
    *         `Component` will get created by this process.
    */
   addChild(child, options = {}, index = this.children_.length) {
+    // console.log('add child');
+
     let component;
     let componentName;
 
@@ -687,9 +690,12 @@ class Component {
    * Bind a listener to the component's ready state.
    * Different from event listeners in that if the ready event has already happened
    * it will trigger the function immediately.
+   *@param {Fn} fn
+   *         the fn
+   *@param {boolean} sync
+   *        the sync
    *
-   * @return {Component}
-   *         Returns itself; method can be chained.
+   *
    */
   ready(fn, sync = false) {
     if (!fn) {
@@ -1526,6 +1532,9 @@ class Component {
    * @param  {Component~GenericCallback} fn
    *         A function that will be bound to this component and executed just
    *         before the browser's next repaint.
+   *
+   *  @return {undefined|String}
+   *        get return
    */
   requestNamedAnimationFrame(name, fn) {
     if (this.namedRafs_.has(name)) {
@@ -1646,6 +1655,7 @@ class Component {
    *         The `Component` that was registered.
    */
   static registerComponent(name, ComponentToRegister) {
+    console.log(name);
     if (typeof name !== 'string' || !name) {
       throw new Error(`Illegal component name, "${name}"; must be a non-empty string.`);
     }
@@ -1713,6 +1723,7 @@ class Component {
    *             return that if it exists.
    */
   static getComponent(name) {
+    // console.log(Component.components_);
     if (!name || !Component.components_) {
       return;
     }

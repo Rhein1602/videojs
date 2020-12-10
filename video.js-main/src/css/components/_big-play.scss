@@ -20,7 +20,7 @@
   // Since the big play button doesn't inherit from vjs-control, we need to specify a bit more than
   // other buttons for the icon.
   & .vjs-icon-placeholder:before {
-    @extend .vjs-icon-play;
+    //@extend .vjs-icon-play;
 
     @extend %icon-default;
   }

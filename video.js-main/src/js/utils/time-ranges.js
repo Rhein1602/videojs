@@ -92,6 +92,8 @@ function getRange(fnName, valueIndex, ranges, rangeIndex) {
  * @private
  * @param   {Array} [ranges]
  *          An array of time ranges.
+ * @return {Object}
+ *        zzf add
  */
 function createTimeRangesObj(ranges) {
   if (ranges === undefined || ranges.length === 0) {
@@ -123,6 +125,8 @@ function createTimeRangesObj(ranges) {
  * @param {number} end
  *        The end of a single range. Cannot be used with the array form of
  *        the `start` argument.
+ * @return {function}
+ *        zzf add
  */
 export function createTimeRanges(start, end) {
   if (Array.isArray(start)) {

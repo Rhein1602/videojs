@@ -58,7 +58,7 @@ export const bind = function(context, fn, uid) {
  * @param    {number}   wait
  *           The number of milliseconds by which to throttle.
  *
- * @return   {Function}
+ * @return   {Function}  zzf add
  */
 export const throttle = function(fn, wait) {
   let last = window.performance.now();

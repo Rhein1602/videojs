@@ -17,7 +17,7 @@ import window from 'global/window';
  *
  * @param    {string} prop
  *           The property name you want
- *
+ * @return {String} zzf add
  * @see      https://bugzilla.mozilla.org/show_bug.cgi?id=548397
  */
 function computedStyle(el, prop) {

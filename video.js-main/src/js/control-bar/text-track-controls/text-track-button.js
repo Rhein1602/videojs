@@ -33,7 +33,8 @@ class TextTrackButton extends TrackButton {
    *
    * @param {TextTrackMenuItem[]} [items=[]]
    *        Existing array of items to use during creation
-   *
+   * @param {Function} TrackMenuItem
+   *        zzf add
    * @return {TextTrackMenuItem[]}
    *         Array of menu items that were created
    */

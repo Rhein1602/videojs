@@ -106,6 +106,7 @@ if (Dom.isReal()) {
 
 /**
  * check if the window has been loaded
+ * @return {boolean} zzf add
  */
 const hasLoaded = function() {
   return _windowLoaded;

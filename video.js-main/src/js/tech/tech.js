@@ -837,7 +837,7 @@ class Tech extends Component {
   /**
    * A method to check for the value of the 'disablePictureInPicture' <video> property.
    * Defaults to true, as it should be considered disabled if the tech does not support pip
-   *
+   *  @return {boolean} zzf add
    * @abstract
    */
   disablePictureInPicture() {
@@ -965,6 +965,8 @@ class Tech extends Component {
    *
    * @param {Object} tech
    *        The `Tech` class to register.
+   *
+   *  @return {any} zzf add
    */
   static registerTech(name, tech) {
     if (!Tech.techs_) {
