@@ -24,7 +24,7 @@ import './text-track-controls/subs-caps-button.js';
 import './audio-track-controls/audio-track-button.js';
 import './playback-rate-menu/playback-rate-menu-button.js';
 import './spacer-controls/custom-control-spacer.js';
-
+  
 /**
  * Container of main controls.
  *
