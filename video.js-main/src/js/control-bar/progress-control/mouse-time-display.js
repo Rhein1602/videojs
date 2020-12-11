@@ -11,6 +11,8 @@ import './time-tooltip';
  * {@link ProgressControl}. It displays an indicator and a {@link TimeTooltip}
  * indicating the time which is represented by a given point in the
  * {@link ProgressControl}.
+ * {@link MouseTimeDisplay}组件跟踪鼠标在{@link ProgressControl}上的移动。
+ * 它显示一个指示器和一个{@link TimeTooltip}，以指示由{@link ProgressControl}中给定点表示的时间。
  *
  * @extends Component
  */
@@ -32,6 +34,7 @@ class MouseTimeDisplay extends Component {
 
   /**
    * Create the DOM element for this class.
+   * 为此类创建DOM元素。
    *
    * @return {Element}
    *         The element that was created.
@@ -45,6 +48,7 @@ class MouseTimeDisplay extends Component {
   /**
    * Enqueues updates to its own DOM as well as the DOM of its
    * {@link TimeTooltip} child.
+   * 使更新加入其自身的DOM及其{@link TimeTooltip}子级的DOM。
    *
    * @param {Object} seekBarRect
    *        The `ClientRect` for the {@link SeekBar} element.
@@ -64,6 +68,7 @@ class MouseTimeDisplay extends Component {
 
 /**
  * Default options for `MouseTimeDisplay`
+ * MouseTimeDisplay的默认操作
  *
  * @type {Object}
  * @private

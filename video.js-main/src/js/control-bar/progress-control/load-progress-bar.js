@@ -6,11 +6,12 @@ import * as Dom from '../../utils/dom.js';
 import clamp from '../../utils/clamp';
 import document from 'global/document';
 
-// get the percent width of a time compared to the total end
+// 得到时间宽度与总时间的百分比
 const percentify = (time, end) => clamp((time / end) * 100, 0, 100).toFixed(2) + '%';
 
 /**
  * Shows loading progress
+ * 显示加载进度
  *
  * @extends Component
  */
@@ -18,6 +19,7 @@ class LoadProgressBar extends Component {
 
   /**
    * Creates an instance of this class.
+   * 创建实例
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -33,6 +35,7 @@ class LoadProgressBar extends Component {
 
   /**
    * Create the `Component`'s DOM element
+   * 创建`Component`的DOM元素
    *
    * @return {Element}
    *         The element that was created.
@@ -65,6 +68,7 @@ class LoadProgressBar extends Component {
 
   /**
    * Update progress bar
+   * 更新进度条
    *
    * @param {EventTarget~Event} [event]
    *        The `progress` event that caused this function to run.
@@ -81,14 +85,14 @@ class LoadProgressBar extends Component {
       const percent = percentify(bufferedEnd, duration);
 
       if (this.percent_ !== percent) {
-        // update the width of the progress bar
+        // 更新进度条的width
         this.el_.style.width = percent;
-        // update the control-text
+        // 更新control-text
         Dom.textContent(this.percentageEl_, percent);
         this.percent_ = percent;
       }
 
-      // add child elements to represent the individual buffered time ranges
+      // 添加子元素以代表各个缓冲时间范围
       for (let i = 0; i < buffered.length; i++) {
         const start = buffered.start(i);
         const end = buffered.end(i);
@@ -99,7 +103,7 @@ class LoadProgressBar extends Component {
           children[i] = part;
         }
 
-        //  only update if changed
+        // 仅在更改时更新
         if (part.dataset.start === start && part.dataset.end === end) {
           continue;
         }
@@ -107,12 +111,12 @@ class LoadProgressBar extends Component {
         part.dataset.start = start;
         part.dataset.end = end;
 
-        // set the percent based on the width of the progress bar (bufferedEnd)
+        // 根据进度条的宽度设置百分比（bufferedEnd）
         part.style.left = percentify(start, bufferedEnd);
         part.style.width = percentify(end - start, bufferedEnd);
       }
 
-      // remove unused buffered range elements
+      // 删除未使用的缓冲范围元素
       for (let i = children.length; i > buffered.length; i--) {
         this.el_.removeChild(children[i - 1]);
       }

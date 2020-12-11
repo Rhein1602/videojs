@@ -8,6 +8,7 @@ import * as Fn from '../../utils/fn.js';
 
 /**
  * Time tooltips display a time above the progress bar.
+ * 时间工具提示在进度条上方显示一个时间。
  *
  * @extends Component
  */
@@ -15,6 +16,7 @@ class TimeTooltip extends Component {
 
   /**
    * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The {@link Player} that this class should be attached to.
@@ -43,6 +45,7 @@ class TimeTooltip extends Component {
 
   /**
    * Updates the position of the time tooltip relative to the `SeekBar`.
+   * 更新时间工具提示相对于“ SeekBar”的位置。
    *
    * @param {Object} seekBarRect
    *        The `ClientRect` for the {@link SeekBar} element.
@@ -60,6 +63,7 @@ class TimeTooltip extends Component {
 
     // do nothing if either rect isn't available
     // for example, if the player isn't in the DOM for testing
+    // 如果任何一个rect不可用，例如，如果播放器不在DOM中进行测试，则不执行任何操作
     if (!playerRect || !tooltipRect) {
       return;
     }
@@ -68,21 +72,27 @@ class TimeTooltip extends Component {
     // of the player. We calculate any gap between the left edge of the player
     // and the left edge of the `SeekBar` and add the number of pixels in the
     // `SeekBar` before hitting the `seekBarPoint`
+    // 这是`seekBarPoint`的剩余空间，可在播放器范围内使用。
+    // 我们计算播放器左边缘与`SeekBar`左边缘之间的任何距离，并在达到`seekBarPoint`之前在`SeekBar`中添加像素数。
     const spaceLeftOfPoint = (seekBarRect.left - playerRect.left) + seekBarPointPx;
 
     // This is the space right of the `seekBarPoint` available within the bounds
     // of the player. We calculate the number of pixels from the `seekBarPoint`
     // to the right edge of the `SeekBar` and add to that any gap between the
     // right edge of the `SeekBar` and the player.
+    // 这是`seekBarPoint`的空间权，它在播放器的范围内可用。
+    // 我们计算从“ seekBarPoint”到“ SeekBar”右边缘的像素数，并增加“ SeekBar”右边缘与播放器之间的任何间隙。
     const spaceRightOfPoint = (seekBarRect.width - seekBarPointPx) +
       (playerRect.right - seekBarRect.right);
 
     // This is the number of pixels by which the tooltip will need to be pulled
     // further to the right to center it over the `seekBarPoint`.
+    // 这是工具提示需要向右进一步拉动以使其在`seekBarPoint`上居中的像素数。
     let pullTooltipBy = tooltipRect.width / 2;
 
     // Adjust the `pullTooltipBy` distance to the left or right depending on
     // the results of the space calculations above.
+    // 根据上面的空间计算结果，将“ pullTooltipBy”距离调整到左侧或右侧。
     if (spaceLeftOfPoint < pullTooltipBy) {
       pullTooltipBy += pullTooltipBy - spaceLeftOfPoint;
     } else if (spaceRightOfPoint < pullTooltipBy) {
@@ -92,6 +102,8 @@ class TimeTooltip extends Component {
     // Due to the imprecision of decimal/ratio based calculations and varying
     // rounding behaviors, there are cases where the spacing adjustment is off
     // by a pixel or two. This adds insurance to these calculations.
+    // 由于基于十进制/比率的计算不精确，并且舍入行为有所变化，因此在某些情况下，间距调整会偏离一两个像素。
+    // 这为这些计算增加了保险。
     if (pullTooltipBy < 0) {
       pullTooltipBy = 0;
     } else if (pullTooltipBy > tooltipRect.width) {
@@ -104,6 +116,7 @@ class TimeTooltip extends Component {
 
   /**
    * Write the time to the tooltip DOM element.
+   * 将时间写入工具提示DOM元素。
    *
    * @param {string} content
    *        The formatted time for the tooltip.
@@ -114,6 +127,7 @@ class TimeTooltip extends Component {
 
   /**
    * Updates the position of the time tooltip relative to the `SeekBar`.
+   * 更新时间工具提示相对于“ SeekBar”的位置。
    *
    * @param {Object} seekBarRect
    *        The `ClientRect` for the {@link SeekBar} element.
