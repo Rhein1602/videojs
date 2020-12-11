@@ -9,6 +9,7 @@ let flag = true;
 
 /**
  * Button to toggle between play and pause.
+ * 播放暂停之间的切换按钮
  *
  * @extends Button
  */
