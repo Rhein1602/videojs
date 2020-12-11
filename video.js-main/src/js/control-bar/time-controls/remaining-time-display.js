@@ -7,6 +7,7 @@ import * as Dom from '../../utils/dom.js';
 
 /**
  * Displays the time left in the video
+ * 显示视频中剩余的时间
  *
  * @extends Component
  */
@@ -14,6 +15,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 
   /**
    * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -28,6 +30,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 
   /**
    * Builds the default DOM `className`.
+   * 构建默认的DOM`className`。
    *
    * @return {string}
    *         The DOM `className` for this object.
@@ -38,6 +41,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 
   /**
    * Create the `Component`'s DOM element with the "minus" characted prepend to the time
+   * 创建“ Component”的DOM元素，并在其前面加上“减号”
    *
    * @return {Element}
    *         The element that was created.
@@ -51,6 +55,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 
   /**
    * Update remaining time display.
+   * 更新剩余时间显示。
    *
    * @param {EventTarget~Event} [event]
    *        The `timeupdate` or `durationchange` event that caused this to run.
@@ -81,6 +86,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 
 /**
  * The text that is added to the `RemainingTimeDisplay` for screen reader users.
+ * 屏幕阅读器用户添加到“ RemainingTimeDisplay”中的文本。
  *
  * @type {string}
  * @private
@@ -89,6 +95,7 @@ RemainingTimeDisplay.prototype.labelText_ = 'Remaining Time';
 
 /**
  * The text that should display over the `RemainingTimeDisplay`s controls. Added to for localization.
+ * 应该在“ RemainingTimeDisplay”控件上显示的文本。添加到本地化。
  *
  * @type {string}
  * @private
