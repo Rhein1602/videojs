@@ -27,7 +27,7 @@ class AutoPlayNext extends Button {
   constructor(player, options = {}) {
     super(player, options);
 
-    // show or hide replay icon
+    // 显示或者隐藏图标
     options.replay = options.replay === undefined || options.replay;
 
     // 绑定监听器
