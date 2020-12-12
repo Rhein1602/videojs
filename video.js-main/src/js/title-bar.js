@@ -1,17 +1,12 @@
 // Subclasses Component
 import Component from './component.js';
 import console from 'global/console';
-import videojs from './video.js';
-console.log('titletttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
+
 
 // The videojs.extend function is used to assist with inheritance. In
 // an ES6 environment, `class TitleBar extends Component` would work
 // identically.
 // videojs.extend方法用来实现继承，等同于ES6环境中的class titleBar extends Component用法
-/**
- * the title bar
- * @extends Component
- */
 class TitleBar extends Component {
 
   // The constructor of a component receives two arguments: the
@@ -40,8 +35,8 @@ class TitleBar extends Component {
     }
   }
 
-  // The `createEl` function of a component creates its DOM element.
-  // 创建一个DOM元素
+  //The `createEl` function of a component creates its DOM element.
+  //创建一个DOM元素
   /**
    * creatEl
    * @returns {*} zzf add
@@ -51,10 +46,11 @@ class TitleBar extends Component {
 
       // Prefixing classes of elements within a player with "vjs-"
       // is a convention used in Video.js.
-      // 给元素加vjs-开头的样式名，是videojs内置样式约定俗成的做法
+      //给元素加vjs-开头的样式名，是videojs内置样式约定俗成的做法
       className: 'vjs-title-bar'
     });
   }
+
 
   /**
    *  This function could be called at any time to update the text
@@ -63,6 +59,7 @@ class TitleBar extends Component {
    * @param {String} text the title
    */
   updateTextContent(text) {
+    console.log(text);
     // If no text was provided, default to "Text Unknown"
     // 如果options中没有提供text属性，默认显示Text Unknow
     if (typeof text !== 'string') {
@@ -93,6 +90,6 @@ class TitleBar extends Component {
 
 TitleBar.prototype.controlText_ = 'title-bar';
 // Register the component with Video.js, so it can be used in players.
-// 在videojs中注册这个组件，才可以使用
+// 在videojs中注册这个组件，才可以使用哦.
 Component.registerComponent('TitleBar', TitleBar);
 export default TitleBar;
