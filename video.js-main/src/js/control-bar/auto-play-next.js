@@ -17,6 +17,7 @@ class AutoPlayNext extends Button {
 
   /**
    * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -38,6 +39,7 @@ class AutoPlayNext extends Button {
 
   /**
    * Builds the default DOM `className`.
+   * 构建默认的DOM`className`。
    *
    * @return {string}
    *         The DOM `className` for this object.

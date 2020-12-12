@@ -3,7 +3,42 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/auto-play-next.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/load-progress-bar.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/mouse-time-display.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/play-progress-bar.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/progress-control.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/seek-bar.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/video.js-main/src/js/control-bar/progress-control/time-tooltip.js">
           <value>
             <set />
           </value>

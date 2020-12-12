@@ -10,6 +10,7 @@ import './time-tooltip';
 /**
  * Used by {@link SeekBar} to display media playback progress as part of the
  * {@link ProgressControl}.
+ * {@link SeekBar}使用它来显示媒体播放进度，作为{@link ProgressControl}的一部分。
  *
  * @extends Component
  */
@@ -17,6 +18,7 @@ class PlayProgressBar extends Component {
 
   /**
    * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The {@link Player} that this class should be attached to.
@@ -31,6 +33,7 @@ class PlayProgressBar extends Component {
 
   /**
    * Create the the DOM element for this class.
+   * 为此类创建DOM元素。
    *
    * @return {Element}
    *         The element that was created.
@@ -46,6 +49,7 @@ class PlayProgressBar extends Component {
   /**
    * Enqueues updates to its own DOM as well as the DOM of its
    * {@link TimeTooltip} child.
+   * 使更新加入其自身的DOM及其{@link TimeTooltip}子级的DOM。
    *
    * @param {Object} seekBarRect
    *        The `ClientRect` for the {@link SeekBar} element.
@@ -79,7 +83,7 @@ PlayProgressBar.prototype.options_ = {
   children: []
 };
 
-// Time tooltips should not be added to a player on mobile devices
+// 时间工具提示不应添加到移动设备上的播放器
 if (!IS_IOS && !IS_ANDROID) {
   PlayProgressBar.prototype.options_.children.push('timeTooltip');
 }
