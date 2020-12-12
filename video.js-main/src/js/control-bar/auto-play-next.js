@@ -50,9 +50,11 @@ class AutoPlayNext extends Button {
   }
 
   /**
-   * This gets called when an `PlayToggle` is "clicked". See
+   * This gets called when an `Autoplay` is "clicked". See
    * {@link ClickableComponent} for more detailed information on what a click can be.
    *
+   * 当点击autoplay图标时
+   * 调用该方法
    * @param {EventTarget~Event} [event]
    *        The `keydown`, `tap`, or `click` event that caused this function to be
    *        called.
@@ -63,11 +65,15 @@ class AutoPlayNext extends Button {
   handleClick(event) {
     console.log('auto-play-next click: ' + flag);
     if (flag) {
+      // 添加关闭自动播放的样式
+      // 该样式见css文件
       this.addClass('autoplay-off');
       this.removeClass('autoplay-on');
       console.log('show ' + 'autoplay-off');
       this.off(this.player_, 'ended', this.handleEnded);
     } else {
+      // 添加启用自动播放的样式
+      // 该样式见css文件
       this.addClass('autoplay-on');
       this.removeClass('autoplay-off');
       console.log('show ' + 'autoplay-on');
@@ -80,6 +86,8 @@ class AutoPlayNext extends Button {
    * This gets called once after the video has ended and the user seeks so that
    * we can change the replay button back to a play button.
    *
+   * 测试该组件是否能正常找到
+   * 
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -92,6 +100,8 @@ class AutoPlayNext extends Button {
   /**
    * Add the vjs-playing class to the element so it can change appearance.
    *
+   * 修改样式
+   * 
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -108,6 +118,8 @@ class AutoPlayNext extends Button {
   /**
    * Add the vjs-paused class to the element so it can change appearance.
    *
+   * 修改样式
+   * 
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
