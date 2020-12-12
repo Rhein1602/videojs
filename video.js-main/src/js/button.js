@@ -80,6 +80,9 @@ class Button extends ClickableComponent {
   /**
    * Enable the `Button` element so that it can be activated or clicked. Use this with
    * {@link Button#disable}.
+   * 
+   * 激活按钮
+   * 
    */
   enable() {
     super.enable();
@@ -89,6 +92,9 @@ class Button extends ClickableComponent {
   /**
    * Disable the `Button` element so that it cannot be activated or clicked. Use this with
    * {@link Button#enable}.
+   * 
+   * 失活按钮
+   * 
    */
   disable() {
     super.disable();
