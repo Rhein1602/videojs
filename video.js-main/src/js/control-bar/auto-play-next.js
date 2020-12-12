@@ -146,18 +146,22 @@ class AutoPlayNext extends Button {
    * @listens Player#ended
    */
   handleEnded(event) {
-    console.log('play-next ended');
+    console.log("play-next ended");
     console.log(this.player_.options_.sources);
-    let theSrc = this.player_.options_.sources[0];
-    const len = this.player_.options_.sources.length;
-
-    for (let i = 1; i < len; i++) {
-      this.player_.options_.sources[i - 1] = this.player_.options_.sources[i];
+    // 获取资源列表
+    let the_src = this.player_.options_.sources[0];
+    let len = this.player_.options_.sources.length;
+    // 更新资源列表
+    for (let i=1;i<len;i++) {
+      this.player_.options_.sources[i-1] = this.player_.options_.sources[i];
     }
-    this.player_.options_.sources[len - 1] = theSrc;
-    theSrc = this.player_.options_.sources[0];
+    this.player_.options_.sources[len-1] = the_src;
+    the_src = this.player_.options_.sources[0];
+    // 重新设置标题
+    this.player_.TitleBar.updateTextContent(the_src.title);
     this.player_.pause();
-    this.player_.src(theSrc);
+    // 重载资源
+    this.player_.src(the_src);
     this.player_.load();
     this.player_.play();
   }

@@ -64,22 +64,22 @@ class PlayNext extends Button {
    * @listens click
    */
   handleClick(event) {
-    console.log('play-next click');
+    console.log("play-next click");
     console.log(this.player_.options_.sources);
-    let theSrc = this.player_.options_.sources[0];
-    const len = this.player_.options_.sources.length;
-
-    // 资源数组长度
+    let the_src = this.player_.options_.sources[0];
+    let len = this.player_.options_.sources.length;   // 资源数组长度
     // 更新资源数组
-    for (let i = 1; i < len; i++) {
-      this.player_.options_.sources[i - 1] = this.player_.options_.sources[i];
+    for (let i=1;i<len;i++) {
+      this.player_.options_.sources[i-1] = this.player_.options_.sources[i];
     }
-    this.player_.options_.sources[len - 1] = theSrc;
+    this.player_.options_.sources[len-1] = the_src;
     // 获取下一个资源
-    theSrc = this.player_.options_.sources[0];
+    the_src = this.player_.options_.sources[0];
+    // 重新设置视频标题
+    this.player_.TitleBar.updateTextContent(the_src.title);
     this.player_.pause();
     // 重载资源
-    this.player_.src(theSrc);
+    this.player_.src(the_src);
     this.player_.load();
     this.player_.play();
   }
