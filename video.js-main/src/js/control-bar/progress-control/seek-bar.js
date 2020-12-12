@@ -239,7 +239,7 @@ class SeekBar extends Slider {
     }
 
     // Stop event propagation to prevent double fire in progress-control.js
-    // 停止事件传播，以防止progress-control.js中发生两次火灾
+    // 停止事件传播，以防止progress-control.js中触发两次
     event.stopPropagation();
     this.player_.scrubbing(true);
 

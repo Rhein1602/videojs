@@ -8,8 +8,8 @@ import console from 'global/console';
 let flag = true;
 
 /**
- * Button to toggle between play and pause.
- * 播放暂停之间的切换按钮
+ * Button to controls whether to start auto continuous playback
+ * 控制是否启用自动连续播放的控制按钮
  *
  * @extends Button
  */
@@ -17,7 +17,8 @@ class AutoPlayNext extends Button {
 
   /**
    * Creates an instance of this class.
-   * 创建此类的实例。
+   *
+   * 创建此类的实例。默认启用自动播放下一集，并绑定对应的函数
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -39,6 +40,7 @@ class AutoPlayNext extends Button {
 
   /**
    * Builds the default DOM `className`.
+   *
    * 构建默认的DOM`className`。
    *
    * @return {string}
@@ -54,7 +56,8 @@ class AutoPlayNext extends Button {
    * {@link ClickableComponent} for more detailed information on what a click can be.
    *
    * 当点击autoplay图标时
-   * 调用该方法
+   * 调用该方法，设置对应状态
+   *
    * @param {EventTarget~Event} [event]
    *        The `keydown`, `tap`, or `click` event that caused this function to be
    *        called.
@@ -87,7 +90,7 @@ class AutoPlayNext extends Button {
    * we can change the replay button back to a play button.
    *
    * 测试该组件是否能正常找到
-   * 
+   *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -101,7 +104,7 @@ class AutoPlayNext extends Button {
    * Add the vjs-playing class to the element so it can change appearance.
    *
    * 修改样式
-   * 
+   *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -118,8 +121,8 @@ class AutoPlayNext extends Button {
   /**
    * Add the vjs-paused class to the element so it can change appearance.
    *
-   * 修改样式
-   * 
+   * 视频暂停时修改部分样式
+   *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -133,7 +136,9 @@ class AutoPlayNext extends Button {
   }
 
   /**
-   * Add the vjs-ended class to the element so it can change appearance
+   * when the video is ended,play the next video
+   *
+   * 监听视频播放结束事件,实现自动播放下一个视频
    *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.

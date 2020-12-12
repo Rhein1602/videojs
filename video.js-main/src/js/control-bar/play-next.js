@@ -6,7 +6,9 @@ import Component from '../component.js';
 import console from 'global/console';
 
 /**
- * Button to toggle between play and pause.
+ * Button to play next video
+ *
+ * 点击播放下一集的按钮
  *
  * @extends Button
  */
@@ -14,6 +16,8 @@ class PlayNext extends Button {
 
   /**
    * Creates an instance of this class.
+   *
+   * 类的构建器
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -25,6 +29,7 @@ class PlayNext extends Button {
     super(player, options);
 
     // show or hide replay icon
+    // 设置图标是否显示
     options.replay = options.replay === undefined || options.replay;
 
     // 绑定监听器
@@ -36,6 +41,8 @@ class PlayNext extends Button {
   /**
    * Builds the default DOM `className`.
    *
+   * 构建元素类
+   *
    * @return {string}
    *         The DOM `className` for this object.
    */
@@ -44,8 +51,10 @@ class PlayNext extends Button {
   }
 
   /**
-   * This gets called when an `PlayToggle` is "clicked". See
+   * This gets called when an `PlayNext` is "clicked". See
    * {@link ClickableComponent} for more detailed information on what a click can be.
+   *
+   * 当该按钮被调用时触发，实现播放下一集
    *
    * @param {EventTarget~Event} [event]
    *        The `keydown`, `tap`, or `click` event that caused this function to be
@@ -79,6 +88,8 @@ class PlayNext extends Button {
    * This gets called once after the video has ended and the user seeks so that
    * we can change the replay button back to a play button.
    *
+   * 确认该组件是否能被找到
+   *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -90,6 +101,8 @@ class PlayNext extends Button {
 
   /**
    * Add the vjs-playing class to the element so it can change appearance.
+   *
+   * 在特定情况下修改样式
    *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
@@ -107,6 +120,8 @@ class PlayNext extends Button {
   /**
    * Add the vjs-paused class to the element so it can change appearance.
    *
+   * 在特定情况下修改样式
+   *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
    *
@@ -121,6 +136,8 @@ class PlayNext extends Button {
 
   /**
    * Add the vjs-ended class to the element so it can change appearance
+   *
+   * 在特定情况下修改样式
    *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.

@@ -15,6 +15,9 @@ class TitleBar extends Component {
   // player将被用来关联options中的参数
   /**
    * constructor
+   *
+   * 构造函数
+   *
    * @param {Player} player  the player
    * @param {any} options   the options
    */
@@ -39,6 +42,9 @@ class TitleBar extends Component {
   //创建一个DOM元素
   /**
    * creatEl
+   *
+   * 创建对应元素
+   *
    * @returns {*} zzf add
    */
   createEl() {
@@ -55,7 +61,9 @@ class TitleBar extends Component {
   /**
    *  This function could be called at any time to update the text
    * contents of the component.
+   *
    * 这个方法可以在任何需要更新这个组件内容的时候调用
+   *
    * @param {String} text the title
    */
   updateTextContent(text) {
@@ -75,6 +83,9 @@ class TitleBar extends Component {
 
   /**
    * build css class
+   *
+   * 创建css样式类
+   *
    * @returns {string} the class
    */
   buildCSSClass() {
@@ -90,6 +101,6 @@ class TitleBar extends Component {
 
 TitleBar.prototype.controlText_ = 'title-bar';
 // Register the component with Video.js, so it can be used in players.
-// 在videojs中注册这个组件，才可以使用哦.
+// 在videojs中注册这个组件，才可以使用
 Component.registerComponent('TitleBar', TitleBar);
 export default TitleBar;

@@ -11,7 +11,7 @@ const percentify = (time, end) => clamp((time / end) * 100, 0, 100).toFixed(2) +
 
 /**
  * Shows loading progress
- * 显示加载进度
+ * 显示加载进度类，继承于component，主要方法为更新进度条
  *
  * @extends Component
  */
