@@ -14,6 +14,7 @@ class FullscreenToggle extends Button {
 
   /**
    * Creates an instance of this class.
+   * 构造函数
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -42,6 +43,7 @@ class FullscreenToggle extends Button {
 
   /**
    * Handles fullscreenchange on the player and change control text accordingly.
+   * 切换全屏状态：如果已经处于全屏状态，则切换为非全屏状态；如果处于非全屏状态，则切换为全屏状态。
    *
    * @param {EventTarget~Event} [event]
    *        The {@link Player#fullscreenchange} event that caused this function to be
@@ -61,6 +63,8 @@ class FullscreenToggle extends Button {
    * This gets called when an `FullscreenToggle` is "clicked". See
    * {@link ClickableComponent} for more detailed information on what a click can be.
    *
+   * 处理点击时间：如果处于非全屏状态，则申请全屏；否则推出全屏。
+   * 
    * @param {EventTarget~Event} [event]
    *        The `keydown`, `tap`, or `click` event that caused this function to be
    *        called.
