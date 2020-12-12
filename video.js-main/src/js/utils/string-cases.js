@@ -5,6 +5,7 @@
 
 /**
  * Lowercase the first letter of a string.
+ * 将首字母小写
  *
  * @param {string} string
  *        String to be lowercased

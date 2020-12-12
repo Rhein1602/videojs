@@ -30,6 +30,7 @@ class TextTrackButton extends TrackButton {
 
   /**
    * Create a menu item for each text track
+   * 为每个文本轨道创建清单
    *
    * @param {TextTrackMenuItem[]} [items=[]]
    *        Existing array of items to use during creation
@@ -66,6 +67,7 @@ class TextTrackButton extends TrackButton {
       const track = tracks[i];
 
       // only add tracks that are of an appropriate kind and have a label
+      //只添加合适且有标签的文本轨道
       if (this.kinds_.indexOf(track.kind) > -1) {
 
         const item = new TrackMenuItem(this.player_, {
@@ -75,6 +77,7 @@ class TextTrackButton extends TrackButton {
           // MenuItem is selectable
           selectable: true,
           // MenuItem is NOT multiSelectable (i.e. only one can be marked "selected" at a time)
+          //不能重复选择
           multiSelectable: false
         });
 

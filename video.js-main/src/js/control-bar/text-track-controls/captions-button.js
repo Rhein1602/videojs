@@ -45,6 +45,8 @@ class CaptionsButton extends TextTrackButton {
   /**
    * Create caption menu items
    *
+   * 创建字幕清单
+   * 
    * @return {CaptionSettingsMenuItem[]}
    *         The array of current menu items.
    */
