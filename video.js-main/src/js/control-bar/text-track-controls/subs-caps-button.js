@@ -11,10 +11,10 @@ import {toTitleCase} from '../../utils/string-cases.js';
  *
  * @extends TextTrackButton
  */
-class SubsCapsButton extends TextTrackButton {
+class SubsCapsButton extends TextTrackButton {//extend from './text-track-button.js'
 
-  constructor(player, options = {}) {
-    super(player, options);
+  constructor(player, options = {}) {//构造函数
+    super(player, options);//(播放器，选项)
 
     // Although North America uses "captions" in most cases for
     // "captions and subtitles" other locales use "subtitles"
@@ -22,7 +22,7 @@ class SubsCapsButton extends TextTrackButton {
     if (['en', 'en-us', 'en-ca', 'fr-ca'].indexOf(this.player_.language_) > -1) {
       this.label_ = 'captions';
     }
-    this.menuButton_.controlText(toTitleCase(this.label_));
+    this.menuButton_.controlText(toTitleCase(this.label_));//import from '../../utils/string-cases.js'
   }
 
   /**
@@ -31,16 +31,17 @@ class SubsCapsButton extends TextTrackButton {
    * @return {string}
    *         The DOM `className` for this object.
    */
-  buildCSSClass() {
+  buildCSSClass() {//建立CSS
     return `vjs-subs-caps-button ${super.buildCSSClass()}`;
   }
 
-  buildWrapperCSSClass() {
+  buildWrapperCSSClass() {//建立CSS包装类
     return `vjs-subs-caps-button ${super.buildWrapperCSSClass()}`;
   }
 
   /**
    * Create caption/subtitles menu items
+   * 创建字幕清单
    *
    * @return {CaptionSettingsMenuItem[]}
    *         The array of current menu items.
@@ -50,12 +51,12 @@ class SubsCapsButton extends TextTrackButton {
 
     if (!(this.player().tech_ && this.player().tech_.featuresNativeTextTracks) &&
       this.player().getChild('textTrackSettings')) {
-      items.push(new CaptionSettingsMenuItem(this.player_, {kind: this.label_}));
+      items.push(new CaptionSettingsMenuItem(this.player_, {kind: this.label_}));//import from './caption-settings-menu-item.js'
 
       this.hideThreshold_ += 1;
     }
 
-    items = super.createItems(items, SubsCapsMenuItem);
+    items = super.createItems(items, SubsCapsMenuItem);//import from './subs-caps-menu-item.js'
     return items;
   }
 
@@ -63,6 +64,7 @@ class SubsCapsButton extends TextTrackButton {
 
 /**
  * `kind`s of TextTrack to look for to associate it with this menu.
+ * 要查找的文本轨道类型，以便将其与此菜单关联。
  *
  * @type {array}
  * @private
@@ -71,12 +73,16 @@ SubsCapsButton.prototype.kinds_ = ['captions', 'subtitles'];
 
 /**
  * The text that should display over the `SubsCapsButton`s controls.
- *
+ * 应显示在“SubsCapsButton”控件上的文本。
  *
  * @type {string}
  * @private
  */
 SubsCapsButton.prototype.controlText_ = 'Subtitles';
 
-Component.registerComponent('SubsCapsButton', SubsCapsButton);
+
+/**
+ * 注册组件为SubsCapsButton
+ */
+Component.registerComponent('SubsCapsButton', SubsCapsButton);//import from '../../component.js'
 export default SubsCapsButton;
