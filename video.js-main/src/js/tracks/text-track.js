@@ -13,12 +13,15 @@ import merge from '../utils/merge-options';
 
 /**
  * Takes a webvtt file contents and parses it into cues
+ * 提取一个webvtt文件内容并将其解析为提示
  *
  * @param {string} srcContent
  *        webVTT file contents
+ *        webVTT文件内容
  *
  * @param {TextTrack} track
  *        TextTrack to add cues to. Cues come from the srcContent.
+ *        要添加提示的TextTrack。 提示来自srcContent
  *
  * @private
  */
@@ -61,12 +64,15 @@ const parseCues = function(srcContent, track) {
 
 /**
  * Load a `TextTrack` from a specified url.
+ * 从指定的网址加载`TextTrack`。
  *
  * @param {string} src
  *        Url to load track from.
+ *        从中加载跟踪的网址
  *
  * @param {TextTrack} track
  *        Track to add cues to. Comes from the content at the end of `url`.
+ *        跟踪以添加提示。 来自“ url”末尾的内容。
  *
  * @private
  */
@@ -116,6 +122,7 @@ const loadTrack = function(src, track) {
 
 /**
  * A representation of a single `TextTrack`.
+ * 单个`TextTrack`的表示形式。
  *
  * @see [Spec]{@link https://html.spec.whatwg.org/multipage/embedded-content.html#texttrack}
  * @extends Track
@@ -124,37 +131,48 @@ class TextTrack extends Track {
 
   /**
    * Create an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Object} options={}
    *        Object of option names and values
+   *        选项名称和值的对象
    *
    * @param {Tech} options.tech
    *        A reference to the tech that owns this TextTrack.
+   *        对拥有此TextTrack的技术的引用。
    *
    * @param {TextTrack~Kind} [options.kind='subtitles']
    *        A valid text track kind.
+   *        有效的文本跟踪类型。
    *
    * @param {TextTrack~Mode} [options.mode='disabled']
    *        A valid text track mode.
+   *        有效的文本跟踪模式。
    *
    * @param {string} [options.id='vjs_track_' + Guid.newGUID()]
    *        A unique id for this TextTrack.
+   *        此TextTrack的唯一ID。
    *
    * @param {string} [options.label='']
    *        The menu label for this track.
+   *        该曲目的菜单标签。
    *
    * @param {string} [options.language='']
    *        A valid two character language code.
+   *        有效的两个字符的语言代码。
    *
    * @param {string} [options.srclang='']
    *        A valid two character language code. An alternative, but deprioritized
    *        version of `options.language`
+   *        有效的两个字符的语言代码。 options.language的替代版本，但优先级较高
    *
    * @param {string} [options.src]
    *        A url to TextTrack cues.
+   *        TextTrack提示的网址。
    *
    * @param {boolean} [options.default]
    *        If this track should default to on or off.
+   *        如果此轨道应默认设置为打开或关闭。
    */
   constructor(options = {}) {
     if (!options.tech) {
@@ -208,6 +226,7 @@ class TextTrack extends Track {
        * @member {boolean} default
        *         If this track was set to be on or off by default. Cannot be changed after
        *         creation.
+       *         默认情况下将此轨道设置为打开还是关闭。 创建后无法更改。
        * @instance
        *
        * @readonly
@@ -224,6 +243,7 @@ class TextTrack extends Track {
        * @member {string} mode
        *         Set the mode of this TextTrack to a valid {@link TextTrack~Mode}. Will
        *         not be set if setting to an invalid mode.
+       *         将此TextTrack的模式设置为有效的{@link TextTrack〜Mode}。 如果设置为无效模式，则不会设置。
        * @instance
        *
        * @fires TextTrack#modechange
@@ -251,8 +271,10 @@ class TextTrack extends Track {
           /**
            * An event that fires when mode changes on this track. This allows
            * the TextTrackList that holds this track to act accordingly.
+           * 当此轨道上的模式更改时触发的事件。 这允许保存此轨道的TextTrackList相应地采取行动。
            *
            * > Note: This is not part of the spec!
+           * 注意：这不是规范的一部分！
            *
            * @event TextTrack#modechange
            * @type {EventTarget~Event}
@@ -266,6 +288,7 @@ class TextTrack extends Track {
        * @memberof TextTrack
        * @member {TextTrackCueList} cues
        *         The text track cue list for this TextTrack.
+       *         此TextTrack的文本轨道提示列表。
        * @instance
        */
       cues: {
@@ -283,6 +306,7 @@ class TextTrack extends Track {
        * @memberof TextTrack
        * @member {TextTrackCueList} activeCues
        *         The list text track cues that are currently active for this TextTrack.
+       *         列出此TextTrack当前处于活动状态的文本轨道提示。
        * @instance
        */
       activeCues: {
@@ -351,9 +375,11 @@ class TextTrack extends Track {
 
   /**
    * Add a cue to the internal list of cues.
+   * 将提示添加到内部提示列表中。
    *
    * @param {TextTrack~Cue} originalCue
    *        The cue to add to our internal list
+   *        添加到我们内部列表的提示
    */
   addCue(originalCue) {
     let cue = originalCue;
@@ -386,9 +412,11 @@ class TextTrack extends Track {
 
   /**
    * Remove a cue from our internal list
+   * 从我们的内部列表中删除提示
    *
    * @param {TextTrack~Cue} removeCue
    *        The cue to remove from our internal list
+   *        从我们的内部列表中删除的提示
    */
   removeCue(removeCue) {
     let i = this.cues_.length;
@@ -407,6 +435,7 @@ class TextTrack extends Track {
 
 /**
  * cuechange - One or more cues in the track have become active or stopped being active.
+ * cuechange-轨道中的一个或多个提示已变为活动状态或已停止活动。
  */
 TextTrack.prototype.allowedEvents_ = {
   cuechange: 'cuechange'

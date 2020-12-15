@@ -23,15 +23,19 @@ const fontMap = {
 
 /**
  * Construct an rgba color from a given hex color code.
+ * 根据给定的十六进制颜色代码构造一个rgba颜色。
  *
  * @param {number} color
  *        Hex number for color, like #f0e or #f604e2.
+ *        颜色的十六进制数字，例如＃f0e或＃f604e2。
  *
  * @param {number} opacity
  *        Value for opacity, 0.0 - 1.0.
+ *        不透明度的值，0.0-1.0。
  *
  * @return {string}
  *         The rgba color that was created, like 'rgba(255, 0, 0, 0.3)'.
+ *         创建的rgba颜色，例如'rgba（255，0，0，0.3）'。
  */
 export function constructColor(color, opacity) {
   let hex;
@@ -55,15 +59,19 @@ export function constructColor(color, opacity) {
 /**
  * Try to update the style of a DOM element. Some style changes will throw an error,
  * particularly in IE8. Those should be noops.
+ * 尝试更新DOM元素的样式。 某些样式更改将引发错误，尤其是在IE8中。 那些应该没有。
  *
  * @param {Element} el
  *        The DOM element to be styled.
+ *        要设置样式的DOM元素。
  *
  * @param {string} style
  *        The CSS property on the element that should be styled.
+ *        应该设置样式的元素上的CSS属性。
  *
  * @param {string} rule
  *        The style rule that should be applied to the property.
+ *        应该应用于属性的样式规则。
  *
  * @private
  */
@@ -79,6 +87,7 @@ function tryUpdateStyle(el, style, rule) {
 
 /**
  * The component for displaying text track cues.
+ * 用于显示文本跟踪提示的组件。
  *
  * @extends Component
  */
@@ -86,15 +95,19 @@ class TextTrackDisplay extends Component {
 
   /**
    * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
+   *        此类应附加到的“玩家”。
    *
    * @param {Object} [options]
    *        The key/value store of player options.
+   *        玩家选项的键/值存储。
    *
    * @param {Component~ReadyCallback} [ready]
    *        The function to call when `TextTrackDisplay` is ready.
+   *        当TextTrackDisplay准备就绪时调用的函数。
    */
   constructor(player, options, ready) {
     super(player, options, ready);
@@ -183,6 +196,8 @@ class TextTrackDisplay extends Component {
     // precedence over all the other tracks.
     // So, display the preferredTrack before the first default track
     // and the subtitles/captions track before the descriptions track
+    // preferredTrack与用户首选项匹配，并且优先于所有其他轨道。
+    // 因此，请在第一个默认轨道之前显示preferredTrack，在描述轨道之前显示字幕/标题轨道
     if (preferredTrack) {
       preferredTrack.mode = 'showing';
     } else if (firstCaptions) {
