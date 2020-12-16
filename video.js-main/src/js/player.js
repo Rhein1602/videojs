@@ -1197,9 +1197,11 @@ class Player extends Component {
 
     // if autoplay is a string we pass false to the tech
     // because the player is going to handle autoplay on `loadstart`
+    // 如果autoplay是一个字符串，我们就把false传给TECH，因为播放器将在loadstart上处理autoplay`
     const autoplay = typeof this.autoplay() === 'string' ? false : this.autoplay();
 
     // Grab tech-specific options from player options and add source and parent element to use.
+    // 从player options抓取特定于技术的选项，并添加要使用的源元素和父元素。
     const techOptions = {
       source,
       autoplay,
@@ -1239,6 +1241,7 @@ class Player extends Component {
     }
 
     // Initialize tech instance
+    // 初始化技术实例
     const TechClass = Tech.getTech(techName);
 
     if (!TechClass) {
@@ -1248,11 +1251,13 @@ class Player extends Component {
     this.tech_ = new TechClass(techOptions);
 
     // player.triggerReady is always async, so don't need this to be async
+    // player.triggerReady播放器不要总是异步的
     this.tech_.ready(Fn.bind(this, this.handleTechReady_), true);
 
     textTrackConverter.jsonToTextTracks(this.textTracksJson_ || [], this.tech_);
 
     // Listen to all HTML5-defined events and trigger them on the player
+    // 监听所有HTML5定义的事件并在播放器上触发它们
     TECH_EVENTS_RETRIGGER.forEach((event) => {
       this.on(this.tech_, event, this[`handleTech${toTitleCase(event)}_`]);
     });
@@ -1297,11 +1302,13 @@ class Player extends Component {
 
     // Add the tech element in the DOM if it was not already there
     // Make sure to not insert the original video element if using Html5
+    // 如果还没有在DOM中添加tech元素，请确保在使用Html5时不要插入原始视频元素
     if (this.tech_.el().parentNode !== this.el() && (titleTechName !== 'Html5' || !this.tag)) {
       Dom.prependTo(this.tech_.el(), this.el());
     }
 
     // Get rid of the original video tag reference after the first tech is loaded
+    // 在加载第一项技术后去掉原始的视频标记引用
     if (this.tag) {
       this.tag.player = null;
       this.tag = null;
@@ -1310,11 +1317,12 @@ class Player extends Component {
 
   /**
    * Unload and dispose of the current playback {@link Tech}.
-   *
+   * 卸载并释放当前播放{@link Tech}。
    * @private
    */
   unloadTech_() {
     // Save the current text tracks so that we can reuse the same text tracks with the next tech
+    // 保存当前的文本轨迹，以便我们可以在下一个技术中重用相同的文本轨迹
     TRACK_TYPES.names.forEach((name) => {
       const props = TRACK_TYPES[name];
 
@@ -1338,9 +1346,10 @@ class Player extends Component {
 
   /**
    * Return a reference to the current {@link Tech}.
+   * 返回对当前{@link Tech}的引用。
    * It will print a warning by default about the danger of using the tech directly
    * but any argument that is passed in will silence the warning.
-   *
+   * 默认情况下，它会打印一条关于直接使用该技术的危险性的警告，但是传入的任何参数都会使警告静默。
    * @param {*} [safety]
    *        Anything passed in to silence the warning
    *
@@ -1358,17 +1367,21 @@ class Player extends Component {
 
   /**
    * Set up click and touch listeners for the playback element
-   *
+   * 为回放元素设置点击式监听
    * - On desktops: a click on the video itself will toggle playback
+   * - 在pc上：点击视频本身将切换播放
    * - On mobile devices: a click on the video toggles controls
    *   which is done by toggling the user state between active and
    *   inactive
+   * - 在移动设备上：点击视频切换控件，通过在活动和非活动之间切换用户状态来完成
    * - A tap can signal that a user has become active or has become inactive
    *   e.g. a quick tap on an iPhone movie should reveal the controls. Another
    *   quick tap should hide them again (signaling the user is in an inactive
    *   viewing state)
+   * - 轻触可以发出用户已激活或已不活动的信号
    * - In addition to this, we still want the user to be considered inactive after
    *   a few seconds of inactivity.
+   * - 除此之外，我们仍然希望用户在几秒钟不活动后被认为是不活动的。
    *
    * > Note: the only part of iOS interaction we can't mimic with this setup
    * is a touch and hold on the video element counting as activity in order to
@@ -1379,10 +1392,12 @@ class Player extends Component {
    */
   addTechControlsListeners_() {
     // Make sure to remove all the previous listeners in case we are called multiple times.
+    // 确保删除所有以前的侦听器，以防被多次调用
     this.removeTechControlsListeners_();
 
     // Some browsers (Chrome & IE) don't trigger a click on a flash swf, but do
     // trigger mousedown/up.
+    // 有些浏览器（Chrome&IE）不会触发对flashswf的点击，但会触发mousedown/up。
     // http://stackoverflow.com/questions/1444562/javascript-onclick-event-over-flash-object
     // Any touch events are set to block the mousedown event from happening
     this.on(this.tech_, 'mouseup', this.handleTechClick_);
@@ -1391,24 +1406,28 @@ class Player extends Component {
     // If the controls were hidden we don't want that to change without a tap event
     // so we'll check if the controls were already showing before reporting user
     // activity
+    // 如果控件是隐藏的，我们不希望在没有tap事件的情况下进行更改。因此，我们将在报告用户活动之前检查控件是否已经显示
     this.on(this.tech_, 'touchstart', this.handleTechTouchStart_);
     this.on(this.tech_, 'touchmove', this.handleTechTouchMove_);
     this.on(this.tech_, 'touchend', this.handleTechTouchEnd_);
 
     // The tap listener needs to come after the touchend listener because the tap
     // listener cancels out any reportedUserActivity when setting userActive(false)
+    // tap侦听器需要在touchend侦听器之后，因为在设置userActive（false）时，tap侦听器会取消任何reportedUserActivity
     this.on(this.tech_, 'tap', this.handleTechTap_);
   }
 
   /**
    * Remove the listeners used for click and tap controls. This is needed for
    * toggling to controls disabled, where a tap/touch should do nothing.
-   *
+   * 删除用于单击和点击控件的侦听器。这对于切换到禁用的控件是必需的，
+   * 在这种情况下，轻触/触摸不应起任何作用。
    * @private
    */
   removeTechControlsListeners_() {
     // We don't want to just use `this.off()` because there might be other needed
     // listeners added by techs that extend this.
+    // 我们不想仅仅使用`this.off（）`因为tech可能会添加其他需要的侦听器来扩展此功能。
     this.off(this.tech_, 'tap', this.handleTechTap_);
     this.off(this.tech_, 'touchstart', this.handleTechTouchStart_);
     this.off(this.tech_, 'touchmove', this.handleTechTouchMove_);
@@ -1419,21 +1438,24 @@ class Player extends Component {
 
   /**
    * Player waits for the tech to be ready
-   *
+   * player等待技术准备就绪
    * @private
    */
   handleTechReady_() {
     this.triggerReady();
 
     // Keep the same volume as before
+    // 保持原来的音量
     if (this.cache_.volume) {
       this.techCall_('setVolume', this.cache_.volume);
     }
 
     // Look if the tech found a higher resolution poster while loading
+    // 看看tech在加载时是否发现了更高分辨率的海报
     this.handleTechPosterChange_();
 
     // Update the duration if available
+    // 更新持续时间（如果可用）
     this.handleTechDurationChange_();
   }
 
@@ -1441,7 +1463,8 @@ class Player extends Component {
    * Retrigger the `loadstart` event that was triggered by the {@link Tech}. This
    * function will also trigger {@link Player#firstplay} if it is the first loadstart
    * for a video.
-   *
+   * 重新触发由{@link Tech}触发的“loadstart”事件。如果是视频的第一个loadstart，
+   * 此函数还将触发{@linkplayer#firstplay}。
    * @fires Player#loadstart
    * @fires Player#firstplay
    * @listens Tech#loadstart
@@ -1454,18 +1477,22 @@ class Player extends Component {
     this.removeClass('vjs-seeking');
 
     // reset the error state
+    // 重置错误状态
     this.error(null);
 
     // Update the duration
+    // 更新持续时间
     this.handleTechDurationChange_();
 
     // If it's already playing we want to trigger a firstplay event now.
     // The firstplay event relies on both the play and loadstart events
     // which can happen in any order for a new source
+    // 如果它已经在播放，我们现在要触发一个firstplay事件。
+    // firstplay事件依赖于play和loadstart事件，对于一个新的源，它们可以以任何顺序发生
     if (!this.paused()) {
       /**
        * Fired when the user agent begins looking for media data
-       *
+       * 当用户代理开始查找媒体数据时激发
        * @event Player#loadstart
        * @type {EventTarget~Event}
        */
@@ -1473,12 +1500,14 @@ class Player extends Component {
       this.trigger('firstplay');
     } else {
       // reset the hasStarted state
+      // 重置hasStarted的状态
       this.hasStarted(false);
       this.trigger('loadstart');
     }
 
     // autoplay happens after loadstart for the browser,
     // so we mimic that behavior
+    // 自动播放在浏览器的loadstart之后发生，所以我们模拟这种行为
     this.manualAutoplay_(this.autoplay());
   }
 
@@ -1487,6 +1516,8 @@ class Player extends Component {
    * values that should be handled by the tech. Note that this is not
    * part of any specification. Valid values and what they do can be
    * found on the autoplay getter at Player#autoplay()
+   * 处理自动播放字符串值，而不是技术人员应该处理的典型布尔值。请注意，这不是任何规范的一部分。
+   * 有效值及其作用可以在Player\autoplay（）的autoplay getter上找到
    * @param {any} type zzf add
    * @return {any} zzf add
    *
@@ -1506,6 +1537,7 @@ class Player extends Component {
       };
 
       // restore muted on play terminatation
+      // 播放结束时恢复静音
       this.playTerminatedQueue_.push(restoreMuted);
 
       const mutedPromise = this.play();
@@ -1521,6 +1553,7 @@ class Player extends Component {
 
     // if muted defaults to true
     // the only thing we can do is call play
+    // 如果muted默认为true，我们只能调用play
     if (type === 'any' && this.muted() !== true) {
       promise = this.play();
 
@@ -1547,11 +1580,11 @@ class Player extends Component {
   /**
    * Update the internal source caches so that we return the correct source from
    * `src()`, `currentSource()`, and `currentSources()`.
-   *
+   * 更新内部源缓存，以便从“src（）”、“currentSource（）”和“currentSources（）”返回正确的源。
    * > Note: `currentSources` will not be updated if the source that is passed in exists
    *         in the current `currentSources` cache.
    *
-   *
+   *  >注意：如果传入的源存在于当前的“currentSources”缓存中，则不会更新“currentSources”。
    * @param {Tech~SourceObject} srcObj
    *        A string or object source to update our caches to.
    */
@@ -1567,15 +1600,18 @@ class Player extends Component {
 
     // make sure all the caches are set to default values
     // to prevent null checking
+    // 确保所有缓存都设置为默认值，以防止空检查
     this.cache_.source = this.cache_.source || {};
     this.cache_.sources = this.cache_.sources || [];
 
     // try to get the type of the src that was passed in
+    // 尝试获取传入的src的类型
     if (src && !type) {
       type = findMimetype(this, src);
     }
 
     // update `currentSource` cache always
+    // 始终更新`currentSource`缓存
     this.cache_.source = mergeOptions({}, srcObj, {src, type});
 
     const matchingSources = this.cache_.sources.filter((s) => s.src && s.src === src);
@@ -1593,31 +1629,31 @@ class Player extends Component {
       }
     }
 
-    // if we have matching source els but not matching sources
-    // the current source cache is not up to date
+    //如果我们有匹配的源els但不匹配源，则当前源缓存不是最新的
     if (matchingSourceEls.length && !matchingSources.length) {
       this.cache_.sources = sourceElSources;
     // if we don't have matching source or source els set the
     // sources cache to the `currentSource` cache
+    // 如果没有匹配的源或源els，请将源缓存设置为“currentSource”缓存
     } else if (!matchingSources.length) {
       this.cache_.sources = [this.cache_.source];
     }
 
-    // update the tech `src` cache
+    // 更新tech`src`缓存
     this.cache_.src = src;
   }
 
   /**
    * *EXPERIMENTAL* Fired when the source is set or changed on the {@link Tech}
    * causing the media element to reload.
-   *
+   * 在{@link Tech}上设置或更改源时激发，导致媒体元素重新加载。
    * It will fire for the initial source and each subsequent source.
    * This event is a custom event from Video.js and is triggered by the {@link Tech}.
-   *
+   * 它将为初始震源和每个后续震源激发。此事件是来自的自定义事件video.js并由{@link Tech}触发。
    * The event object for this event contains a `src` property that will contain the source
    * that was available when the event was triggered. This is generally only necessary if Video.js
    * is switching techs while the source was being changed.
-   *
+   * 此事件的事件对象包含一个“src”属性，该属性将包含触发事件时可用的源。通常只有在以下情况下才有必要这样做video.js正在更改源时正在切换技术。
    * It is also fired when `load` is called on the player (or media element)
    * because the {@link https://html.spec.whatwg.org/multipage/media.html#dom-media-load|specification for `load`}
    * says that the resource selection algorithm needs to be aborted and restarted.
@@ -1646,16 +1682,19 @@ class Player extends Component {
   handleTechSourceset_(event) {
     // only update the source cache when the source
     // was not updated using the player api
+    // 仅在未使用player api更新源时更新源缓存
     if (!this.changingSrc_) {
       let updateSourceCaches = (src) => this.updateSourceCaches_(src);
       const playerSrc = this.currentSource().src;
       const eventSrc = event.src;
 
       // if we have a playerSrc that is not a blob, and a tech src that is a blob
+      // 如果我们有一个不是blob的playerSrc和一个blob的tech src
       if (playerSrc && !(/^blob:/).test(playerSrc) && (/^blob:/).test(eventSrc)) {
 
         // if both the tech source and the player source were updated we assume
         // something like @videojs/http-streaming did the sourceset and skip updating the source cache.
+        // 如果技术源和播放器源代码都更新了，我们假设类似@videojs/httpstreaming这样的东西对sourceset进行了设置，并跳过了源缓存的更新。
         if (!this.lastSource_ || (this.lastSource_.tech !== eventSrc && this.lastSource_.player !== playerSrc)) {
           updateSourceCaches = () => {};
         }
@@ -1663,16 +1702,21 @@ class Player extends Component {
 
       // update the source to the initial source right away
       // in some cases this will be empty string
+      // 立即将源代码更新为初始源代码在某些情况下这将是空字符串
       updateSourceCaches(eventSrc);
 
       // if the `sourceset` `src` was an empty string
       // wait for a `loadstart` to update the cache to `currentSrc`.
       // If a sourceset happens before a `loadstart`, we reset the state
+      // 如果“sourceset”是空字符串，请等待“loadstart”将缓存更新为“currentSrc”。
+      // 如果sourceset发生在“loadstart”之前，我们将重置状态
       if (!event.src) {
         this.tech_.any(['sourceset', 'loadstart'], (e) => {
           // if a sourceset happens before a `loadstart` there
           // is nothing to do as this `handleTechSourceset_`
           // will be called again and this will be handled there.
+          // 如果sourceset发生在“loadstart”之前，则无需执行任何操作，
+          // 因为将再次调用此“handleTechSourceset”，并在那里进行处理。
           if (e.type === 'sourceset') {
             return;
           }
@@ -1694,7 +1738,7 @@ class Player extends Component {
 
   /**
    * Add/remove the vjs-has-started class
-   *
+   * 添加/删除vjs has started类
    * @fires Player#firstplay
    *
    * @param {boolean} request
@@ -1707,6 +1751,7 @@ class Player extends Component {
   hasStarted(request) {
     if (request === undefined) {
       // act as getter, if we have no request to change
+      // 如果我们没有改变的要求，那就当做getter使用
       return this.hasStarted_;
     }
 
@@ -1726,7 +1771,7 @@ class Player extends Component {
 
   /**
    * Fired whenever the media begins or resumes playback
-   *
+   * 每当媒体开始或恢复播放时激发
    * @see [Spec]{@link https://html.spec.whatwg.org/multipage/embedded-content.html#dom-media-play}
    * @fires Player#play
    * @listens Tech#play
@@ -1738,11 +1783,12 @@ class Player extends Component {
     this.addClass('vjs-playing');
 
     // hide the poster when the user hits play
+    // 当用户点击播放时隐藏海报
     this.hasStarted(true);
     /**
      * Triggered whenever an {@link Tech#play} event happens. Indicates that
      * playback has started or resumed.
-     *
+     * 每当{@link Tech{play}事件发生时触发。指示播放已开始或已恢复。
      * @event Player#play
      * @type {EventTarget~Event}
      */
@@ -1751,10 +1797,10 @@ class Player extends Component {
 
   /**
    * Retrigger the `ratechange` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“ratechange”事件。
    * If there were any events queued while the playback rate was zero, fire
    * those events now.
-   *
+   * 如果在播放速率为零时有任何事件排队，请立即触发这些事件。
    * @private
    * @method Player#handleTechRateChange_
    * @fires Player#ratechange
@@ -1768,7 +1814,7 @@ class Player extends Component {
     this.cache_.lastPlaybackRate = this.tech_.playbackRate();
     /**
      * Fires when the playing speed of the audio/video is changed
-     *
+     * 更改音频/视频的播放速度时激发
      * @event Player#ratechange
      * @type {event}
      */
@@ -1777,7 +1823,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `waiting` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“waiting”事件。
    * @fires Player#waiting
    * @listens Tech#waiting
    * @private
@@ -1786,7 +1832,7 @@ class Player extends Component {
     this.addClass('vjs-waiting');
     /**
      * A readyState change on the DOM element has caused playback to stop.
-     *
+     * 对DOM元素的readyState更改已导致播放停止。
      * @event Player#waiting
      * @type {EventTarget~Event}
      */
@@ -1794,6 +1840,7 @@ class Player extends Component {
 
     // Browsers may emit a timeupdate event after a waiting event. In order to prevent
     // premature removal of the waiting class, wait for the time to change.
+    // 浏览器可能在等待事件之后发出timeupdate事件。为了防止过早删除等待的班级，等待时间的改变。
     const timeWhenWaiting = this.currentTime();
     const timeUpdateListener = () => {
       if (timeWhenWaiting !== this.currentTime()) {
@@ -1807,6 +1854,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `canplay` event that was triggered by the {@link Tech}.
+   * 重新触发由{@link Tech}触发的“canplay”事件。
    * > Note: This is not consistent between browsers. See #1351
    *
    * @fires Player#canplay
@@ -1826,7 +1874,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `canplaythrough` event that was triggered by the {@link Tech}.
-   *
+   * 媒体的readyState为HAVE\u FUTURE_DATA或更高版本。
    * @fires Player#canplaythrough
    * @listens Tech#canplaythrough
    * @private
@@ -1836,7 +1884,8 @@ class Player extends Component {
     /**
      * The media has a readyState of HAVE_ENOUGH_DATA or greater. This means that the
      * entire media file can be played without buffering.
-     *
+     * 媒体的readyState为“有足够的数据”或更高的数据。
+     * 这意味着整个媒体文件可以在没有缓冲的情况下播放。
      * @event Player#canplaythrough
      * @type {EventTarget~Event}
      */
@@ -1845,7 +1894,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `playing` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“playing”事件。
    * @fires Player#playing
    * @listens Tech#playing
    * @private
@@ -1854,7 +1903,7 @@ class Player extends Component {
     this.removeClass('vjs-waiting');
     /**
      * The media is no longer blocked from playback, and has started playing.
-     *
+     * 媒体不再被阻止播放，并且已开始播放。
      * @event Player#playing
      * @type {EventTarget~Event}
      */
@@ -1863,7 +1912,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `seeking` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“seeking”事件。
    * @fires Player#seeking
    * @listens Tech#seeking
    * @private
@@ -1872,7 +1921,7 @@ class Player extends Component {
     this.addClass('vjs-seeking');
     /**
      * Fired whenever the player is jumping to a new time
-     *
+     * 每当玩家跳转到新的时间时被触发
      * @event Player#seeking
      * @type {EventTarget~Event}
      */
@@ -1881,7 +1930,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `seeked` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“seeked”事件。
    * @fires Player#seeked
    * @listens Tech#seeked
    * @private
@@ -1891,7 +1940,7 @@ class Player extends Component {
     this.removeClass('vjs-ended');
     /**
      * Fired when the player has finished jumping to a new time
-     *
+     * 当玩家跳到一个新的时间后触发
      * @event Player#seeked
      * @type {EventTarget~Event}
      */
@@ -1900,7 +1949,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `firstplay` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“firstplay”事件。
    * @fires Player#firstplay
    * @listens Tech#firstplay
    * @deprecated As of 6.0 firstplay event is deprecated.
@@ -1910,6 +1959,7 @@ class Player extends Component {
   handleTechFirstPlay_() {
     // If the first starttime attribute is specified
     // then we will start at the given offset in seconds
+    // 如果指定了第一个starttime属性，那么我们将以秒为单位从给定的偏移量开始
     if (this.options_.starttime) {
       log.warn('Passing the `starttime` option to the player will be deprecated in 6.0');
       this.currentTime(this.options_.starttime);
@@ -1920,7 +1970,8 @@ class Player extends Component {
      * Fired the first time a video is played. Not part of the HLS spec, and this is
      * probably not the best implementation yet, so use sparingly. If you don't have a
      * reason to prevent playback, use `myPlayer.one('play');` instead.
-     *
+     * 第一次播放视频时激发。不是HLS规范的一部分，而且这可能还不是最好的实现，所以要谨慎使用。
+     * 如果您没有理由阻止播放，请使用`myPlayer.one（'play'）；`。
      * @event Player#firstplay
      * @deprecated As of 6.0 firstplay event is deprecated.
      * @type {EventTarget~Event}
@@ -1930,7 +1981,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `pause` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“pause”事件。
    * @fires Player#pause
    * @listens Tech#pause
    * @private
@@ -1940,7 +1991,7 @@ class Player extends Component {
     this.addClass('vjs-paused');
     /**
      * Fired whenever the media has been paused
-     *
+     * 每当媒体暂停时激发
      * @event Player#pause
      * @type {EventTarget~Event}
      */
@@ -1949,7 +2000,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `ended` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“ended”事件。
    * @fires Player#ended
    * @listens Tech#ended
    * @private
@@ -1965,7 +2016,7 @@ class Player extends Component {
 
     /**
      * Fired when the end of the media resource is reached (currentTime == duration)
-     *
+     * 到达媒体资源结尾时激发
      * @event Player#ended
      * @type {EventTarget~Event}
      */
@@ -1974,7 +2025,7 @@ class Player extends Component {
 
   /**
    * Fired when the duration of the media resource is first known or changed
-   *
+   * 在首次知道或更改媒体资源的持续时间时激发
    * @listens Tech#durationchange
    * @private
    */
@@ -1984,7 +2035,7 @@ class Player extends Component {
 
   /**
    * Handle a click on the media element to play/pause
-   *
+   * 点击媒体元素播放/暂停
    * @param {EventTarget~Event} event
    *        the event that caused this function to trigger
    *
@@ -1998,6 +2049,7 @@ class Player extends Component {
 
     // When controls are disabled a click should not toggle playback because
     // the click is considered a control
+    // 禁用控件时，单击不应切换播放，因为单击被视为控件
     if (!this.controls_) {
       return;
     }
