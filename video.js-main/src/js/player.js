@@ -1,7 +1,7 @@
 /**
  * @file player.js
  */
-// Subclasses Component
+// 子组件
 import Component from './component.js';
 
 import {version} from '../../package.json';
@@ -38,6 +38,7 @@ import keycode from 'keycode';
 // The following imports are used only to ensure that the corresponding modules
 // are always included in the video.js package. Importing the modules will
 // execute them and they will register themselves with video.js.
+// 以下导入仅用于确保相应的模块始终包含在视频.js包裹。导入模块将执行它们，它们将注册到videojs.
 import './tech/loader.js';
 import './poster-image.js';
 import './tracks/text-track-display.js';
@@ -51,21 +52,22 @@ import './resize-manager.js';
 import './live-tracker.js';
 import './title-bar.js';
 
-// Import Html5 tech, at least for disposing the original video tag.
+// 导入html5支持，使其至少可以处理原始的video标签
 import './tech/html5.js';
 
 // The following tech events are simply re-triggered
 // on the player when they happen
+// 以下技术事件只是在发生时在播放器上重新触发
 const TECH_EVENTS_RETRIGGER = [
   /**
    * Fired while the user agent is downloading media data.
-   *
+   * 用户在下载媒体时数据时触发。
    * @event Player#progress
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `progress` event that was triggered by the {@link Tech}.
-   *
+   * 通过tech重新触发‘progerss’
    * @private
    * @method Player#handleTechProgress_
    * @fires Player#progress
@@ -75,13 +77,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the loading of an audio/video is aborted.
-   *
+   * 视频/音频终止时触发
    * @event Player#abort
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `abort` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发tech中触发的‘abort’事件
    * @private
    * @method Player#handleTechAbort_
    * @fires Player#abort
@@ -91,13 +93,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the browser is intentionally not getting media data.
-   *
+   * 当浏览器不希望获取数据时触发
    * @event Player#suspend
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `suspend` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“suspend”事件。
    * @private
    * @method Player#handleTechSuspend_
    * @fires Player#suspend
@@ -107,13 +109,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the current playlist is empty.
-   *
+   * 当播放器列表为空时触发
    * @event Player#emptied
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `emptied` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“emptied”事件。
    * @private
    * @method Player#handleTechEmptied_
    * @fires Player#emptied
@@ -122,13 +124,13 @@ const TECH_EVENTS_RETRIGGER = [
   'emptied',
   /**
    * Fires when the browser is trying to get media data, but data is not available.
-   *
+   * 当浏览器尝试获取数据时，却无法获取数据时触发。
    * @event Player#stalled
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `stalled` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“stalled”事件。
    * @private
    * @method Player#handleTechStalled_
    * @fires Player#stalled
@@ -138,13 +140,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the browser has loaded meta data for the audio/video.
-   *
+   * 当浏览器已加载音频/视频的元数据时激发。
    * @event Player#loadedmetadata
    * @type {EventTarget~Event}
    */
   /**
    * Retrigger the `stalled` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“stalled”事件。
    * @private
    * @method Player#handleTechLoadedmetadata_
    * @fires Player#loadedmetadata
@@ -160,7 +162,7 @@ const TECH_EVENTS_RETRIGGER = [
    */
   /**
    * Retrigger the `loadeddata` event that was triggered by the {@link Tech}.
-   *
+   * 当浏览器已加载音频/视频的当前帧时激发。
    * @private
    * @method Player#handleTechLoaddeddata_
    * @fires Player#loadeddata
@@ -176,7 +178,7 @@ const TECH_EVENTS_RETRIGGER = [
    */
   /**
    * Retrigger the `timeupdate` event that was triggered by the {@link Tech}.
-   *
+   * 当前播放位置更改时激发。
    * @private
    * @method Player#handleTechTimeUpdate_
    * @fires Player#timeupdate
@@ -186,13 +188,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the video's intrinsic dimensions change
-   *
+   * 当视频的内在尺寸改变时触发
    * @event Player#resize
    * @type {event}
    */
   /**
    * Retrigger the `resize` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“resize”事件。
    * @private
    * @method Player#handleTechResize_
    * @fires Player#resize
@@ -202,13 +204,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the volume has been changed
-   *
+   * 更改音量时激发
    * @event Player#volumechange
    * @type {event}
    */
   /**
    * Retrigger the `volumechange` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“volumechange”事件
    * @private
    * @method Player#handleTechVolumechange_
    * @fires Player#volumechange
@@ -218,13 +220,13 @@ const TECH_EVENTS_RETRIGGER = [
 
   /**
    * Fires when the text track has been changed
-   *
+   * 当文本轨迹已更改时激发
    * @event Player#texttrackchange
    * @type {event}
    */
   /**
    * Retrigger the `texttrackchange` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发由{@link Tech}触发的“texttrackchange”事件
    * @private
    * @method Player#handleTechTexttrackchange_
    * @fires Player#texttrackchange
@@ -236,6 +238,7 @@ const TECH_EVENTS_RETRIGGER = [
 // events to queue when playback rate is zero
 // this is a hash for the sole purpose of mapping non-camel-cased event names
 // to camel-cased function names
+// 播放速率为零时要排队的事件这是一个散列，其唯一目的是将非大小写事件名称映射为大小写混合的函数名称
 const TECH_EVENTS_QUEUE = {
   canplay: 'CanPlay',
   canplaythrough: 'CanPlayThrough',
@@ -281,8 +284,9 @@ const DEFAULT_BREAKPOINTS = {
 /**
  * An instance of the `Player` class is created when any of the Video.js setup methods
  * are used to initialize a video.
- *
+ * 使用video.js设置方法用于初始化视频播放器类。
  * After an instance has been created it can be accessed globally in two ways:
+ * 利用下面两个方法可以获得全局的player对象
  * 1. By calling `videojs('example_video_1');`
  * 2. By using it directly via  `videojs.players.example_video_1;`
  *
@@ -292,42 +296,50 @@ class Player extends Component {
 
   /**
    * Create an instance of this class.
-   *
+   * 创建此类的实例。
    * @param {Element} tag
    *        The original video DOM element used for configuring options.
    *
    * @param {Object} [options]
    *        Object of option names and values.
-   *
+   *        用于配置选项的原始视频DOM元素。
    * @param {Component~ReadyCallback} [ready]
    *        Ready callback function.
+   *        播放器准备就绪时的回调函数
    */
   constructor(tag, options, ready) {
     // Make sure tag ID exists
+    // 确认标签id是否存在
     tag.id = tag.id || options.id || `vjs_video_${Guid.newGUID()}`;
 
-    // Set Options
+    // 设置选项
     // The options argument overrides options set in the video tag
     // which overrides globally set options.
+    // options参数重写在video标记中设置的选项，后者覆盖全局设置的选项。
     // This latter part coincides with the load order
+    // 后一部分与荷载顺序一致
     // (tag must exist before Player)
     options = assign(Player.getTagSettings(tag), options);
 
     // Delay the initialization of children because we need to set up
     // player properties first, and can't use `this` before `super()`
+    // 延迟子级的初始化，因为我们需要先设置播放器属性，并且不能在“super（）”之前使用”this（）“
     options.initChildren = false;
 
-    // Same with creating the element
+    // 与创建元素相同
     options.createEl = false;
 
     // don't auto mixin the evented mixin
+    // 不要在事件混音中自动混音
     options.evented = false;
 
     // we don't want the player to report touch activity on itself
     // see enableTouchActivity in Component
+    // 我们不想让播放器报告自己的触摸活动，详情请参阅组件中的enableToughActivity
     options.reportTouchActivity = false;
 
     // If language is not set, get the closest lang attribute
+    // 如果未设置语言，请获取最近的lang属性
     if (!options.language) {
       if (typeof tag.closest === 'function') {
         const closest = tag.closest('[lang]');
@@ -349,42 +361,51 @@ class Player extends Component {
     }
 
     // Run base component initializing with new options
+    // 使用新选项运行基本组件初始化
     super(null, options, ready);
 
-    // Create bound methods for document listeners.
+    // 为文档侦听器创建绑定方法。
     this.boundDocumentFullscreenChange_ = Fn.bind(this, this.documentFullscreenChange_);
     this.boundFullWindowOnEscKey_ = Fn.bind(this, this.fullWindowOnEscKey);
 
-    // default isFullscreen_ to false
+    // 全屏显示默认为false
     this.isFullscreen_ = false;
 
-    // create logger
+    // 创建记录器
     this.log = createLogger(this.id_);
 
     // Hold our own reference to fullscreen api so it can be mocked in tests
+    // 保留我们自己对全屏api的引用，以便可以在测试中模拟它
     this.fsApi_ = FullscreenApi;
 
     // Tracks when a tech changes the poster
+    // 当调用更改海报方法时进行追踪
     this.isPosterFromTech_ = false;
 
     // Holds callback info that gets queued when playback rate is zero
     // and a seek is happening
+    // 保存在播放速率为零时排队的回调信息
     this.queuedCallbacks_ = [];
 
     // Turn off API access because we're loading a new tech that might load asynchronously
+    // 关闭API访问，因为我们正在加载可能异步加载的新技术
     this.isReady_ = false;
 
     // Init state hasStarted_
+    // 初始化hasStarted_的状态
     this.hasStarted_ = false;
 
     // Init state userActive_
+    // 初始化userActive_状态
     this.userActive_ = false;
 
     // Init debugEnabled_
+    // 初始化debugEnabled_
     this.debugEnabled_ = false;
 
     // if the global option object was accidentally blown away by
     // someone, bail early with an informative error
+    // 如果全局选项对象意外地被某人销毁了，提前退出并显示一个信息错误
     if (!this.options_ ||
         !this.options_.techOrder ||
         !this.options_.techOrder.length) {
@@ -394,17 +415,22 @@ class Player extends Component {
     }
 
     // Store the original tag used to set options
+    // 存储用于设置选项的原始标记
     this.tag = tag;
 
     // Store the tag attributes used to restore html5 element
+    // 存储用于恢复html5元素的标记属性
     this.tagAttributes = tag && Dom.getAttributes(tag);
 
     // Update current language
+    // 更新当前语言
     this.language(this.options_.language);
 
     // Update Supported Languages
+    // 更新支持的语言
     if (options.languages) {
       // Normalise player option languages to lowercase
+      // 将播放器选项语言规范化为小写
       const languagesToLower = {};
 
       Object.getOwnPropertyNames(options.languages).forEach(function(name) {
@@ -418,14 +444,18 @@ class Player extends Component {
     this.resetCache_();
 
     // Set poster
+    // 设置封面
     this.poster_ = options.poster || '';
 
     // Set controls
+    // 设置控制器
     this.controls_ = !!options.controls;
 
     // Original tag settings stored in options
     // now remove immediately so native controls don't flash.
     // May be turned back on by HTML5 tech if nativeControlsForTouch is true
+    // 存储在选项中的原始标记设置现在立即删除，这样本机控件就不会闪烁。
+    // 如果nativeControlsForTouch为真，则可能被HTML5技术重新打开
     tag.controls = false;
     tag.removeAttribute('controls');
 
@@ -433,15 +463,15 @@ class Player extends Component {
     this.playCallbacks_ = [];
     this.playTerminatedQueue_ = [];
 
-    // the attribute overrides the option
+    // 该属性将覆盖该选项
     if (tag.hasAttribute('autoplay')) {
       this.autoplay(true);
     } else {
-      // otherwise use the setter to validate and
-      // set the correct value.
+      // 否则，使用setter来验证和设置正确的值。
       this.autoplay(this.options_.autoplay);
     }
-    // check plugins
+    // check plugins、
+    // 检查插件
     if (options.plugins) {
       Object.keys(options.plugins).forEach((name) => {
         if (typeof this[name] !== 'function') {
@@ -452,7 +482,7 @@ class Player extends Component {
 
     /*
      * Store the internal state of scrubbing
-     *
+     * 存储内部擦洗状态
      * @private
      * @return {Boolean} True if the user is scrubbing
      */
@@ -461,12 +491,15 @@ class Player extends Component {
     this.el_ = this.createEl();
 
     // Make this an evented object and use `el_` as its event bus.
+    // 将此对象设为事件对象并使用“el”作为其事件总线。
     evented(this, {eventBusKey: 'el_'});
 
     // listen to document and player fullscreenchange handlers so we receive those events
     // before a user can receive them so we can update isFullscreen appropriately.
+    // 监听document和player fullscreenschange处理程序，以便在用户接收事件之前接收这些事件，以便我们可以适当地更新isFullscreen。
     // make sure that we listen to fullscreenchange events before everything else to make sure that
     // our isFullscreen method is updated properly for internal components as well as external.
+    // 确保我们在做其他事情之前先听fullscreenchange事件，以确保我们的isFullscreen方法对内部组件和外部组件都进行了正确的更新。
     if (this.fsApi_.requestFullscreen) {
       Events.on(document, this.fsApi_.fullscreenchange, this.boundDocumentFullscreenChange_);
       this.on(this.fsApi_.fullscreenchange, this.boundDocumentFullscreenChange_);
@@ -477,18 +510,21 @@ class Player extends Component {
     }
     // We also want to pass the original player options to each component and plugin
     // as well so they don't need to reach back into the player for options later.
+    // 我们还希望将原始播放器选项传递给每个组件和插件，这样他们就不需要再回到播放器中获取选项了。
     // We also need to do another copy of this.options_ so we don't end up with
     // an infinite loop.
+    // 我们还需要再做一份this.options所以我们不会以无限循环结束。
     const playerOptionsCopy = mergeOptions(this.options_);
 
     // Load plugins
+    // 加载插件
     if (options.plugins) {
       Object.keys(options.plugins).forEach((name) => {
         this[name](options.plugins[name]);
       });
     }
 
-    // Enable debug mode to fire debugon event for all plugins.
+    // 启用调试模式以触发所有插件的debugon事件。
     if (options.debug) {
       this.debug(true);
     }
@@ -500,10 +536,12 @@ class Player extends Component {
     this.initChildren();
 
     // Set isAudio based on whether or not an audio tag was used
+    // 根据是否使用了音频标记设置isAudio
     this.isAudio(tag.nodeName.toLowerCase() === 'audio');
 
     // Update controls className. Can't do this when the controls are initially
     // set because the element doesn't exist yet.
+    // 更新控件类名。无法在控件初始设置时执行此操作，因为元素尚不存在。
     if (this.controls()) {
       this.addClass('vjs-controls-enabled');
     } else {
@@ -511,6 +549,7 @@ class Player extends Component {
     }
 
     // Set ARIA label and region role depending on player type
+    // 根据player类型设置ARIA标签和区域角色
     this.el_.setAttribute('role', 'region');
     if (this.isAudio()) {
       this.el_.setAttribute('aria-label', this.localize('Audio Player'));
@@ -526,29 +565,30 @@ class Player extends Component {
       this.addClass('vjs-no-flex');
     }
 
-    // TODO: Make this smarter. Toggle user state between touching/mousing
-    // using events, since devices can have both touch and mouse events.
-    // TODO: Make this check be performed again when the window switches between monitors
-    // (See https://github.com/videojs/video.js/issues/5683)
+
     if (browser.TOUCH_ENABLED) {
       this.addClass('vjs-touch-enabled');
     }
 
     // iOS Safari has broken hover handling
+    // iOS Safari中断了悬停处理
     if (!browser.IS_IOS) {
       this.addClass('vjs-workinghover');
     }
 
     // Make player easily findable by ID
+    // 让player很容易依据id查找
     Player.players[this.id_] = this;
 
     // Add a major version class to aid css in plugins
+    // 添加一个主版本类来帮助插件中的css
     const majorVersion = version.split('.')[0];
 
     this.addClass(`vjs-v${majorVersion}`);
 
     // When the player is first initialized, trigger activity so components
     // like the control bar show themselves if needed
+    // 当播放器第一次初始化时，触发活动，以便控件栏等组件在需要时显示自己
     this.userActive(true);
     this.reportUserActivity();
 
@@ -563,24 +603,25 @@ class Player extends Component {
 
   /**
    * Destroys the video player and does any necessary cleanup.
-   *
+   * 销毁视频播放器并进行任何必要的清理。
    * This is especially helpful if you are dynamically adding and removing videos
    * to/from the DOM.
-   *
+   * 如果要在DOM中动态添加和删除视频，这一点尤其有用。
    * @fires Player#dispose
    */
   dispose() {
     /**
      * Called when the player is being disposed of.
-     *
+     * 在处理播放机时调用。
      * @event Player#dispose
      * @type {EventTarget~Event}
      */
     this.trigger('dispose');
     // prevent dispose from being called twice
+    // 防止调用dispose两次
     this.off('dispose');
 
-    // Make sure all player-specific document listeners are unbound. This is
+    // 确保所有特定于播放器的文档侦听器都已解除绑定。
     Events.off(document, this.fsApi_.fullscreenchange, this.boundDocumentFullscreenChange_);
     Events.off(document, 'keydown', this.boundFullWindowOnEscKey_);
 
@@ -589,7 +630,9 @@ class Player extends Component {
       this.styleEl_ = null;
     }
 
+    
     // Kill reference to this player
+    // 删除对该播放器的引用
     Player.players[this.id_] = null;
 
     if (this.tag && this.tag.player) {
@@ -619,24 +662,27 @@ class Player extends Component {
     // remove all event handlers for track lists
     // all tracks and track listeners are removed on
     // tech dispose
+    // 删除跟踪列表的所有事件处理程序在tech dispose上删除所有跟踪和跟踪侦听器
     TRACK_TYPES.names.forEach((name) => {
       const props = TRACK_TYPES[name];
       const list = this[props.getterName]();
 
       // if it is not a native list
       // we have to manually remove event listeners
+      // 如果不是本机列表，则必须手动删除事件侦听器
       if (list && list.off) {
         list.off();
       }
     });
 
     // the actual .el_ is removed here
+    // 调用父类的销毁函数
     super.dispose();
   }
 
   /**
    * Create the `Player`'s DOM element.
-   *
+   * 创建“Player”的DOM元素。
    * @return {Element}
    *         The DOM element that gets created.
    */
@@ -654,6 +700,7 @@ class Player extends Component {
 
     // Copy over all the attributes from the tag, including ID and class
     // ID will now reference player box, not the video tag
+    // 复制标记中的所有属性，包括ID和class ID现在将引用player box，而不是video标记
     const attrs = Dom.getAttributes(tag);
 
     if (divEmbed) {
@@ -674,30 +721,30 @@ class Player extends Component {
       // to our new `video` element. This will move things like
       // `src` or `controls` that were set via js before the player
       // was initialized.
+      // 将属性从我们的自定义“video js”元素移到新的“video”元素。
+      // 这将移动在初始化播放器之前通过js设置的“src”或“controls”。
       Object.keys(el).forEach((k) => {
         try {
           tag[k] = el[k];
         } catch (e) {
-          // we got a a property like outerHTML which we can't actually copy, ignore it
+
         }
       });
     }
 
     // set tabindex to -1 to remove the video element from the focus order
+    // 将tabindex设置为-1以从焦点顺序中删除视频元素
     tag.setAttribute('tabindex', '-1');
     attrs.tabindex = '-1';
 
-    // Workaround for #4583 (JAWS+IE doesn't announce BPB or play button), and
-    // for the same issue with Chrome (on Windows) with JAWS.
-    // See https://github.com/FreedomScientific/VFO-standards-support/issues/78
-    // Note that we can't detect if JAWS is being used, but this ARIA attribute
-    //  doesn't change behavior of IE11 or Chrome if JAWS is not being used
+
     if (IE_VERSION || (IS_CHROME && IS_WINDOWS)) {
       tag.setAttribute('role', 'application');
       attrs.role = 'application';
     }
 
     // Remove width/height attrs from tag so CSS can make it 100% width/height
+    // 从标记中删除width/height属性，这样CSS就可以使其达到100%的宽度/高度
     tag.removeAttribute('width');
     tag.removeAttribute('height');
 
@@ -712,6 +759,8 @@ class Player extends Component {
       // don't copy over the class attribute to the player element when we're in a div embed
       // the class is already set up properly in the divEmbed case
       // and we want to make sure that the `video-js` class doesn't get lost
+      // 当我们在div embed中时，不要将class属性复制到player元素中，
+      // 类已经在divEmbed中正确设置了，我们希望确保“video js”类不会丢失
       if (!(divEmbed && attr === 'class')) {
         el.setAttribute(attr, attrs[attr]);
       }
@@ -725,17 +774,23 @@ class Player extends Component {
     // Might think we should do this after embedding in container so .vjs-tech class
     // doesn't flash 100% width/height, but class only applies with .video-js parent
     tag.playerId = tag.id;
+    // 更新标签id/class以用作HTML5回放技术可能认为我们应该在嵌入容器之后
+    // 这样.vjs tech类不会100%地闪烁宽度/高度，但是类只适用于.video js parent
     tag.id += '_html5_api';
     tag.className = 'vjs-tech';
 
     // Make player findable on elements
+    // 使player可以在元素上找到
     tag.player = el.player = this;
     // Default state of video is paused
+    // 默认状态为暂停
     this.addClass('vjs-paused');
 
     // Add a style element in the player that we'll use to set the width/height
     // of the player in a way that's still overrideable by CSS, just like the
     // video element
+    // 在播放器中添加一个style元素，我们将使用这个元素来设置播放器的宽度/高度，
+    // 这种方式仍然可以被CSS覆盖，就像video元素一样
     if (window.VIDEOJS_NO_DYNAMIC_STYLE !== true) {
       this.styleEl_ = stylesheet.createStyleElement('vjs-styles-dimensions');
       const defaultsStyleEl = Dom.$('.vjs-styles-defaults');
@@ -748,16 +803,19 @@ class Player extends Component {
     this.fluid_ = false;
 
     // Pass in the width/height/aspectRatio options which will update the style el
+    // 传入width/height/aspectRatio选项，该选项将更新样式el
     this.width(this.options_.width);
     this.height(this.options_.height);
     this.fill(this.options_.fill);
     this.fluid(this.options_.fluid);
     this.aspectRatio(this.options_.aspectRatio);
     // support both crossOrigin and crossorigin to reduce confusion and issues around the name
+    // 同时支持crossOrigin和crossOrigin以减少名称的混淆和问题
     this.crossOrigin(this.options_.crossOrigin || this.options_.crossorigin);
 
     // Hide any links within the video/audio tag,
     // because IE doesn't hide them completely from screen readers.
+    // 隐藏视频/音频标签中的任何链接，因为IE不会完全对屏幕阅读器隐藏它们。
     const links = tag.getElementsByTagName('a');
 
     for (let i = 0; i < links.length; i++) {
@@ -769,6 +827,7 @@ class Player extends Component {
 
     // insertElFirst seems to cause the networkState to flicker from 3 to 2, so
     // keep track of the original for later so we can know if the source originally failed
+    // insertElFirst似乎会导致networkState从3闪烁到2，因此请跟踪原始数据以便稍后我们可以知道源是否失败
     tag.initNetworkState_ = tag.networkState;
 
     // Wrap video tag in div (el/box) container
@@ -779,13 +838,16 @@ class Player extends Component {
     // insert the tag as the first child of the player element
     // then manually add it to the children array so that this.addChild
     // will work properly for other components
-    //
+    // 插入标记作为player元素的第一个子元素，然后手动将其添加到子数组中，
+    // 以便这个.addChild对其他部件也能正常工作
     // Breaks iPhone, fixed in HTML5 setup.
     Dom.prependTo(tag, el);
     this.children_.unshift(tag);
 
     // Set lang attr on player to ensure CSS :lang() in consistent with player
+    // 在player上设置lang attr以确保CSS:lang（）与player一致
     // if it's been set to something different to the doc
+    // 如果它被设置成与文档不同的东西
     this.el_.setAttribute('lang', this.language_);
 
     this.el_ = el;
@@ -797,7 +859,7 @@ class Player extends Component {
    * Get or set the `Player`'s crossOrigin option. For the HTML5 player, this
    * sets the `crossOrigin` property on the `<video>` tag to control the CORS
    * behavior.
-   *
+   * 获取或设置“Player”的crossOrigin选项。对于HTML5播放器，这将在“<video>”标记上设置“crossOrigin”属性来控制CORS行为。
    * @see [Video Element Attributes]{@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video#attr-crossorigin}
    *
    * @param {string} [value]
@@ -826,10 +888,10 @@ class Player extends Component {
   /**
    * A getter/setter for the `Player`'s width. Returns the player's configured value.
    * To get the current width use `currentWidth()`.
-   *
+   * “Player”宽度的getter/setter。返回播放器的配置值。要获取当前宽度，请使用“currentWidth（）”。
    * @param {number} [value]
    *        The value to set the `Player`'s width to.
-   *
+   *        播放器的宽度
    * @return {number}
    *         The current width of the `Player` when getting.
    */
@@ -840,10 +902,11 @@ class Player extends Component {
   /**
    * A getter/setter for the `Player`'s height. Returns the player's configured value.
    * To get the current height use `currentheight()`.
+   * player高度的一个固定器。返回播放器的配置值。要获取当前高度，请使用“currentheight（）”。
    *
    * @param {number} [value]
    *        The value to set the `Player`'s heigth to.
-   *
+   *        播放器的目标高度
    * @return {number}
    *         The current height of the `Player` when getting.
    */
@@ -853,7 +916,7 @@ class Player extends Component {
 
   /**
    * A getter/setter for the `Player`'s width & height.
-   *
+   * player宽度和高度的getter/setter。
    * @param {string} dimension
    *        This string can be:
    *        - 'width'
@@ -861,7 +924,7 @@ class Player extends Component {
    *
    * @param {number} [value]
    *        Value for dimension specified in the first argument.
-   *
+   *        在第一个参数中指定的维度的值。
    * @return {number}
    *         The dimension arguments value when getting (width/height).
    */
@@ -874,6 +937,7 @@ class Player extends Component {
 
     if (value === '' || value === 'auto') {
       // If an empty string is given, reset the dimension to be automatic
+      // 如果给定空字符串，请将维度重置为自动
       this[privDimension] = undefined;
       this.updateStyleEl_();
       return;
@@ -892,9 +956,9 @@ class Player extends Component {
 
   /**
    * A getter/setter/toggler for the vjs-fluid `className` on the `Player`.
-   *
+   * “Player”上的vjs流体“className”的getter/setter/toggler。
    * Turning this on will turn off fill mode.
-   *
+   * 启用此选项将关闭填充模式。
    * @param {boolean} [bool]
    *        - A value of true adds the class.
    *        - A value of false removes the class.
@@ -929,9 +993,9 @@ class Player extends Component {
 
   /**
    * A getter/setter/toggler for the vjs-fill `className` on the `Player`.
-   *
+   * vjs在“Player”上填充“className”的getter/setter/toggler。
    * Turning this on will turn off fluid mode.
-   *
+   *  启用此选项将关闭流体模式。
    * @param {boolean} [bool]
    *        - A value of true adds the class.
    *        - A value of false removes the class.
@@ -958,7 +1022,7 @@ class Player extends Component {
 
   /**
    * Get/Set the aspect ratio
-   *
+   * 获取/设置纵横比
    * @param {string} [ratio]
    *        Aspect ratio for player
    *
@@ -968,7 +1032,7 @@ class Player extends Component {
 
   /**
    * A getter/setter for the `Player`'s aspect ratio.
-   *
+   * “Player”纵横比的getter/setter。
    * @param {string} [ratio]
    *        The value to set the `Player`'s aspect ratio to.
    *
@@ -982,6 +1046,7 @@ class Player extends Component {
     }
 
     // Check for width:height format
+    // 检查宽度：高度格式
     if (!(/^\d+\:\d+$/).test(ratio)) {
       throw new Error('Improper value supplied for aspect ratio. The format should be width:height, for example 16:9.');
     }
@@ -989,6 +1054,7 @@ class Player extends Component {
 
     // We're assuming if you set an aspect ratio you want fluid mode,
     // because in fixed mode you could calculate width and height yourself.
+    // 我们假设如果你设置一个宽高比你想要流体模式，因为在固定模式下你可以自己计算宽度和高度。
     this.fluid(true);
 
     this.updateStyleEl_();
@@ -996,7 +1062,7 @@ class Player extends Component {
 
   /**
    * Update styles of the `Player` element (height, width and aspect ratio).
-   *
+   * 更新“Player”元素的样式（高度、宽度和纵横比）。
    * @private
    * @listens Tech#loadedmetadata
    */
@@ -1024,41 +1090,52 @@ class Player extends Component {
     let idClass;
 
     // The aspect ratio is either used directly or to calculate width and height.
+    // 纵横比可以直接使用，也可以用于计算宽度和高度。
     if (this.aspectRatio_ !== undefined && this.aspectRatio_ !== 'auto') {
       // Use any aspectRatio that's been specifically set
+      // 使用任何专门设置的aspectRatio
       aspectRatio = this.aspectRatio_;
     } else if (this.videoWidth() > 0) {
       // Otherwise try to get the aspect ratio from the video metadata
+      // 否则，请尝试从视频元数据中获取纵横比
       aspectRatio = this.videoWidth() + ':' + this.videoHeight();
     } else {
       // Or use a default. The video element's is 2:1, but 16:9 is more common.
+      // 或者使用默认值。视频元素是2:1，但是16:9更常见。
       aspectRatio = '16:9';
     }
 
     // Get the ratio as a decimal we can use to calculate dimensions
+    // 我们可以用十进制来计算尺寸
     const ratioParts = aspectRatio.split(':');
     const ratioMultiplier = ratioParts[1] / ratioParts[0];
 
     if (this.width_ !== undefined) {
       // Use any width that's been specifically set
+      // 使用任何指定的宽度
       width = this.width_;
     } else if (this.height_ !== undefined) {
       // Or calulate the width from the aspect ratio if a height has been set
+      // 或根据纵横比计算宽度（如果已设置高度）
       width = this.height_ / ratioMultiplier;
     } else {
       // Or use the video's metadata, or use the video el's default of 300
+      // 或者使用视频的元数据，或者使用视频el的默认值300
       width = this.videoWidth() || 300;
     }
 
     if (this.height_ !== undefined) {
       // Use any height that's been specifically set
+      // 使用任何指定的高度
       height = this.height_;
     } else {
       // Otherwise calculate the height from the ratio and the width
+      // 否则根据比率和宽度计算高度
       height = width * ratioMultiplier;
     }
 
     // Ensure the CSS class is valid by starting with an alpha character
+    // 确保CSS类以字母字符开头是有效的
     if ((/^[^a-zA-Z]/).test(this.id())) {
       idClass = 'dimensions-' + this.id();
     } else {
@@ -1066,6 +1143,7 @@ class Player extends Component {
     }
 
     // Ensure the right class is still on the player for the style element
+    // 确保style元素的播放器上仍然有正确的类
     this.addClass(idClass);
 
     stylesheet.setTextContent(this.styleEl_, `
@@ -1083,7 +1161,7 @@ class Player extends Component {
   /**
    * Load/Create an instance of playback {@link Tech} including element
    * and API methods. Then append the `Tech` element in `Player` as a child.
-   *
+   * 加载/创建playback{@linktech}的实例，包括元素和API方法。然后将“Tech”元素作为子元素附加到“Player”中。
    * @param {string} techName
    *        name of the playback technology
    *
@@ -1095,6 +1173,7 @@ class Player extends Component {
   loadTech_(techName, source) {
 
     // Pause and remove current playback technology
+    // 暂停和删除当前播放技术
     if (this.tech_) {
       this.unloadTech_();
     }
@@ -1103,6 +1182,7 @@ class Player extends Component {
     const camelTechName = techName.charAt(0).toLowerCase() + techName.slice(1);
 
     // get rid of the HTML5 video tag as soon as we are using another tech
+    // 一旦我们正在使用另一种技术，请尽快去掉HTML5视频标签
     if (titleTechName !== 'Html5' && this.tag) {
       Tech.getTech('Html5').disposeMediaElement(this.tag);
       this.tag.player = null;
@@ -1112,6 +1192,7 @@ class Player extends Component {
     this.techName_ = titleTechName;
 
     // Turn off API access because we're loading a new tech that might load asynchronously
+    // 关闭API访问，因为我们正在加载可能异步加载的新技术
     this.isReady_ = false;
 
     // if autoplay is a string we pass false to the tech
