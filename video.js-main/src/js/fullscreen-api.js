@@ -7,7 +7,7 @@ import document from 'global/document';
 
 /**
  * Store the browser-specific methods for the fullscreen API.
- *
+ * 为全屏API存储特定于浏览器的方法。
  * @type {Object}
  * @see [Specification]{@link https://fullscreen.spec.whatwg.org}
  * @see [Map Approach From Screenfull.js]{@link https://github.com/sindresorhus/screenfull.js}
@@ -17,6 +17,7 @@ const FullscreenApi = {
 };
 
 // browser API methods
+// 浏览器API方法
 const apiMap = [
   [
     'requestFullscreen',
@@ -63,8 +64,10 @@ const specApi = apiMap[0];
 let browserApi;
 
 // determine the supported set of functions
+// 确定支持的函数集
 for (let i = 0; i < apiMap.length; i++) {
   // check for exitFullscreen function
+  // 检查exitFullscreen功能
   if (apiMap[i][1] in document) {
     browserApi = apiMap[i];
     break;
@@ -72,6 +75,7 @@ for (let i = 0; i < apiMap.length; i++) {
 }
 
 // map the browser API names to the spec API names
+// 将浏览器API名称映射到规范API名称
 if (browserApi) {
   for (let i = 0; i < browserApi.length; i++) {
     FullscreenApi[specApi[i]] = browserApi[i];

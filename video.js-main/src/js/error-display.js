@@ -7,14 +7,14 @@ import ModalDialog from './modal-dialog';
 /**
  * A display that indicates an error has occurred. This means that the video
  * is unplayable.
- *
+ * 指示发生错误的显示。这意味着视频无法播放。
  * @extends ModalDialog
  */
 class ErrorDisplay extends ModalDialog {
 
   /**
    * Creates an instance of this class.
-   *
+   * 创建此类的实例。
    * @param  {Player} player
    *         The `Player` that this class should be attached to.
    *
@@ -28,7 +28,7 @@ class ErrorDisplay extends ModalDialog {
 
   /**
    * Builds the default DOM `className`.
-   *
+   * 生成默认的DOM“className”。
    * @return {string}
    *         The DOM `className` for this object.
    *
@@ -40,7 +40,7 @@ class ErrorDisplay extends ModalDialog {
 
   /**
    * Gets the localized error message based on the `Player`s error.
-   *
+   * 获取基于“Player”错误的本地化错误消息。
    * @return {string}
    *         The `Player`s error message localized or an empty string.
    */
@@ -53,7 +53,7 @@ class ErrorDisplay extends ModalDialog {
 
 /**
  * The default options for an `ErrorDisplay`.
- *
+ * “ErrorDisplay”的默认选项。
  * @private
  */
 ErrorDisplay.prototype.options_ = Object.assign({}, ModalDialog.prototype.options_, {
