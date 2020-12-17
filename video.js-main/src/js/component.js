@@ -202,7 +202,7 @@ class Component {
 
   /**
    * Return the {@link Player} that the `Component` has attached to.
-   *
+   *  返回“Component”引用到的{@link Player}
    * @return {Player}
    *         The player that this `Component` has attached to.
    */
@@ -212,14 +212,17 @@ class Component {
 
   /**
    * Deep merge of options objects with new options.
+   * 选项对象与新选项的深度合并。
    * > Note: When both `obj` and `options` contain properties whose values are objects.
    *         The two properties get merged using {@link module:mergeOptions}
    *
    * @param {Object} obj
    *        The object that contains new options.
+   *        包含新选项的对象。
    *
    * @return {Object}
    *         A new object of `this.options_` and `obj` merged together.
+   *          新对象的选项和“obj”的合并在一起。
    */
   options(obj) {
     if (!obj) {
@@ -232,7 +235,7 @@ class Component {
 
   /**
    * Get the `Component`s DOM element
-   *
+   *  获取`Component`DOM元素
    * @return {Element}
    *         The DOM element for this `Component`.
    */
@@ -242,7 +245,7 @@ class Component {
 
   /**
    * Create the `Component`s DOM element.
-   *
+   *创建`Component`DOM元素。
    * @param {string} [tagName]
    *        Element's DOM node type. e.g. 'div'
    *
@@ -261,15 +264,22 @@ class Component {
 
   /**
    * Localize a string given the string in english.
-   *
+   *  用英语将字符串本地化。
+   * 
    * If tokens are provided, it'll try and run a simple token replacement on the provided string.
    * The tokens it looks for look like `{1}` with the index being 1-indexed into the tokens array.
+   * 如果提供了令牌，它将尝试在提供的字符串上运行一个简单的令牌替换。
+   * 它查找的标记看起来像{1}'，索引被1索引到令牌数组中。
    *
    * If a `defaultValue` is provided, it'll use that over `string`,
    * if a value isn't found in provided language files.
    * This is useful if you want to have a descriptive key for token replacement
    * but have a succinct localized string and not require `en.json` to be included.
-   *
+   * 如果提供了“defaultValue”，它将在“string”上使用它，
+   * 如果在提供的语言文件中找不到值。
+   * 如果您希望有一个用于令牌替换的描述性密钥，这很有用
+   * 但有一个简洁的本地化字符串，不需要`英语.json`包括在内。
+   * 
    * Currently, it is used for the progress bar timing.
    * ```js
    * {
@@ -288,12 +298,15 @@ class Component {
    *
    * @param {string} string
    *        The string to localize and the key to lookup in the language files.
+   * 语言文件中要本地化的字符串和要查找的键。
    * @param {string[]} [tokens]
    *        If the current item has token replacements, provide the tokens here.
+   * 如果当前项有令牌替换，请在此处提供令牌。
    * @param {string} [defaultValue]
    *        Defaults to `string`. Can be a default value to use for token replacement
    *        if the lookup key is needed to be separate.
-   *
+   * 默认为“string”。可以是用于令牌替换的默认值
+   * 如果查找键需要分开。
    * @return {string}
    *         The localized string or if no localization exists the english string.
    */
@@ -331,7 +344,7 @@ class Component {
 
   /**
    * Handles language change for the player in components. Should be overriden by sub-components.
-   *
+   * 处理组件中播放器的语言更改。应该被子组件覆盖。
    * @abstract
    */
   handleLanguagechange() {}
@@ -339,7 +352,8 @@ class Component {
   /**
    * Return the `Component`s DOM element. This is where children get inserted.
    * This will usually be the the same as the element returned in {@link Component#el}.
-   *
+   * 返回`Component`DOM元素。这是child被插入的地方。
+   * 这通常与{@link Component#el}中返回的元素相同
    * @return {Element}
    *         The content element for this `Component`.
    */
@@ -348,7 +362,7 @@ class Component {
   }
 
   /**
-   * Get this `Component`s ID
+   * 获取此组件的ID
    *
    * @return {string}
    *         The id of this `Component`
@@ -358,8 +372,8 @@ class Component {
   }
 
   /**
-   * Get the `Component`s name. The name gets used to reference the `Component`
-   * and is set during registration.
+   * 获取组件的名称。该名称用于引用
+   * 并在注册期间设置。
    *
    * @return {string}
    *         The name of this `Component`.
@@ -369,7 +383,7 @@ class Component {
   }
 
   /**
-   * Get an array of all child components
+   * 获取所有子组件的数组
    *
    * @return {Array}
    *         The children
@@ -379,26 +393,26 @@ class Component {
   }
 
   /**
-   * Returns the child `Component` with the given `id`.
+   * 返回具有给定“id”的子“Component”。
    *
    * @param {string} id
-   *        The id of the child `Component` to get.
+   *       要获取的子“Component”的id。
    *
    * @return {Component|undefined}
-   *         The child `Component` with the given `id` or undefined.
+   *         具有给定“id”或未定义的子“Component”。
    */
   getChildById(id) {
     return this.childIndex_[id];
   }
 
   /**
-   * Returns the child `Component` with the given `name`.
+   * 返回具有给定“name”的子“Component”。
    *
    * @param {string} name
-   *        The name of the child `Component` to get.
+   *        要获取的子“Component”的名称。
    *
    * @return {Component|undefined}
-   *         The child `Component` with the given `name` or undefined.
+   *         具有给定“name”或未定义的子“Component”。
    */
   getChild(name) {
     if (!name) {
@@ -409,11 +423,11 @@ class Component {
   }
 
   /**
-   * Returns the descendant `Component` following the givent
-   * descendant `names`. For instance ['foo', 'bar', 'baz'] would
-   * try to get 'foo' on the current component, 'bar' on the 'foo'
-   * component and 'baz' on the 'bar' component and return undefined
-   * if any of those don't exist.
+   * 返回给定项之后的子代“Component”后代的“names”。
+   * 例如['foo'、'bar'、'baz']会尝试在当前组件上获取“foo”，在“foo”上获取“bar”
+   * 
+   * 如果这些都不存在，组件和“bar”组件上的“baz”，并返回undefined
+   * 
    *
    * @param {...string} names
    *        The name of the child `Component` to get.
