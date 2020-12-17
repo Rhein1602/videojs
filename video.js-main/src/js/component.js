@@ -22,6 +22,9 @@ import console from 'global/console';
  * Components are UI objects which represent both a javascript object and an element
  * in the DOM. They can be children of other components, and can have
  * children themselves.
+ *所有UI组件的基类。
+ *组件是表示javascript对象和元素的UI对象
+ *在DOM内，它们可以是其他组件的children，并且自己也可以包含children。
  *
  * Components can also use methods from {@link EventTarget}
  */
@@ -31,13 +34,15 @@ class Component {
    * A callback that is called when a component is ready. Does not have any
    * paramters and any callback value will be ignored.
    *
+   * 当组件准备就绪时调用的回调。没有任何参数和任何回调值都将被忽略。
+   *
    * @callback Component~ReadyCallback
    * @this Component
    */
 
   /**
    * Creates an instance of this class.
-   *
+   *创建类实例
    * @param {Player} player
    *        The `Player` that this class should be attached to.
    *
@@ -54,7 +59,7 @@ class Component {
    */
   constructor(player, options, ready) {
 
-    // The component might be the player itself and we can't pass `this` to super
+    // 成分可能是player本身，我们不能把这个传给super
     if (!player && this.play) {
       this.player_ = player = this; // eslint-disable-line
     } else {
@@ -63,21 +68,21 @@ class Component {
 
     this.isDisposed_ = false;
 
-    // Hold the reference to the parent component via `addChild` method
+    // 通过“addChild”方法保留对父组件的引用
     this.parentComponent_ = null;
 
-    // Make a copy of prototype.options_ to protect against overriding defaults
+    // 复制prototype.options\防止覆盖默认值
     this.options_ = mergeOptions({}, this.options_);
 
-    // Updated options with supplied options
+    // 更新了带有所提供选项的选项
     options = this.options_ = mergeOptions(this.options_, options);
 
-    // Get ID from options or options element if one is supplied
+    // 从options或options元素获取ID（如果提供了）
     this.id_ = options.id || (options.el && options.el.id);
 
-    // If there was no ID from the options, generate one
+    // 如果选项中没有ID，请生成一个
     if (!this.id_) {
-      // Don't require the player ID function in the case of mock players
+      // 在模拟player的情况下，不需要player ID函数
       const id = player && player.id && player.id() || 'no_player';
 
       this.id_ = `${id}_component_${Guid.newGUID()}`;
@@ -85,16 +90,16 @@ class Component {
 
     this.name_ = options.name || null;
 
-    // Create element if one wasn't provided in options
+    // 如果选项中没有提供元素，则创建元素
     if (options.el) {
       this.el_ = options.el;
     } else if (options.createEl !== false) {
       this.el_ = this.createEl();
     }
 
-    // if evented is anything except false, we want to mixin in evented
+    // 如果evented不是false，我们想在evented中混入
     if (options.evented !== false) {
-      // Make this an evented object and use `el_`, if available, as its event bus
+      // 将此对象设为事件对象，并使用“el”作为其事件总线（如果可用）
       evented(this, {eventBusKey: this.el_ ? 'el_' : null});
 
       this.handleLanguagechange = this.handleLanguagechange.bind(this);
@@ -112,14 +117,14 @@ class Component {
     this.namedRafs_ = new Map();
     this.clearingTimersOnDispose_ = false;
 
-    // Add any child components in options
+    // 在选项中添加任何子组件
     if (options.initChildren !== false) {
       this.initChildren();
     }
 
     this.ready(ready);
-    // Don't want to trigger ready here or it will before init is actually
-    // finished for all children that run this constructor
+    // 不要在这里触发，否则它会在init真正开始之前就触发
+    // 运行此构造函数的所有子部件已完成
 
     if (options.reportTouchActivity !== false) {
       this.enableTouchActivity();
@@ -128,19 +133,19 @@ class Component {
   }
 
   /**
-   * Dispose of the `Component` and all child components.
+   * 处理“Component”和所有子组件。
    *
    * @fires Component#dispose
    */
   dispose() {
 
-    // Bail out if the component has already been disposed.
+    // 如果部件已被处理，则应进行保释。
     if (this.isDisposed_) {
       return;
     }
 
     /**
-     * Triggered when a `Component` is disposed.
+     * 释放“Component”时触发。
      *
      * @event Component#dispose
      * @type {EventTarget~Event}
@@ -153,7 +158,7 @@ class Component {
 
     this.isDisposed_ = true;
 
-    // Dispose all children.
+    // 处理所有子组件
     if (this.children_) {
       for (let i = this.children_.length - 1; i >= 0; i--) {
         if (this.children_[i].dispose) {
@@ -162,7 +167,7 @@ class Component {
       }
     }
 
-    // Delete child references
+    // 删除子引用
     this.children_ = null;
     this.childIndex_ = null;
     this.childNameIndex_ = null;
@@ -170,7 +175,7 @@ class Component {
     this.parentComponent_ = null;
 
     if (this.el_) {
-      // Remove element from DOM
+      // 从DOM中删除元素
       if (this.el_.parentNode) {
         this.el_.parentNode.removeChild(this.el_);
       }
@@ -181,13 +186,13 @@ class Component {
       this.el_ = null;
     }
 
-    // remove reference to the player after disposing of the element
+    // 处理元素后删除对播放器的引用
     this.player_ = null;
   }
 
   /**
    * Determine whether or not this component has been disposed.
-   *
+   *  确定此组件是否已被释放。
    * @return {boolean}
    *         If the component has been disposed, will be `true`. Otherwise, `false`.
    */
