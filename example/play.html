@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link type="text/css" href="css/play.css" rel="stylesheet"/>
+    <link href="example/docs/copycss.css" rel="stylesheet">
+
+  <script src="example/dist/video.min.js"></script>
+</head>
+<body>
+      <div id="header">
+        <img src="image/title2.png" alt="">
+      </div>
+     <!--上传文件按钮-->
+     <div>
+      <input type="file" id="putfiles" class="nobutton" onchange="dealFiles()" multiple webkitdirectory value="上传文件" >
+    </div>
+    <div>
+      <input type="button" id="putfilesbt" class="filebutton" onclick="clickfiles()" value="打开文件夹" >
+      <input type="button" id="putfilebt" class="filebutton1" onclick="clickfile()" value="打开文件">
+    </div>
+    <div class="file-box">
+      <input type="file" id="putfile" class="nobutton" onchange="dealFile()" multiple value="上传文件夹" accept="video/*,audio/mp3">
+    </div>
+    
+
+      <div id = "total_layout">
+
+          <div id="video">
+            <video id="example_video_1" class="video-js"  controls preload="none" width="800" height="600" 
+             data-set="{}">
+            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web 
+              browser that <a href="https://videojs.com/html5-video-support/" target="_blank">
+                supports HTML5 video</a></p>
+          </video>
+
+          </div>
+          <div id="video_list">
+              <ul class="video-lists" id="video-list1">
+              </ul>
+          </div>
+      </div>
+
+      <div id="footer">
+          Made By Rainbow
+      </div>
+     
+
+          <script src="js/jquery-3.5.1.min.js"></script>
+          <script src="js/jquery.cookie.js"></script>
+          <script src="js/play.js"></script>
+
+   
+</body>
+</html>
+
