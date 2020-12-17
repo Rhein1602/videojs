@@ -4,28 +4,28 @@
 import Component from '../../component.js';
 
 /**
- * Just an empty spacer element that can be used as an append point for plugins, etc.
- * Also can be used to create space between elements when necessary.
+ * 只是一个空的间隔元素，可以作为插件的附加点，等等。
+ * 必要时也可用于在元素之间创建空间。
  *
  * @extends Component
  */
 class Spacer extends Component {
 
   /**
-  * Builds the default DOM `className`.
+  * 构建默认的DOM“类名”。
   *
   * @return {string}
-  *         The DOM `className` for this object.
+  *        此对象的DOM `className ' .
   */
   buildCSSClass() {
     return `vjs-spacer ${super.buildCSSClass()}`;
   }
 
   /**
-   * Create the `Component`'s DOM element
+   * 创建“组件”的DOM元素
    *
    * @return {Element}
-   *         The element that was created.
+   *        创建的元素。
    */
   createEl() {
     return super.createEl('div', {

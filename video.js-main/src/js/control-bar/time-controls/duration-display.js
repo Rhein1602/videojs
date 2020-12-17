@@ -5,7 +5,6 @@ import TimeDisplay from './time-display';
 import Component from '../../component.js';
 
 /**
- * Displays the duration
  * 显示持续时间
  *
  * @extends Component
@@ -13,39 +12,32 @@ import Component from '../../component.js';
 class DurationDisplay extends TimeDisplay {
 
   /**
-   * Creates an instance of this class.
    * 创建此类的实例。
    *
    * @param {Player} player
-   *        The `Player` that this class should be attached to.
+   *        该类应附加到的“玩家”。
    *
    * @param {Object} [options]
-   *        The key/value store of player options.
+   *        玩家选项的键/值存储。
    */
   constructor(player, options) {
     super(player, options);
 
-    // we do not want to/need to throttle duration changes,
-    // as they should always display the changed duration as
-    // it has changed
-    // 我们不想/不需要限制持续时间的更改，因为它们应该始终显示更改后的更改后的持续时间
+    //我们不希望/不需要限制持续时间的改变，因为它们应该总是显示改变后的持续时间
     this.on(player, 'durationchange', this.updateContent);
 
-    // Listen to loadstart because the player duration is reset when a new media element is loaded,
-    // but the durationchange on the user agent will not fire.
-    // 收听loadstart，因为在加载新的媒体元素时会重置播放器的持续时间，但是不会触发用户代理上的duration更改。
+    // 听loadstart，因为在加载新媒体元素时播放器持续时间被重置，但是用户代理上的持续时间更改不会触发。
     // @see [Spec]{@link https://www.w3.org/TR/2011/WD-html5-20110113/video.html#media-element-load-algorithm}
     this.on(player, 'loadstart', this.updateContent);
 
-    // Also listen for timeupdate (in the parent) and loadedmetadata because removing those
-    // listeners could have broken dependent applications/libraries. These
-    // can likely be removed for 7.0.
-    // 还监听timeupdate（在父级中）和loadmetadata，因为删除那些监听器可能会破坏相关的应用程序/库。这些可能会在7.0中删除。
+    // 还要监听timeupdate(在父进程中)并加载metadata，因为删除这些
+    //侦听器可能已经破坏了相关的应用程序/库。这些
+    //对于7.0可能会被删除。
     this.on(player, 'loadedmetadata', this.updateContent);
   }
 
   /**
-   * Builds the default DOM `className`.
+   * 构建默认的DOM“类名”。
    *
    * @return {string}
    *         The DOM `className` for this object.
@@ -55,12 +47,11 @@ class DurationDisplay extends TimeDisplay {
   }
 
   /**
-   * Update duration time display.
    * 更新持续时间显示。
    *
    * @param {EventTarget~Event} [event]
-   *        The `durationchange`, `timeupdate`, or `loadedmetadata` event that caused
-   *        this function to be called.
+   *        导致的“durationchange”、“timeupdate”或“loadedmetadata”事件
+   *此函数将被调用。
    *
    * @listens Player#durationchange
    * @listens Player#timeupdate
@@ -74,8 +65,7 @@ class DurationDisplay extends TimeDisplay {
 }
 
 /**
- * The text that is added to the `DurationDisplay` for screen reader users.
- * 屏幕阅读器用户添加到“ DurationDisplay”中的文本。
+ * 为屏幕阅读器用户添加到“持续时间显示”中的文本。
  *
  * @type {string}
  * @private
@@ -83,8 +73,7 @@ class DurationDisplay extends TimeDisplay {
 DurationDisplay.prototype.labelText_ = 'Duration';
 
 /**
- * The text that should display over the `DurationDisplay`s controls. Added to for localization.
- * 应该在“ DurationDisplay”控件上显示的文本。添加到本地化。
+ * 应显示在“工期显示”控件上的文本。添加到以进行本地化。
  *
  * @type {string}
  * @private

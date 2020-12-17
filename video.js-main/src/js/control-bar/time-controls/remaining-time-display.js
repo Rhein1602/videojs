@@ -6,7 +6,6 @@ import Component from '../../component.js';
 import * as Dom from '../../utils/dom.js';
 
 /**
- * Displays the time left in the video
  * 显示视频中剩余的时间
  *
  * @extends Component
@@ -14,7 +13,6 @@ import * as Dom from '../../utils/dom.js';
 class RemainingTimeDisplay extends TimeDisplay {
 
   /**
-   * Creates an instance of this class.
    * 创建此类的实例。
    *
    * @param {Player} player
@@ -29,8 +27,7 @@ class RemainingTimeDisplay extends TimeDisplay {
   }
 
   /**
-   * Builds the default DOM `className`.
-   * 构建默认的DOM`className`。
+   * 构建默认的DOM“类名”。
    *
    * @return {string}
    *         The DOM `className` for this object.
@@ -40,8 +37,7 @@ class RemainingTimeDisplay extends TimeDisplay {
   }
 
   /**
-   * Create the `Component`'s DOM element with the "minus" characted prepend to the time
-   * 创建“ Component”的DOM元素，并在其前面加上“减号”
+   * 创建“组件”的DOM元素，在时间前面加上“减号”
    *
    * @return {Element}
    *         The element that was created.
@@ -54,11 +50,10 @@ class RemainingTimeDisplay extends TimeDisplay {
   }
 
   /**
-   * Update remaining time display.
    * 更新剩余时间显示。
    *
    * @param {EventTarget~Event} [event]
-   *        The `timeupdate` or `durationchange` event that caused this to run.
+   *        导致此运行的“timeupdate”或“durationchange”事件。
    *
    * @listens Player#timeupdate
    * @listens Player#durationchange
@@ -70,8 +65,8 @@ class RemainingTimeDisplay extends TimeDisplay {
 
     let time;
 
-    // @deprecated We should only use remainingTimeDisplay
-    // as of video.js 7
+    // @deprecated 我们应该只使用remainingTimeDisplay
+    //从video.js 7开始
     if (this.player_.ended()) {
       time = 0;
     } else if (this.player_.remainingTimeDisplay) {
@@ -85,8 +80,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 }
 
 /**
- * The text that is added to the `RemainingTimeDisplay` for screen reader users.
- * 屏幕阅读器用户添加到“ RemainingTimeDisplay”中的文本。
+ * 为屏幕阅读器用户添加到“剩余时间显示”中的文本。
  *
  * @type {string}
  * @private
@@ -94,8 +88,7 @@ class RemainingTimeDisplay extends TimeDisplay {
 RemainingTimeDisplay.prototype.labelText_ = 'Remaining Time';
 
 /**
- * The text that should display over the `RemainingTimeDisplay`s controls. Added to for localization.
- * 应该在“ RemainingTimeDisplay”控件上显示的文本。添加到本地化。
+ * 应显示在“剩余时间显示”控件上的文本。添加到以进行本地化。
  *
  * @type {string}
  * @private

@@ -6,26 +6,24 @@ import * as Dom from '../../utils/dom.js';
 import clamp from '../../utils/clamp';
 import document from 'global/document';
 
-// 得到时间宽度与总时间的百分比
+// 获取时间相对于总结束时间的百分比宽度
 const percentify = (time, end) => clamp((time / end) * 100, 0, 100).toFixed(2) + '%';
 
 /**
- * Shows loading progress
- * 显示加载进度类，继承于component，主要方法为更新进度条
+ * 显示加载进度
  *
  * @extends Component
  */
 class LoadProgressBar extends Component {
 
   /**
-   * Creates an instance of this class.
-   * 创建实例
+   * 创建此类的实例。
    *
    * @param {Player} player
-   *        The `Player` that this class should be attached to.
+   *        该类应附加到的“玩家”。
    *
    * @param {Object} [options]
-   *        The key/value store of player options.
+   *        玩家选项的键/值存储。
    */
   constructor(player, options) {
     super(player, options);
@@ -34,11 +32,10 @@ class LoadProgressBar extends Component {
   }
 
   /**
-   * Create the `Component`'s DOM element
-   * 创建`Component`的DOM元素
+   * 创建“组件”的DOM元素
    *
    * @return {Element}
-   *         The element that was created.
+   *         创建的元素。
    */
   createEl() {
     const el = super.createEl('div', {className: 'vjs-load-progress'});
@@ -67,11 +64,10 @@ class LoadProgressBar extends Component {
   }
 
   /**
-   * Update progress bar
    * 更新进度条
    *
    * @param {EventTarget~Event} [event]
-   *        The `progress` event that caused this function to run.
+   *        导致此函数运行的“进度”事件。
    *
    * @listens Player#progress
    */
@@ -85,14 +81,14 @@ class LoadProgressBar extends Component {
       const percent = percentify(bufferedEnd, duration);
 
       if (this.percent_ !== percent) {
-        // 更新进度条的width
+        //更新进度栏的宽度
         this.el_.style.width = percent;
-        // 更新control-text
+        // 更新控件文本
         Dom.textContent(this.percentageEl_, percent);
         this.percent_ = percent;
       }
 
-      // 添加子元素以代表各个缓冲时间范围
+      // 添加子元素来表示各个缓冲时间范围
       for (let i = 0; i < buffered.length; i++) {
         const start = buffered.start(i);
         const end = buffered.end(i);
@@ -103,7 +99,7 @@ class LoadProgressBar extends Component {
           children[i] = part;
         }
 
-        // 仅在更改时更新
+        //  仅在更改时更新
         if (part.dataset.start === start && part.dataset.end === end) {
           continue;
         }
@@ -111,12 +107,12 @@ class LoadProgressBar extends Component {
         part.dataset.start = start;
         part.dataset.end = end;
 
-        // 根据进度条的宽度设置百分比（bufferedEnd）
+        // 根据进度条的宽度设置百分比
         part.style.left = percentify(start, bufferedEnd);
         part.style.width = percentify(end - start, bufferedEnd);
       }
 
-      // 删除未使用的缓冲范围元素
+      // remove unused buffered range elements
       for (let i = children.length; i > buffered.length; i--) {
         this.el_.removeChild(children[i - 1]);
       }

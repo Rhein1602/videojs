@@ -8,14 +8,14 @@ import Component from '../../component.js';
 import * as Dom from '../../utils/dom.js';
 
 /**
- * The component for controlling the playback rate.
+ * 用于控制播放速率的组件。
  *
  * @extends MenuButton
  */
 class PlaybackRateMenuButton extends MenuButton {
 
   /**
-   * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The `Player` that this class should be attached to.
@@ -34,7 +34,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Create the `Component`'s DOM element
+   * 创建“组件”的DOM元素
    *
    * @return {Element}
    *         The element that was created.
@@ -59,7 +59,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Builds the default DOM `className`.
+   * 构建默认的DOM“类名”。
    *
    * @return {string}
    *         The DOM `className` for this object.
@@ -73,7 +73,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Create the playback rate menu
+   * 创建回放速率菜单
    *
    * @return {Menu}
    *         Menu object populated with {@link PlaybackRateMenuItem}s
@@ -92,15 +92,15 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Updates ARIA accessibility attributes
+   * 更新ARIA可访问性属性
    */
   updateARIAAttributes() {
-    // Current playback rate
+    // 当前播放速率
     this.el().setAttribute('aria-valuenow', this.player().playbackRate());
   }
 
   /**
-   * This gets called when an `PlaybackRateMenuButton` is "clicked". See
+   * 当“点击”一个“回放速度按钮”时，就会调用这个函数。 See
    * {@link ClickableComponent} for more detailed information on what a click can be.
    *
    * @param {EventTarget~Event} [event]
@@ -111,11 +111,11 @@ class PlaybackRateMenuButton extends MenuButton {
    * @listens click
    */
   handleClick(event) {
-    // select next rate option
+    // 选择下一个费率选项
     const currentRate = this.player().playbackRate();
     const rates = this.playbackRates();
 
-    // this will select first one if the last one currently selected
+    // 如果当前选择了最后一个，这将选择第一个
     let newRate = rates[0];
 
     for (let i = 0; i < rates.length; i++) {
@@ -128,7 +128,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Get possible playback rates
+   * 获得可能的播放速率
    *
    * @return {Array}
    *         All possible playback rates
@@ -138,8 +138,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Get whether playback rates is supported by the tech
-   * and an array of playback rates exists
+   * 获取播放速率是否受技术支持，是否存在播放速率数组
    *
    * @return {boolean}
    *         Whether changing playback rate is supported
@@ -153,7 +152,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Hide playback rate controls when they're no playback rate options to select
+   * 当没有回放速率选项可供选择时，隐藏回放速率控制
    *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
@@ -169,7 +168,7 @@ class PlaybackRateMenuButton extends MenuButton {
   }
 
   /**
-   * Update button label when rate changed
+   * 费率改变时更新按钮标签
    *
    * @param {EventTarget~Event} [event]
    *        The event that caused this function to run.
@@ -185,7 +184,7 @@ class PlaybackRateMenuButton extends MenuButton {
 }
 
 /**
- * The text that should display over the `FullscreenToggle`s controls. Added for localization.
+ * 应显示在“全屏切换”控件上的文本。添加用于本地化。
  *
  * @type {string}
  * @private

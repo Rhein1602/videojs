@@ -5,35 +5,34 @@ import Spacer from './spacer.js';
 import Component from '../../component.js';
 
 /**
- * Spacer specifically meant to be used as an insertion point for new plugins, etc.
+ * 间隔器专门用来作为新插件的插入点，等等。
  *
  * @extends Spacer
  */
 class CustomControlSpacer extends Spacer {
 
   /**
-   * Builds the default DOM `className`.
+   * 构建默认的DOM“类名”。
    *
    * @return {string}
-   *         The DOM `className` for this object.
+   *         此对象的DOM `className ' .
    */
   buildCSSClass() {
     return `vjs-custom-control-spacer ${super.buildCSSClass()}`;
   }
 
   /**
-   * Create the `Component`'s DOM element
+   * 创建“组件”的DOM元素
    *
    * @return {Element}
-   *         The element that was created.
+   *         创建的元素。
    */
   createEl() {
     const el = super.createEl({
       className: this.buildCSSClass()
     });
 
-    // No-flex/table-cell mode requires there be some content
-    // in the cell to fill the remaining space of the table.
+    // 无伸缩/表格单元格模式要求单元格中有一些内容来填充表格的剩余空间。
     el.innerHTML = '\u00a0';
     return el;
   }

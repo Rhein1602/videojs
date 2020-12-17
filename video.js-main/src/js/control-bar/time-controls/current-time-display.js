@@ -5,7 +5,6 @@ import TimeDisplay from './time-display';
 import Component from '../../component.js';
 
 /**
- * Displays the current time
  * 显示当前时间
  *
  * @extends Component
@@ -13,8 +12,7 @@ import Component from '../../component.js';
 class CurrentTimeDisplay extends TimeDisplay {
 
   /**
-   * Builds the default DOM `className`.
-   * 构建默认的DOM`className`。
+   * 构建默认的DOM“类名”。
    *
    * @return {string}
    *         The DOM `className` for this object.
@@ -24,7 +22,6 @@ class CurrentTimeDisplay extends TimeDisplay {
   }
 
   /**
-   * Update current time display
    * 更新当前时间显示
    *
    * @param {EventTarget~Event} [event]
@@ -33,7 +30,7 @@ class CurrentTimeDisplay extends TimeDisplay {
    * @listens Player#timeupdate
    */
   updateContent(event) {
-    // Allows for smooth scrubbing, when player can't keep up.
+    // 当玩家跟不上时，允许平滑擦洗。
     let time;
 
     if (this.player_.ended()) {
@@ -47,8 +44,7 @@ class CurrentTimeDisplay extends TimeDisplay {
 }
 
 /**
- * The text that is added to the `CurrentTimeDisplay` for screen reader users.
- * 屏幕阅读器用户添加到“ CurrentTimeDisplay”中的文本。
+ * 为屏幕阅读器用户添加到“当前媒体显示”中的文本。
  *
  * @type {string}
  * @private
@@ -56,8 +52,7 @@ class CurrentTimeDisplay extends TimeDisplay {
 CurrentTimeDisplay.prototype.labelText_ = 'Current Time';
 
 /**
- * The text that should display over the `CurrentTimeDisplay`s controls. Added to for localization.
- * 应该在“ CurrentTimeDisplay”控件上显示的文本。添加到本地化。
+ * 应显示在“当前媒体显示”控件上的文本。添加到以进行本地化。
  *
  * @type {string}
  * @private

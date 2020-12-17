@@ -13,22 +13,19 @@ import {assign} from '../../utils/obj';
 class AudioTrackMenuItem extends MenuItem {
 
   /**
-   * Creates an instance of this class.
-   * 创建此类的实例
+   * 创建此类的实例。
    *
    * @param {Player} player
-   *        The `Player` that this class should be attached to.
-   *        此类应附加到的“播放器”
+   *        该类应附加到的“玩家”。
    *
    * @param {Object} [options]
-   *        The key/value store of player options.
-   *        玩家选项的键/值存储
+   *        玩家选项的键/值存储。
    */
   constructor(player, options) {
     const track = options.track;
     const tracks = player.audioTracks();
 
-    // Modify options for parent MenuItem class's init.
+    // 修改父MenuItem类的初始化选项。
     options.label = track.label || track.language || 'Unknown';
     options.selected = track.enabled;
 
@@ -68,16 +65,11 @@ class AudioTrackMenuItem extends MenuItem {
   }
 
   /**
-   * This gets called when an `AudioTrackMenuItem is "clicked". See {@link ClickableComponent}
-   * for more detailed information on what a click can be.
-   * 当“ AudioTrackMenuItem”被“点击”时，将调用此方法，有关点击的详细信息。
-   *
+   * 当“点击”一个音频跟踪菜单项时，就会调用这个函数。See {@link ClickableComponent}
+   * 有关点击的更多详细信息，
    *
    * @param {EventTarget~Event} [event]
-   *        The `keydown`, `tap`, or `click` event that caused this function to be
-   *        called.
-   *        导致此功能被触发的“ keydown”，“ tap”或“ click”事件
-   *
+   *        导致此函数被调用的“按键”、“点击”或“点击”事件。
    *
    * @listens tap
    * @listens click
@@ -96,10 +88,9 @@ class AudioTrackMenuItem extends MenuItem {
 
   /**
    * Handle any {@link AudioTrack} change.
-   * 解决任意的音轨变化
+   *
    * @param {EventTarget~Event} [event]
    *        The {@link AudioTrackList#change} event that caused this to run.
-   *        导致此事件运行的事件
    *
    * @listens AudioTrackList#change
    */
