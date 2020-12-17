@@ -2063,7 +2063,7 @@ class Player extends Component {
 
   /**
    * Handle a double-click on the media element to enter/exit fullscreen
-   *
+   * 当发生双击事件时切换全屏状态
    * @param {EventTarget~Event} event
    *        the event that caused this function to trigger
    *
@@ -2077,6 +2077,7 @@ class Player extends Component {
 
     // we do not want to toggle fullscreen state
     // when double-clicking inside a control bar or a modal
+    // 我们不想在双击控制栏或模态时切换全屏状态
     const inAllowedEls = Array.prototype.some.call(
       this.$$('.vjs-control-bar, .vjs-modal-dialog'),
       el => el.contains(event.target)
@@ -2086,7 +2087,8 @@ class Player extends Component {
       /*
        * options.userActions.doubleClick
        *
-       * If `undefined` or `true`, double-click toggles fullscreen if controls are present
+       * 
+       * 如果“undefined”或“true”，则双击可在存在控件时全屏切换
        * Set to `false` to disable double-click handling
        * Set to a function to substitute an external double-click handler
        */
@@ -2117,7 +2119,7 @@ class Player extends Component {
   /**
    * Handle a tap on the media element. It will toggle the user
    * activity state, which hides and shows the controls.
-   *
+   * 轻触媒体元素。它将切换用户活动状态，该状态隐藏并显示控件。
    * @listens Tech#tap
    * @private
    */
@@ -2127,7 +2129,7 @@ class Player extends Component {
 
   /**
    * Handle touch to start
-   *
+   * 点击时开始播放
    * @listens Tech#touchstart
    * @private
    */
@@ -2137,7 +2139,7 @@ class Player extends Component {
 
   /**
    * Handle touch to move
-   *
+   * 监听滑动事件
    * @listens Tech#touchmove
    * @private
    */
@@ -2149,7 +2151,7 @@ class Player extends Component {
 
   /**
    * Handle touch to end
-   *
+   * 监听滑动到视频接收
    * @param {EventTarget~Event} event
    *        the touchend event that triggered
    *        this function
@@ -2159,13 +2161,14 @@ class Player extends Component {
    */
   handleTechTouchEnd_(event) {
     // Stop the mouse events from also happening
+    // 阻止鼠标事件同时发生
     event.preventDefault();
   }
 
   /**
    * native click events on the SWF aren't triggered on IE11, Win8.1RT
    * use stageclick events triggered from inside the SWF instead
-   *
+   * SWF上的原生点击事件不会在IE11上触发，Win8.1RT使用从SWF内部触发的stageclick事件
    * @private
    * @listens stageclick
    */
@@ -2186,13 +2189,13 @@ class Player extends Component {
 
   /**
    * when the document fschange event triggers it calls this
+   * 当文档fschange事件触发时，调用这个函数
    * @param {any} e zzf add
    */
   documentFullscreenChange_(e) {
     const targetPlayer = e.target.player;
 
-    // if another player was fullscreen
-    // do a null check for targetPlayer because older firefox's would put document as e.target
+    // 如果另一个播放器是全屏的，那么对targetPlayer做一个空检查，因为旧版的firefox会将文档作为e.target
     if (targetPlayer && targetPlayer !== this) {
       return;
     }
@@ -2211,7 +2214,7 @@ class Player extends Component {
 
   /**
    * Handle Tech Fullscreen Change
-   *
+   * 处理全屏状态更改
    * @param {EventTarget~Event} event
    *        the fullscreenchange event that triggered this function
    *
@@ -2248,7 +2251,7 @@ class Player extends Component {
 
   /**
    * Handle Tech Enter Picture-in-Picture.
-   *
+   * 处理画中画状态。
    * @param {EventTarget~Event} event
    *        the enterpictureinpicture event that triggered this function
    *
@@ -2261,7 +2264,7 @@ class Player extends Component {
 
   /**
    * Handle Tech Leave Picture-in-Picture.
-   *
+   * 处理退出画中画
    * @param {EventTarget~Event} event
    *        the leavepictureinpicture event that triggered this function
    *
@@ -2274,7 +2277,7 @@ class Player extends Component {
 
   /**
    * Fires when an error occurred during the loading of an audio/video.
-   *
+   * 在加载音频/视频期间发生错误时激发。
    * @private
    * @listens Tech#error
    */
@@ -2286,7 +2289,7 @@ class Player extends Component {
 
   /**
    * Retrigger the `textdata` event that was triggered by the {@link Tech}.
-   *
+   * 重新触发{@link Tech}触发的“textdata”事件。
    * @fires Player#textdata
    * @listens Tech#textdata
    * @private
@@ -2300,7 +2303,7 @@ class Player extends Component {
 
     /**
      * Fires when we get a textdata event from tech
-     *
+     * 当我们从tech获取textdata事件时激发
      * @event Player#textdata
      * @type {EventTarget~Event}
      */
@@ -2309,7 +2312,7 @@ class Player extends Component {
 
   /**
    * Get object for cached values.
-   *
+   * 获取cache中的对象
    * @return {Object}
    *         get the current object cache
    */
@@ -2319,19 +2322,16 @@ class Player extends Component {
 
   /**
    * Resets the internal cache object.
-   *
+   * 重置内部缓存对象。
    * Using this function outside the player constructor or reset method may
    * have unintended side-effects.
-   *
+   * 在播放器构造函数或reset方法之外使用此函数可能会产生意外的副作用。
    * @private
    */
   resetCache_() {
     this.cache_ = {
 
-      // Right now, the currentTime is not _really_ cached because it is always
-      // retrieved from the tech (see: currentTime). However, for completeness,
-      // we set it to zero here to ensure that if we do start actually caching
-      // it, we reset it along with everything else.
+
       currentTime: 0,
       initTime: 0,
       inactivityTimeout: this.options_.inactivityTimeout,
@@ -2348,7 +2348,7 @@ class Player extends Component {
 
   /**
    * Pass values to the playback tech
-   *
+   * 将值传递给回放技术
    * @param {string} [method]
    *        the method to call
    *
@@ -2359,7 +2359,7 @@ class Player extends Component {
    */
   techCall_(method, arg) {
     // If it's not ready yet, call method when it is
-
+    // 如果它还没有准备好，请在它准备好的时候调用方法
     this.ready(function() {
       if (method in middleware.allowedSetters) {
         return middleware.set(this.middleware_, this.tech_, method, arg);
@@ -2381,7 +2381,7 @@ class Player extends Component {
 
   /**
    * Get calls can't wait for the tech, and sometimes don't need to.
-   *
+   * 请求调用时不能等tech，有时也不需要。
    * @param {string} method
    *        Tech method
    *
@@ -2403,19 +2403,24 @@ class Player extends Component {
     }
 
     // Flash likes to die and reload when you hide or reposition it.
+    // 当你隐藏或重新定位它时，Flash会销毁并重新加载。
     // In these cases the object methods go away and we get errors.
+    // 在这些情况下，对象方法消失了，我们得到了错误。
     // When that happens we'll catch the errors and inform tech that it's not ready any more.
+    // 当这种情况发生时，我们会发现错误并通知tech它还没有准备好。
     try {
       return this.tech_[method]();
     } catch (e) {
 
       // When building additional tech libs, an expected method may not be defined yet
+      // 在构建额外的技术库时，可能还没有定义预期的方法
       if (this.tech_[method] === undefined) {
         log(`Video.js: ${method} method not defined for ${this.techName_} playback technology.`, e);
         throw e;
       }
 
       // When a method isn't available on the object it throws a TypeError
+      // 当对象上的方法不可用时，它将抛出一个TypeError
       if (e.name === 'TypeError') {
         log(`Video.js: ${method} unavailable on ${this.techName_} playback technology element.`, e);
         this.tech_.isReady_ = false;
@@ -2423,6 +2428,7 @@ class Player extends Component {
       }
 
       // If error unknown, just log and throw
+      // 如果错误未知，只需记录并抛出
       log(e);
       throw e;
     }
@@ -2430,13 +2436,15 @@ class Player extends Component {
 
   /**
    * Attempt to begin playback at the first opportunity.
-   *
+   * 尝试在第一时间开始播放。
    * @return {Promise|undefined}
    *         Returns a promise if the browser supports Promises (or one
    *         was passed in as an option). This promise will be resolved on
    *         the return value of play. If this is undefined it will fulfill the
    *         promise chain otherwise the promise chain will be fulfilled when
    *         the promise from play is fulfilled.
+   *        如果浏览器支持承诺（或作为选项传入），则返回承诺。这个承诺将在游戏的回报价值上得到解决。
+   *        如果这是未定义的，它将实现承诺链，否则当游戏中的承诺实现时，承诺链将实现。
    */
   play() {
     const PromiseClass = this.options_.Promise || window.Promise;
@@ -2454,7 +2462,7 @@ class Player extends Component {
    * The actual logic for play, takes a callback that will be resolved on the
    * return value of play. This allows us to resolve to the play promise if there
    * is one on modern browsers.
-   *
+   * play的实际逻辑接受一个回调，该回调将在play的返回值上解析。这使我们能够解决的发挥承诺，如果有一个在现代浏览器。
    * @private
    * @param {Function} [callback]
    *        The callback that should be called when the techs play is actually called
@@ -2465,6 +2473,7 @@ class Player extends Component {
     const isSrcReady = Boolean(!this.changingSrc_ && (this.src() || this.currentSrc()));
 
     // treat calls to play_ somewhat like the `one` event function
+    // 将要播放的调用视为“one”事件函数
     if (this.waitToPlay_) {
       this.off(['ready', 'loadstart'], this.waitToPlay_);
       this.waitToPlay_ = null;
@@ -2472,6 +2481,7 @@ class Player extends Component {
 
     // if the player/tech is not ready or the src itself is not ready
     // queue up a call to play on `ready` or `loadstart`
+    // 如果播放机/技术没有准备好或者src本身还没有准备好，请在“ready”或“loadstart”上排队播放`
     if (!this.isReady_ || !isSrcReady) {
       this.waitToPlay_ = (e) => {
         this.play_();
@@ -2480,6 +2490,8 @@ class Player extends Component {
 
       // if we are in Safari, there is a high chance that loadstart will trigger after the gesture timeperiod
       // in that case, we need to prime the video element by calling load so it'll be ready in time
+      // 如果我们在Safari中，loadstart很有可能会在手势时间段后触发，
+      // 在这种情况下，我们需要通过调用load来初始化视频元素，以便及时准备好
       if (!isSrcReady && (browser.IS_ANY_SAFARI || browser.IS_IOS)) {
         this.load();
       }
@@ -2487,9 +2499,11 @@ class Player extends Component {
     }
 
     // If the player/tech is ready and we have a source, we can attempt playback.
+    // 如果播放器/技术已经准备好，并且我们有一个源，我们可以尝试播放。
     const val = this.techGet_('play');
 
     // play was terminated if the returned value is null
+    // 如果返回的值为空，则结束播放
     if (val === null) {
       this.runPlayTerminatedQueue_();
     } else {
@@ -2501,6 +2515,8 @@ class Player extends Component {
    * These functions will be run when if play is terminated. If play
    * runPlayCallbacks_ is run these function will not be run. This allows us
    * to differenciate between a terminated play and an actual call to play.
+   * 如果播放终止，这些函数将运行。如果这些runbacks函数不运行，
+   * 将运行这些回调函数。这允许我们区分终止的播放和实际的播放调用。
    */
   runPlayTerminatedQueue_() {
     const queue = this.playTerminatedQueue_.slice(0);
@@ -2517,7 +2533,8 @@ class Player extends Component {
    * callbacks when play is actually called on the tech. This function
    * runs the callbacks that were delayed and accepts the return value
    * from the tech.
-   *
+   * 当要播放的回调被延迟时，我们必须在技术上实际调用play时运行这些回调。
+   * 这个函数运行延迟的回调并接受来自tech的返回值
    * @param {undefined|Promise} val
    *        The return value from the tech.
    */
@@ -2526,6 +2543,7 @@ class Player extends Component {
 
     this.playCallbacks_ = [];
     // clear play terminatedQueue since we finished a real play
+    // 清除播放结束队列，因为我们完成了一个真正的播放
     this.playTerminatedQueue_ = [];
 
     callbacks.forEach(function(cb) {
@@ -2535,7 +2553,7 @@ class Player extends Component {
 
   /**
    * Pause the video playback
-   *
+   * 暂停视频播放
    */
   pause() {
     this.techCall_('pause');
@@ -2543,20 +2561,21 @@ class Player extends Component {
 
   /**
    * Check if the player is paused or has yet to play
-   *
+   * 检查播放器是否暂停或尚未播放
    * @return {boolean}
    *         - false: if the media is currently playing
    *         - true: if media is not currently playing
    */
   paused() {
     // The initial state of paused should be true (in Safari it's actually false)
+    // paused的初始状态应该是true（在Safari中它实际上是false）
     return (this.techGet_('paused') === false) ? false : true;
   }
 
   /**
    * Get a TimeRange object representing the current ranges of time that the user
    * has played.
-   *
+   * 获取一个TimeRange对象，该对象表示用户当前播放的时间范围。
    * @return {TimeRange}
    *         A time range object that represents all the increments of time that have
    *         been played.
@@ -2569,7 +2588,7 @@ class Player extends Component {
    * Returns whether or not the user is "scrubbing". Scrubbing is
    * when the user has clicked the progress bar handle and is
    * dragging it along the progress bar.
-   *
+   * 返回用户是否正在“scrubbing”。清理是指用户单击进度条句柄并沿着进度条拖动它
    * @param {boolean} [isScrubbing]
    *        whether the user is or is not scrubbing
    *
@@ -2592,7 +2611,7 @@ class Player extends Component {
 
   /**
    * Get or set the current time (in seconds)
-   *
+   * 获取或设置当前时间（秒）
    * @param {number|string} [seconds]
    *        The time to seek to in seconds
    *
@@ -2616,18 +2635,14 @@ class Player extends Component {
     }
 
     // cache last currentTime and return. default to 0 seconds
-    //
-    // Caching the currentTime is meant to prevent a massive amount of reads on the tech's
-    // currentTime when scrubbing, but may not provide much performance benefit afterall.
-    // Should be tested. Also something has to read the actual current time or the cache will
-    // never get updated.
+    // 缓存上次currentTime并返回。默认为0秒
     this.cache_.currentTime = (this.techGet_('currentTime') || 0);
     return this.cache_.currentTime;
   }
 
   /**
    * Apply the value of initTime stored in cache as currentTime.
-   *
+   * 将缓存中存储的initTime值应用为currentTime。
    * @private
    */
   applyInitTime_() {
@@ -2637,11 +2652,11 @@ class Player extends Component {
   /**
    * Normally gets the length in time of the video in seconds;
    * in all but the rarest use cases an argument will NOT be passed to the method
-   *
+   * 通常以秒为单位获取视频的时间长度；除极少数用例外，所有情况下都不会将参数传递给方法
    * > **NOTE**: The video must have started loading before the duration can be
    * known, and in the case of Flash, may not be known until the video starts
    * playing.
-   *
+   * 视频必须在持续时间已知之前开始加载，如果是Flash，则可能在视频开始播放之前才知道。
    * @fires Player#durationchange
    *
    * @param {number} [seconds]
@@ -2653,18 +2668,21 @@ class Player extends Component {
   duration(seconds) {
     if (seconds === undefined) {
       // return NaN if the duration is not known
+      // 如果持续时间未知，则返回NaN
       return this.cache_.duration !== undefined ? this.cache_.duration : NaN;
     }
 
     seconds = parseFloat(seconds);
 
     // Standardize on Infinity for signaling video is live
+    // 无限标准化视频直播信号
     if (seconds < 0) {
       seconds = Infinity;
     }
 
     if (seconds !== this.cache_.duration) {
       // Cache the last set value for optimized scrubbing (esp. Flash)
+      // 缓存上次设置的值以进行优化清理（尤其是闪存）
       this.cache_.duration = seconds;
 
       if (seconds === Infinity) {
@@ -2674,6 +2692,7 @@ class Player extends Component {
       }
       if (!isNaN(seconds)) {
         // Do not fire durationchange unless the duration value is known.
+        // 除非知道duration值，否则不要激发durationchange。
         // @see [Spec]{@link https://www.w3.org/TR/2011/WD-html5-20110113/video.html#media-element-load-algorithm}
 
         /**
@@ -2688,7 +2707,7 @@ class Player extends Component {
   /**
    * Calculates how much time is left in the video. Not part
    * of the native video API.
-   *
+   * 计算视频中还剩多少时间。不是本机视频API的一部分。
    * @return {number}
    *         The time remaining in seconds
    */
@@ -2699,7 +2718,7 @@ class Player extends Component {
   /**
    * A remaining time function that is intented to be used when
    * the time is to be displayed directly to the user.
-   *
+   * 当时间要直接显示给用户时，打算使用的剩余时间函数。
    * @return {number}
    *         The rounded time remaining in seconds
    */
@@ -2707,14 +2726,15 @@ class Player extends Component {
     return Math.floor(this.duration()) - Math.floor(this.currentTime());
   }
 
-  //
+  // 有点像是已经下载的视频片段的数组。
   // Kind of like an array of portions of the video that have been downloaded.
 
   /**
    * Get a TimeRange object with an array of the times of the video
    * that have been downloaded. If you just want the percent of the
    * video that's been downloaded, use bufferedPercent.
-   *
+   * 获取一个TimeRange对象，其中包含已下载视频的时间数组。
+   * 如果您只需要下载视频的百分比，请使用bufferedPercent。
    * @see [Buffered Spec]{@link http://dev.w3.org/html5/spec/video.html#dom-media-buffered}
    *
    * @return {TimeRange}
@@ -2733,7 +2753,7 @@ class Player extends Component {
   /**
    * Get the percent (as a decimal) of the video that's been downloaded.
    * This method is not a part of the native HTML video API.
-   *
+   * 获取已下载视频的百分比（十进制）。此方法不是本机HTML视频API的一部分。
    * @return {number}
    *         A decimal between 0 and 1 representing the percent
    *         that is buffered 0 being 0% and 1 being 100%
@@ -2745,7 +2765,7 @@ class Player extends Component {
   /**
    * Get the ending time of the last buffered time range
    * This is used in the progress bar to encapsulate all time ranges.
-   *
+   * 获取最后一个缓冲时间范围的结束时间。它在进度条中用于封装所有时间范围。
    * @return {number}
    *         The end of the last buffered time range
    */
@@ -2763,7 +2783,7 @@ class Player extends Component {
 
   /**
    * Get or set the current volume of the media
-   *
+   * 获取或设置媒体的当前音量
    * @param  {number} [percentAsDecimal]
    *         The new volume as a decimal percent:
    *         - 0 is muted/0%/off
@@ -2778,6 +2798,7 @@ class Player extends Component {
 
     if (percentAsDecimal !== undefined) {
       // Force value to between 0 and 1
+      // 强制值介于0和1之间
       vol = Math.max(0, Math.min(1, parseFloat(percentAsDecimal)));
       this.cache_.volume = vol;
       this.techCall_('setVolume', vol);
@@ -2790,13 +2811,14 @@ class Player extends Component {
     }
 
     // Default to 1 when returning current volume.
+    // 返回当前卷时默认为1。
     vol = parseFloat(this.techGet_('volume'));
     return (isNaN(vol)) ? 1 : vol;
   }
 
   /**
    * Get the current muted state, or turn mute on or off
-   *
+   * 获取当前静音状态，或打开或关闭静音
    * @param {boolean} [muted]
    *        - true to mute
    *        - false to unmute
@@ -2816,7 +2838,7 @@ class Player extends Component {
   /**
    * Get the current defaultMuted state, or turn defaultMuted on or off. defaultMuted
    * indicates the state of muted on initial playback.
-   *
+   * 获取当前的defaultMuted状态，或启用或禁用defaultMuted。defaultMuted指示初始播放时的静音状态。
    * ```js
    *   var myPlayer = videojs('some-player-id');
    *
@@ -2848,7 +2870,7 @@ class Player extends Component {
 
   /**
    * Get the last volume, or set it
-   *
+   * 获取上一个音量，或者设置它
    * @param  {number} [percentAsDecimal]
    *         The new last volume as a decimal percent:
    *         - 0 is muted/0%/off
@@ -2870,6 +2892,7 @@ class Player extends Component {
 
   /**
    * Check if current tech can support native fullscreen
+   * 检查当前技术是否支持本机全屏
    * (e.g. with built in controls like iOS, so not our flash swf)
    *
    * @return {boolean}
@@ -2882,11 +2905,12 @@ class Player extends Component {
   /**
    * Check if the player is in fullscreen mode or tell the player that it
    * is or is not in fullscreen mode.
-   *
+   * 检查播放机是否处于全屏模式，或告诉播放机是否处于全屏模式。
    * > NOTE: As of the latest HTML5 spec, isFullscreen is no longer an official
    * property and instead document.fullscreenElement is used. But isFullscreen is
    * still a valuable property for internal player workings.
-   *
+   * 在最新的HTML5规范中，isFullscreen不再是官方属性，而是文档.fullscreenElement被使用。
+   * 但是isFullscreen对于内部玩家来说仍然是一个很有价值的属性。
    * @param  {boolean} [isFS]
    *         Set the players current fullscreen state
    *
@@ -2903,6 +2927,8 @@ class Player extends Component {
       // if we changed fullscreen state and we're in prefixed mode, trigger fullscreenchange
       // this is the only place where we trigger fullscreenchange events for older browsers
       // fullWindow mode is treated as a prefixed event and will get a fullscreenchange event as well
+      // 如果我们更改了全屏状态，并且处于前缀模式，
+      // 那么触发全屏更改这是我们为旧浏览器触发全屏更改事件的唯一地方fullWindow模式被视为一个前缀事件，并将获得一个全屏更改事件
       if (this.isFullscreen_ !== oldValue && this.fsApi_.prefixed) {
         /**
            * @event Player#fullscreenchange
@@ -2919,10 +2945,13 @@ class Player extends Component {
 
   /**
    * Increase the size of the video to full screen
+   *  将视频大小增大到全屏
    * In some browsers, full screen is not supported natively, so it enters
    * "full window mode", where the video fills the browser window.
+   * 在某些浏览器中，本机不支持全屏显示，因此它进入“全窗口模式”，即视频填满浏览器窗口。
    * In browsers and devices that support native full screen, sometimes the
    * browser's default controls will be shown, and not the Video.js custom skin.
+   * 在支持本机全屏显示的浏览器和设备中，有时会显示浏览器的默认控件，而不是video.js定制皮肤。
    * This includes most mobile devices (iOS, Android) and older versions of
    * Safari.
    *
@@ -2970,7 +2999,9 @@ class Player extends Component {
     let fsOptions;
 
     // Only pass fullscreen options to requestFullscreen in spec-compliant browsers.
+    // 在符合规范的浏览器中，只向requestFullscreen传递全屏选项。
     // Use defaults or player configured option unless passed directly to this method.
+    // 除非直接传递给此方法，否则使用默认值或播放器配置的选项。
     if (!this.fsApi_.prefixed) {
       fsOptions = this.options_.fullscreen && this.options_.fullscreen.options || {};
       if (fullscreenOptions !== undefined) {
@@ -2979,6 +3010,7 @@ class Player extends Component {
     }
 
     // This method works as follows:
+    // 该方法的工作原理如下：
     // 1. if a fullscreen api is available, use it
     //   1. call requestFullscreen with potential options
     //   2. if we got a promise from above, use it to update isFullscreen()
@@ -2996,16 +3028,19 @@ class Player extends Component {
     } else if (this.tech_.supportsFullScreen()) {
       // we can't take the video.js controls fullscreen but we can go fullscreen
       // with native controls
+      // 我们不能接受视频.js控件全屏显示，但我们可以使用本机控件全屏显示
       this.techCall_('enterFullScreen');
     } else {
       // fullscreen isn't supported so we'll just stretch the video element to
       // fill the viewport
+      // 不支持全屏显示，所以我们只需拉伸视频元素来填充视窗
       this.enterFullWindow();
     }
   }
 
   /**
    * Return the video to its normal size after having been in full screen mode
+   * 进入全屏模式后，将视频恢复到正常大小
    * @return {any} zzf add
    * @fires Player#fullscreenchange
    */
@@ -3063,7 +3098,7 @@ class Player extends Component {
   /**
    * When fullscreen isn't supported we can stretch the
    * video container to as wide as the browser will let us.
-   *
+   * 当不支持全屏时，我们可以将视频容器扩展到浏览器允许的最大宽度。
    * @fires Player#enterFullWindow
    */
   enterFullWindow() {
@@ -3071,15 +3106,19 @@ class Player extends Component {
     this.isFullWindow = true;
 
     // Storing original doc overflow value to return to when fullscreen is off
+    // 存储要在全屏关闭时返回的原始文档溢出值
     this.docOrigOverflow = document.documentElement.style.overflow;
 
     // Add listener for esc key to exit fullscreen
+    // 添加esc键的侦听器以退出全屏
     Events.on(document, 'keydown', this.boundFullWindowOnEscKey_);
 
     // Hide any scroll bars
+    // 隐藏任何滚动条
     document.documentElement.style.overflow = 'hidden';
 
     // Apply fullscreen styles
+    // 应用全屏样式
     Dom.addClass(document.body, 'vjs-full-window');
 
     /**
@@ -3092,7 +3131,7 @@ class Player extends Component {
   /**
    * Check for call to either exit full window or
    * full screen on ESC key
-   *
+   * 检查是否调用ESC键退出全窗口或全屏
    * @param {string} event
    *        Event to check for key press
    */
@@ -3108,7 +3147,7 @@ class Player extends Component {
 
   /**
    * Exit full window
-   *
+   * 退出全窗口
    * @fires Player#exitFullWindow
    */
   exitFullWindow() {
@@ -3117,12 +3156,14 @@ class Player extends Component {
     Events.off(document, 'keydown', this.boundFullWindowOnEscKey_);
 
     // Unhide scroll bars.
+    // 取消隐藏滚动条。
     document.documentElement.style.overflow = this.docOrigOverflow;
 
     // Remove fullscreen styles
+    // 移除全屏样式
     Dom.removeClass(document.body, 'vjs-full-window');
 
-    // Resize the box, controller, and poster to original sizes
+    // 将方框、控制器和海报调整为原始大小
     // this.positionAll();
     /**
      * @event Player#exitFullWindow
@@ -3133,7 +3174,7 @@ class Player extends Component {
 
   /**
    * Disable Picture-in-Picture mode.
-   *
+   * 禁用画中画模式
    * @param {boolean} value
    *                  - true will disable Picture-in-Picture mode
    *                  - false will enable Picture-in-Picture mode
@@ -3151,7 +3192,7 @@ class Player extends Component {
   /**
    * Check if the player is in Picture-in-Picture mode or tell the player that it
    * is or is not in Picture-in-Picture mode.
-   *
+   * 检查player是否处于画中画模式，并告知player
    * @param  {boolean} [isPiP]
    *         Set the players current Picture-in-Picture state
    *
@@ -3172,7 +3213,8 @@ class Player extends Component {
    * Create a floating video window always on top of other windows so that users may
    * continue consuming media while they interact with other content sites, or
    * applications on their device.
-   *
+   * 在其他窗口上创建一个浮动的视频窗口，
+   * 以便用户在与其他内容网站或设备上的应用程序交互时继续使用媒体。
    * @see [Spec]{@link https://wicg.github.io/picture-in-picture}
    *
    * @fires Player#enterpictureinpicture
@@ -3184,7 +3226,7 @@ class Player extends Component {
     if ('pictureInPictureEnabled' in document && this.disablePictureInPicture() === false) {
       /**
        * This event fires when the player enters picture in picture mode
-       *
+       * 当player以图片模式进画中画模式时激发此事件
        * @event Player#enterpictureinpicture
        * @type {EventTarget~Event}
        */
@@ -3194,7 +3236,7 @@ class Player extends Component {
 
   /**
    * Exit Picture-in-Picture mode.
-   *
+   * 退出画中画模式
    * @see [Spec]{@link https://wicg.github.io/picture-in-picture}
    *
    * @fires Player#leavepictureinpicture
@@ -3206,7 +3248,7 @@ class Player extends Component {
     if ('pictureInPictureEnabled' in document) {
       /**
        * This event fires when the player leaves picture in picture mode
-       *
+       *此事件在player退出画中画时激发
        * @event Player#leavepictureinpicture
        * @type {EventTarget~Event}
        */
@@ -3217,9 +3259,10 @@ class Player extends Component {
   /**
    * Called when this Player has focus and a key gets pressed down, or when
    * any Component of this player receives a key press that it doesn't handle.
+   * 当此播放机具有焦点且某个键被按下时，或当该播放机的任何组件接收到它无法处理的按键时调用。
    * This allows player-wide hotkeys (either as defined below, or optionally
    * by an external function).
-   *
+   * 这允许播放器范围内的热键（可以定义如下，也可以通过外部函数选择）
    * @param {EventTarget~Event} event
    *        The `keydown` event that caused this function to be called.
    *
@@ -3229,22 +3272,26 @@ class Player extends Component {
     const {userActions} = this.options_;
 
     // Bail out if hotkeys are not configured.
+    // 如果没有配置热键，则退出。
     if (!userActions || !userActions.hotkeys) {
       return;
     }
 
     // Function that determines whether or not to exclude an element from
     // hotkeys handling.
+    // 确定是否从热键处理中排除元素的函数。
     const excludeElement = (el) => {
       const tagName = el.tagName.toLowerCase();
 
       // The first and easiest test is for `contenteditable` elements.
+      // 第一个也是最简单的测试是针对“contenteditable”元素
       if (el.isContentEditable) {
         return true;
       }
 
       // Inputs matching these types will still trigger hotkey handling as
       // they are not text inputs.
+      // 与这些类型匹配的输入仍将触发热键处理，因为它们不是文本输入。
       const allowedInputTypes = [
         'button',
         'checkbox',
@@ -3259,12 +3306,14 @@ class Player extends Component {
       }
 
       // The final test is by tag name. These tags will be excluded entirely.
+      // 最后的测试是通过标记名。这些标签将被完全排除。
       const excludedTags = ['textarea'];
 
       return excludedTags.indexOf(tagName) !== -1;
     };
 
     // Bail out if the user is focused on an interactive form element.
+    // 如果用户的注意力集中在交互式表单元素上，请退出
     if (excludeElement(this.el_.ownerDocument.activeElement)) {
       return;
     }
@@ -3278,8 +3327,9 @@ class Player extends Component {
 
   /**
    * Called when this Player receives a hotkey keydown event.
+   * 当此播放机接收到热键按下事件时调用。
    * Supported player-wide hotkeys are:
-   *
+   * 播放器支持的热键如下
    *   f          - toggle fullscreen
    *   m          - toggle mute
    *   k or Space - toggle play/pause
@@ -3291,6 +3341,7 @@ class Player extends Component {
     const hotkeys = this.options_.userActions ? this.options_.userActions.hotkeys : {};
 
     // set fullscreenKey, muteKey, playPauseKey from `hotkeys`, use defaults if not set
+    // 从“hotkeys”设置fullscreenKey、muteKey、playPauseKey，如果未设置，则使用默认值
     const {
       fullscreenKey = keydownEvent => keycode.isEventKey(keydownEvent, 'f'),
       muteKey = keydownEvent => keycode.isEventKey(keydownEvent, 'm'),
@@ -3327,7 +3378,7 @@ class Player extends Component {
 
   /**
    * Check whether the player can play a given mimetype
-   *
+   * 检查player是否可以播放给定的mimetype
    * @see https://www.w3.org/TR/2011/WD-html5-20110113/video.html#dom-navigator-canplaytype
    *
    * @param {string} type
@@ -3340,23 +3391,28 @@ class Player extends Component {
     let can;
 
     // Loop through each playback technology in the options order
+    // 按选项顺序循环播放每个播放技术
     for (let i = 0, j = this.options_.techOrder; i < j.length; i++) {
       const techName = j[i];
       let tech = Tech.getTech(techName);
 
       // Support old behavior of techs being registered as components.
+      // 支持技术注册为组件的旧行为。
       // Remove once that deprecated behavior is removed.
+      // 一旦不推荐的行为被删除，就删除。
       if (!tech) {
         tech = Component.getComponent(techName);
       }
 
       // Check if the current tech is defined before continuing
+      // 继续之前，检查当前技术是否已定义
       if (!tech) {
         log.error(`The "${techName}" tech is undefined. Skipped browser support check for that tech.`);
         continue;
       }
 
       // Check if the browser supports this technology
+      // 检查浏览器是否支持此技术
       if (tech.isSupported()) {
         can = tech.canPlayType(type);
 
@@ -3373,7 +3429,7 @@ class Player extends Component {
    * Select source based on tech-order or source-order
    * Uses source-order selection if `options.sourceOrder` is truthy. Otherwise,
    * defaults to tech-order selection
-   *
+   * 根据技术顺序或来源顺序选择来源。如果`选项.sourceOrder`是真的。否则，默认为tech-order选择
    * @param {Array} sources
    *        The sources for a media asset
    *
@@ -3383,15 +3439,17 @@ class Player extends Component {
   selectSource(sources) {
     // Get only the techs specified in `techOrder` that exist and are supported by the
     // current platform
+    // 仅获取“techOrder”中指定的存在且受当前平台支持的技术
     const techs =
       this.options_.techOrder
         .map((techName) => {
           return [techName, Tech.getTech(techName)];
         })
         .filter(([techName, tech]) => {
-          // Check if the current tech is defined before continuing
+          // 继续之前，检查当前技术是否已定义
           if (tech) {
             // Check if the browser supports this technology
+            // 检查浏览器是否支持此技术
             return tech.isSupported();
           }
 
@@ -3402,6 +3460,8 @@ class Player extends Component {
     // Iterate over each `innerArray` element once per `outerArray` element and execute
     // `tester` with both. If `tester` returns a non-falsy value, exit early and return
     // that value.
+    // 对每个“outerArray”元素迭代每个“innerArray”元素一次，
+    // 并使用这两个元素执行“tester”。如果“tester”返回非错误值，请尽早退出并返回该值。
     const findFirstPassingTechSourcePair = function(outerArray, innerArray, tester) {
       let found;
 
@@ -3426,13 +3486,14 @@ class Player extends Component {
       }
     };
 
-    // Depending on the truthiness of `options.sourceOrder`, we swap the order of techs and sources
-    // to select from them based on their priority.
+
     if (this.options_.sourceOrder) {
       // Source-first ordering
+      // 源代码优先排序
       foundSourceAndTech = findFirstPassingTechSourcePair(sources, techs, flip(finder));
     } else {
       // Tech-first ordering
+      // tech优先度排序
       foundSourceAndTech = findFirstPassingTechSourcePair(techs, sources, finder);
     }
 
@@ -3441,7 +3502,7 @@ class Player extends Component {
 
   /**
    * Get or set the video source.
-   *
+   * 获取或设置媒体资源
    * @param {Tech~SourceObject|Tech~SourceObject[]|string} [source]
    *        A SourceObject, an array of SourceObjects, or a string referencing
    *        a URL to a media source. It is _highly recommended_ that an object
@@ -3456,16 +3517,19 @@ class Player extends Component {
    */
   src(source) {
     // getter usage
+    // 获取
     if (typeof source === 'undefined') {
       return this.cache_.src || '';
     }
     // filter out invalid sources and turn our source into
     // an array of source objects
+    // 过滤掉无效的源代码并将源代码转换为源对象数组
     const sources = filterSource(source);
 
     // if a source was passed in then it is invalid because
     // it was filtered to a zero length Array. So we have to
     // show an error
+    // 如果传入了一个源，则它是无效的，因为它被筛选为长度为零的数组。所以我们必须显示一个错误
     if (!sources.length) {
       this.setTimeout(function() {
         this.error({ code: 4, message: this.localize(this.options_.notSupportedMessage) });
@@ -3474,17 +3538,18 @@ class Player extends Component {
     }
 
     // initial sources
+    // 初始化资源
     this.changingSrc_ = true;
 
     this.cache_.sources = sources;
     this.updateSourceCaches_(sources[0]);
 
-    // middlewareSource is the source after it has been changed by middleware
+    // middlewareSource是中间件更改后的源
     middleware.setSource(this, sources[0], (middlewareSource, mws) => {
       this.middleware_ = mws;
 
-      // since sourceSet is async we have to update the cache again after we select a source since
-      // the source that is selected could be out of order from the cache update above this callback.
+      // 因为sourceSet是异步的，所以在选择源之后，我们必须再次更新缓存，
+      // 因为所选的源可能会在这个回调上面的缓存更新中出现顺序错误。
       this.cache_.sources = sources;
       this.updateSourceCaches_(middlewareSource);
 
@@ -3498,12 +3563,14 @@ class Player extends Component {
         this.changingSrc_ = false;
 
         // We need to wrap this in a timeout to give folks a chance to add error event handlers
+        // 我们需要在一个超时中包装它，以便让人们有机会添加错误事件处理程序
         this.setTimeout(function() {
           this.error({ code: 4, message: this.localize(this.options_.notSupportedMessage) });
         }, 0);
 
         // we could not find an appropriate tech, but let's still notify the delegate that this is it
         // this needs a better comment about why this is needed
+        // 我们找不到合适的技术，但我们还是要通知学员，就是这样，需要更好地说明为什么需要这样做
         this.triggerReady();
 
         return;
@@ -3516,7 +3583,7 @@ class Player extends Component {
   /**
    * Set the source object on the tech, returns a boolean that indicates whether
    * there is a tech that can play the source or not
-   *
+   * 在tech上设置source对象，返回一个boolean值，指示是否有一个tech可以播放该源
    * @param {Tech~SourceObject} source
    *        The source object to set on the Tech
    *
@@ -3536,6 +3603,7 @@ class Player extends Component {
     if (!titleCaseEquals(sourceTech.tech, this.techName_)) {
       this.changingSrc_ = true;
       // load this technology with the chosen source
+      // 使用所选源加载此技术
       this.loadTech_(sourceTech.tech, sourceTech.source);
       this.tech_.ready(() => {
         this.changingSrc_ = false;
@@ -3545,12 +3613,15 @@ class Player extends Component {
 
     // wait until the tech is ready to set the source
     // and set it synchronously if possible (#2326)
+    // 等到技术人员准备好设置资源，如果可能的话，同步设置
     this.ready(function() {
 
       // The setSource tech method was added with source handlers
       // so older techs won't support it
+      // setSource tech方法是与源处理程序一起添加的，因此旧的tech将不支持它
       // We need to check the direct prototype for the case where subclasses
       // of the tech do not support source handlers
+      // 如果技术的子类不支持源处理程序，我们需要检查直接原型
       if (this.tech_.constructor.prototype.hasOwnProperty('setSource')) {
         this.techCall_('setSource', source);
       } else {
@@ -3564,7 +3635,7 @@ class Player extends Component {
   }
 
   /**
-   * Begin loading the src data.
+   * 开始加载src数据。
    */
   load() {
     this.techCall_('load');
@@ -3574,6 +3645,7 @@ class Player extends Component {
    * Reset the player. Loads the first tech in the techOrder,
    * removes all the text tracks in the existing `tech`,
    * and calls `reset` on the `tech`.
+   * 重置播放器。加载techOrder中的第一个tech，删除现有“tech”中的所有文本轨迹，并在“tech”上调用“reset”
    */
   reset() {
     const PromiseClass = this.options_.Promise || window.Promise;
@@ -3604,6 +3676,7 @@ class Player extends Component {
   /**
    * Reset Control Bar's UI by calling sub-methods that reset
    * all of Control Bar's components
+   * 通过调用重置控件栏所有组件的子方法重置控件栏的UI
    */
   resetControlBarUI_() {
     this.resetProgressBar_();
@@ -3613,6 +3686,7 @@ class Player extends Component {
 
   /**
    * Reset tech's progress so progress bar is reset in the UI
+   * 重置技术进度，以便在UI中重置进度条
    */
   resetProgressBar_() {
     this.currentTime(0);
@@ -3630,6 +3704,7 @@ class Player extends Component {
 
   /**
    * Reset Playback ratio
+   * 重置播放比率
    */
   resetPlaybackRate_() {
     this.playbackRate(this.defaultPlaybackRate());
@@ -3637,7 +3712,7 @@ class Player extends Component {
   }
 
   /**
-   * Reset Volume bar
+   * 重置音量选项
    */
   resetVolumeBar_() {
     this.volume(1.0);
@@ -3646,7 +3721,7 @@ class Player extends Component {
 
   /**
    * Returns all of the current source objects.
-   *
+   * 返回所有当前源对象。
    * @return {Tech~SourceObject[]}
    *         The current source objects
    */
@@ -3664,7 +3739,7 @@ class Player extends Component {
 
   /**
    * Returns the current source object.
-   *
+   * 返回当前源对象。
    * @return {Tech~SourceObject}
    *         The current source object
    */
@@ -3675,7 +3750,7 @@ class Player extends Component {
   /**
    * Returns the fully qualified URL of the current source value e.g. http://mysite.com/video.mp4
    * Can be used in conjunction with `currentType` to assist in rebuilding the current source object.
-   *
+   * 返回当前资源的URL
    * @return {string}
    *         The current source
    */
@@ -3685,9 +3760,10 @@ class Player extends Component {
 
   /**
    * Get the current source type e.g. video/mp4
+   * 获取当前的资源格式
    * This can allow you rebuild the current source object so that you could load the same
    * source and tech later
-   *
+   * 这可以使您重新构建当前源对象，以便以后可以加载相同的源和技术
    * @return {string}
    *         The source MIME type
    */
@@ -3697,7 +3773,7 @@ class Player extends Component {
 
   /**
    * Get or set the preload attribute
-   *
+   * 获取或设置preload属性
    * @param {boolean} [value]
    *        - true means that we should preload
    *        - false means that we should not preload
@@ -3718,7 +3794,8 @@ class Player extends Component {
    * Get or set the autoplay option. When this is a boolean it will
    * modify the attribute on the tech. When this is a string the attribute on
    * the tech will be removed and `Player` will handle autoplay on loadstarts.
-   *
+   * 获取或设置自动播放选项。当这是一个布尔值时，它将修改技术上的属性。当这是一个字符串时，
+   * 技术上的属性将被删除，并且“Player”将处理加载启动时的自动播放。
    * @param {boolean|string} [value]
    *        - true: autoplay using the browser behavior
    *        - false: do not autoplay
@@ -3731,7 +3808,7 @@ class Player extends Component {
    *         The current value of autoplay when getting
    */
   autoplay(value) {
-    // getter usage
+    // 作为getter使用
     if (value === undefined) {
       return this.options_.autoplay || false;
     }
@@ -3739,6 +3816,7 @@ class Player extends Component {
     let techAutoplay;
 
     // if the value is a valid string set it to that
+    // 如果值是有效字符串，则将其设置
     if (typeof value === 'string' && (/(any|play|muted)/).test(value)) {
       this.options_.autoplay = value;
       this.manualAutoplay_(value);
@@ -3746,20 +3824,19 @@ class Player extends Component {
 
     // any falsy value sets autoplay to false in the browser,
     // lets do the same
+    // 任何错误的值都会在浏览器中将autoplay设置为false，也可以这样做
     } else if (!value) {
       this.options_.autoplay = false;
 
     // any other value (ie truthy) sets autoplay to true
+    // 任何其他值（即truthy）都会将autoplay设置为true
     } else {
       this.options_.autoplay = true;
     }
 
     techAutoplay = typeof techAutoplay === 'undefined' ? this.options_.autoplay : techAutoplay;
 
-    // if we don't have a tech then we do not queue up
-    // a setAutoplay call on tech ready. We do this because the
-    // autoplay option will be passed in the constructor and we
-    // do not need to set it twice
+
     if (this.tech_) {
       this.techCall_('setAutoplay', techAutoplay);
     }
@@ -3767,8 +3844,9 @@ class Player extends Component {
 
   /**
    * Set or unset the playsinline attribute.
+   * 设置或取消设置playsinline属性。
    * Playsinline tells the browser that non-fullscreen playback is preferred.
-   *
+   * Playsinline告诉浏览器首选非全屏播放。
    * @param {boolean} [value]
    *        - true means that we should try to play inline by default
    *        - false means that we should use the browser's default playback mode,
@@ -3792,7 +3870,7 @@ class Player extends Component {
 
   /**
    * Get or set the loop attribute on the video element.
-   *
+   * 获取或设置视频元素的循环属性。
    * @param {boolean} [value]
    *        - true means that we should loop the video
    *        - false means that we should not loop the video
@@ -3811,7 +3889,7 @@ class Player extends Component {
 
   /**
    * Get or set the poster image source url
-   *
+   * 获取或设置海报图像源url
    * @fires Player#posterchange
    *
    * @param {string} [src]
@@ -3827,6 +3905,7 @@ class Player extends Component {
 
     // The correct way to remove a poster is to set as an empty string
     // other falsey values will throw errors
+    // 删除海报的正确方法是将其他错误值设置为空字符串
     if (!src) {
       src = '';
     }
@@ -3836,17 +3915,19 @@ class Player extends Component {
     }
 
     // update the internal poster variable
+    // 更新内部海报变量
     this.poster_ = src;
 
-    // update the tech's poster
+    // 更新tech的海报
     this.techCall_('setPoster', src);
 
     this.isPosterFromTech_ = false;
 
     // alert components that the poster has been set
+    // 提醒组件海报已设置
     /**
      * This event fires when the poster image is changed on the player.
-     *
+     * 此事件在播放机上的海报图像更改时激发。
      * @event Player#posterchange
      * @type {EventTarget~Event}
      */
@@ -3874,6 +3955,7 @@ class Player extends Component {
         this.isPosterFromTech_ = true;
 
         // Let components know the poster has changed
+        // 通知部件海报已更改
         this.trigger('posterchange');
       }
     }
@@ -3881,7 +3963,7 @@ class Player extends Component {
 
   /**
    * Get or set whether or not the controls are showing.
-   *
+   * 获取或设置控件是否显示。
    * @fires Player#controlsenabled
    *
    * @param {boolean} [bool]
@@ -3899,6 +3981,7 @@ class Player extends Component {
     bool = !!bool;
 
     // Don't trigger a change event unless it actually changed
+    // 除非实际更改，否则不要触发更改事件
     if (this.controls_ === bool) {
       return;
     }
@@ -3937,6 +4020,7 @@ class Player extends Component {
   /**
    * Toggle native controls on/off. Native controls are the controls built into
    * devices (e.g. default iPhone controls), Flash, or other techs
+   * 打开/关闭本机控件。本机控件是内置于设备（例如默认iPhone控件）、Flash或其他技术的控件
    * (e.g. Vimeo Controls)
    * **This should only be set by the current tech, because only the tech knows
    * if it can support native controls**
@@ -3959,6 +4043,7 @@ class Player extends Component {
     bool = !!bool;
 
     // Don't trigger a change event unless it actually changed
+    // 除非实际更改，否则不要触发更改事件
     if (this.usingNativeControls_ === bool) {
       return;
     }
@@ -3970,7 +4055,7 @@ class Player extends Component {
 
       /**
        * player is using the native device controls
-       *
+       * 播放机正在使用本机设备控件
        * @event Player#usingnativecontrols
        * @type {EventTarget~Event}
        */
@@ -3980,7 +4065,7 @@ class Player extends Component {
 
       /**
        * player is using the custom HTML controls
-       *
+       * 播放机正在使用自定义HTML控件
        * @event Player#usingcustomcontrols
        * @type {EventTarget~Event}
        */
@@ -3990,7 +4075,7 @@ class Player extends Component {
 
   /**
    * Set or get the current MediaError
-   *
+   * 设置或获取当前媒体错误
    * @fires Player#error
    *
    * @param  {MediaError|string|number} [err]
@@ -4005,8 +4090,7 @@ class Player extends Component {
       return this.error_ || null;
     }
 
-    // Suppress the first error message for no compatible source until
-    // user interaction
+    // 在用户交互之前，禁止显示没有兼容源的第一条错误消息
     if (this.options_.suppressNotSupportedError &&
         err && err.code === 4
     ) {
@@ -4023,6 +4107,7 @@ class Player extends Component {
     }
 
     // restoring to default
+    // 恢复到默认值
     if (err === null) {
       this.error_ = err;
       this.removeClass('vjs-error');
@@ -4035,9 +4120,11 @@ class Player extends Component {
     this.error_ = new MediaError(err);
 
     // add the vjs-error classname to the player
+    // 将vjs-error类名添加到播放器
     this.addClass('vjs-error');
 
     // log the name of the error type and any message
+    // 记录错误类型的名称和任何消息
     // IE11 logs "[object object]" and required you to expand message to see error object
     log.error(`(CODE:${this.error_.code} ${MediaError.errorTypes[this.error_.code]})`, this.error_.message, this.error_);
 
@@ -4052,7 +4139,7 @@ class Player extends Component {
 
   /**
    * Report user activity
-   *
+   * 报告用户动作
    * @param {Object} event
    *        Event object
    */
@@ -4062,7 +4149,7 @@ class Player extends Component {
 
   /**
    * Get/set if user is active
-   *
+   * 如果用户处于活动状态，则获取/设置
    * @fires Player#useractive
    * @fires Player#userinactive
    *
@@ -4098,14 +4185,7 @@ class Player extends Component {
       return;
     }
 
-    // Chrome/Safari/IE have bugs where when you change the cursor it can
-    // trigger a mousemove event. This causes an issue when you're hiding
-    // the cursor when the user is inactive, and a mousemove signals user
-    // activity. Making it impossible to go into inactive mode. Specifically
-    // this happens in fullscreen when we really need to hide the cursor.
-    //
-    // When this gets resolved in ALL browsers it can be removed
-    // https://code.google.com/p/chromium/issues/detail?id=103041
+
     if (this.tech_) {
       this.tech_.one('mousemove', function(e) {
         e.stopPropagation();
@@ -4125,7 +4205,7 @@ class Player extends Component {
 
   /**
    * Listen for user activity based on timeout value
-   *
+   * 根据超时值侦听用户活动
    * @private
    */
   listenForUserActivity_() {
@@ -4149,20 +4229,25 @@ class Player extends Component {
       // For as long as the they are touching the device or have their mouse down,
       // we consider them active even if they're not moving their finger or mouse.
       // So we want to continue to update that they are active
+      // 只要他们在触摸设备或按下鼠标，即使他们没有移动手指或鼠标，
+      // 我们也认为他们是活跃的。所以我们想继续更新他们是活跃的
       this.clearInterval(mouseInProgress);
       // Setting userActivity=true now and setting the interval to the same time
       // as the activityCheck interval (250) should ensure we never miss the
       // next activityCheck
+      // 现在设置userActivity=true并将间隔设置为与activityCheck间隔（250）相同的时间，
+      // 可以确保我们永远不会错过下一个activityCheck
       mouseInProgress = this.setInterval(handleActivity, 250);
     };
 
     const handleMouseUpAndMouseLeave = function(event) {
       handleActivity();
-      // Stop the interval that maintains activity if the mouse/touch is down
+      // 如果鼠标/触控按下，停止保持活动的间隔
       this.clearInterval(mouseInProgress);
     };
 
     // Any mouse movement will be considered user activity
+    // 任何鼠标移动都将被视为用户活动
     this.on('mousedown', handleMouseDown);
     this.on('mousemove', handleMouseMove);
     this.on('mouseup', handleMouseUpAndMouseLeave);
@@ -4172,6 +4257,7 @@ class Player extends Component {
 
     // Fixes bug on Android & iOS where when tapping progressBar (when control bar is displayed)
     // controlBar would no longer be hidden by default timeout.
+    // 修正了Android&iOS上的错误，当点击progressBar（当显示控制栏时）controlBar在默认超时下不再隐藏。
     if (controlBar && !browser.IS_IOS && !browser.IS_ANDROID) {
 
       controlBar.on('mouseenter', function(event) {
@@ -4187,29 +4273,28 @@ class Player extends Component {
 
     // Listen for keyboard navigation
     // Shouldn't need to use inProgress interval because of key repeat
+    // 监听键盘动作，不需要使用进程间隔，因为按键重复
     this.on('keydown', handleActivity);
     this.on('keyup', handleActivity);
 
-    // Run an interval every 250 milliseconds instead of stuffing everything into
-    // the mousemove/touchmove function itself, to prevent performance degradation.
-    // `this.reportUserActivity` simply sets this.userActivity_ to true, which
-    // then gets picked up by this loop
-    // http://ejohn.org/blog/learning-from-twitter/
+
     let inactivityTimeout;
 
     this.setInterval(function() {
       // Check to see if mouse/touch activity has happened
+      // 检查鼠标/触摸活动是否发生
       if (!this.userActivity_) {
         return;
       }
 
       // Reset the activity tracker
+      // 重置活动跟踪器
       this.userActivity_ = false;
 
-      // If the user state was inactive, set the state to active
+      // 如果用户状态为“不活动”，将状态设置为“活动”
       this.userActive(true);
 
-      // Clear any existing inactivity timeout to start the timer over
+      // 清除任何现有的非活动超时以重新启动计时器
       this.clearTimeout(inactivityTimeout);
 
       const timeout = this.options_.inactivityTimeout;
@@ -4218,12 +4303,12 @@ class Player extends Component {
         return;
       }
 
-      // In <timeout> milliseconds, if no more activity has occurred the
-      // user will be considered inactive
+      // 在<timeout>毫秒内，如果没有更多活动发生，则用户将被视为不活动
       inactivityTimeout = this.setTimeout(function() {
         // Protect against the case where the inactivityTimeout can trigger just
         // before the next user activity is picked up by the activity check loop
         // causing a flicker
+        // 防止不活动超时可能在活动检查循环拾取下一个用户活动之前触发，从而导致闪烁
         if (!this.userActivity_) {
           this.userActive(false);
         }
@@ -4236,7 +4321,7 @@ class Player extends Component {
    * Gets or sets the current playback rate. A playback rate of
    * 1.0 represents normal speed and 0.5 would indicate half-speed
    * playback, for instance.
-   *
+   * 获取或设置当前播放速率。例如，播放速率为1.0表示正常速度，0.5表示半速播放。
    * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-media-playbackrate
    *
    * @param {number} [rate]
@@ -4265,7 +4350,7 @@ class Player extends Component {
    * 1.0 represents normal speed and 0.5 would indicate half-speed playback, for instance.
    * defaultPlaybackRate will only represent what the initial playbackRate of a video was, not
    * not the current playbackRate.
-   *
+   * 获取或设置当前默认播放速率。例如，默认播放速率1.0表示正常速度，0.5表示半速播放。defaultPlaybackRate只代表视频的初始播放速率，而不是当前的播放速率。
    * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-media-defaultplaybackrate
    *
    * @param {number} [rate]
@@ -4288,7 +4373,7 @@ class Player extends Component {
 
   /**
    * Gets or sets the audio flag
-   *
+   * 获取或设置audio flag
    * @param {boolean} bool
    *        - true signals that this is an audio player
    *        - false signals that this is not an audio player
@@ -4308,9 +4393,9 @@ class Player extends Component {
   /**
    * A helper method for adding a {@link TextTrack} to our
    * {@link TextTrackList}.
-   *
+   * 一个帮助器方法，用于将{@linktexttrack}添加到我们的{@linktexttracklist}。
    * In addition to the W3C settings we allow adding additional info through options.
-   *
+   * 除了W3C设置，我们还允许通过选项添加附加信息。
    * @see http://www.w3.org/html/wg/drafts/html/master/embedded-content-0.html#dom-media-addtexttrack
    *
    * @param {string} [kind]
@@ -4336,7 +4421,7 @@ class Player extends Component {
    * Create a remote {@link TextTrack} and an {@link HTMLTrackElement}.
    * When manualCleanup is set to false, the track will be automatically removed
    * on source changes.
-   *
+   * 创建远程{@linktexttrack}和{@linkhtmltrackelement}。当manualCleanup设置为false时，轨迹将在源代码更改时自动删除。
    * @param {Object} options
    *        Options to pass to {@link HTMLTrackElement} during creation. See
    *        {@link HTMLTrackElement} for object properties that you should use.
@@ -4361,7 +4446,7 @@ class Player extends Component {
   /**
    * Remove a remote {@link TextTrack} from the respective
    * {@link TextTrackList} and {@link HtmlTrackElementList}.
-   *
+   * 从相应的{@link textracklist}和{@link HtmlTrackElementList}中删除远程{@link TextTrack}。
    * @param {Object} obj
    *        Remote {@link TextTrack} to remove
    *
@@ -4377,7 +4462,7 @@ class Player extends Component {
 
     // destructure the input into an object with a track argument, defaulting to arguments[0]
     // default the whole argument to an empty object if nothing was passed in
-
+    // 用track参数将输入解构成一个对象，默认为参数[0]如果没有传入任何内容，则将整个参数默认为空对象
     if (this.tech_) {
       return this.tech_.removeRemoteTextTrack(track);
     }
@@ -4386,7 +4471,7 @@ class Player extends Component {
   /**
    * Gets available media playback quality metrics as specified by the W3C's Media
    * Playback Quality API.
-   *
+   * 获取W3C的媒体播放质量API指定的可用媒体播放质量度量。
    * @see [Spec]{@link https://wicg.github.io/media-playback-quality}
    *
    * @return {Object|undefined}
@@ -4399,7 +4484,7 @@ class Player extends Component {
 
   /**
    * Get video width
-   *
+   * 获取视频宽度
    * @return {number}
    *         current video width
    */
@@ -4409,7 +4494,7 @@ class Player extends Component {
 
   /**
    * Get video height
-   *
+   * 获取视频高度
    * @return {number}
    *         current video height
    */
@@ -4419,7 +4504,7 @@ class Player extends Component {
 
   /**
    * The player's language code.
-   *
+   * player语言编码
    * Changing the langauge will trigger
    * [languagechange]{@link Player#event:languagechange}
    * which Components can use to update control text.
@@ -4443,6 +4528,7 @@ class Player extends Component {
       this.language_ = String(code).toLowerCase();
 
       // during first init, it's possible some things won't be evented
+      // 在第一次初始化期间，有些事情可能不会被事件化
       if (isEvented(this)) {
         /**
         * fires when the player language change
@@ -4459,7 +4545,7 @@ class Player extends Component {
    * Get the player's language dictionary
    * Merge every time, because a newly added plugin might call videojs.addLanguage() at any time
    * Languages specified directly in the player options have precedence
-   *
+   * 每次都要合并播放器的语言词典，因为新添加的插件可能会调用videojs.addLanguage（）在任何时候，直接在播放器选项中指定的语言都具有优先权
    * @return {Array}
    *         An array of of supported languages
    */
@@ -4470,7 +4556,7 @@ class Player extends Component {
   /**
    * returns a JavaScript object reperesenting the current track
    * information. **DOES not return it as JSON**
-   *
+   * 返回重新显示当前轨迹的JavaScript对象信息。
    * @return {Object}
    *         Object representing the current of track info
    */
@@ -4484,6 +4570,7 @@ class Player extends Component {
       let track = tracks[i];
 
       // deep merge tracks and null out player so no circular references
+      // 深度合并曲目和空出播放器，因此没有循环引用
       track = mergeOptions(track);
       track.player = undefined;
       options.tracks[i] = track;
@@ -4496,7 +4583,7 @@ class Player extends Component {
    * Creates a simple modal dialog (an instance of the {@link ModalDialog}
    * component) that immediately overlays the player with arbitrary
    * content and removes itself when closed.
-   *
+   * 创建一个简单的模式对话框（一个{@linkmodaldialog}组件的实例），它立即用任意内容覆盖播放器，并在关闭时自动删除。
    * @param {string|Function|Element|Array|null} content
    *        Same as {@link ModalDialog#content}'s param of the same name.
    *        The most straight-forward usage is to provide a string or DOM
@@ -4525,7 +4612,7 @@ class Player extends Component {
 
   /**
    * Change breakpoint classes when the player resizes.
-   *
+   * 当播放器调整大小时更改断点类。
    * @private
    */
   updateCurrentBreakpoint_() {
@@ -4543,11 +4630,13 @@ class Player extends Component {
       if (currentWidth <= maxWidth) {
 
         // The current breakpoint did not change, nothing to do.
+        // 当前断点未更改，无需执行任何操作。
         if (currentBreakpoint === candidateBreakpoint) {
           return;
         }
 
         // Only remove a class if there is a current breakpoint.
+        // 只有在存在当前断点时才删除类。
         if (currentBreakpoint) {
           this.removeClass(BREAKPOINT_CLASSES[currentBreakpoint]);
         }
@@ -4561,7 +4650,7 @@ class Player extends Component {
 
   /**
    * Removes the current breakpoint.
-   *
+   * 删除当前断点。
    * @private
    */
   removeCurrentBreakpoint_() {
@@ -4576,10 +4665,10 @@ class Player extends Component {
 
   /**
    * Get or set breakpoints on the player.
-   *
+   * 在播放器上获取或设置断点。
    * Calling this method with an object or `true` will remove any previous
    * custom breakpoints and start from the defaults again.
-   *
+   * 使用对象或“true”调用此方法将删除以前的任何自定义断点，并重新从默认值开始。
    * @param  {Object|boolean} [breakpoints]
    *         If an object is given, it can be used to provide custom
    *         breakpoints. If `true` is given, will set default breakpoints.
@@ -4613,6 +4702,7 @@ class Player extends Component {
   breakpoints(breakpoints) {
 
     // Used as a getter.
+    // 作为getter的用法
     if (breakpoints === undefined) {
       return assign(this.breakpoints_);
     }
@@ -4622,16 +4712,18 @@ class Player extends Component {
 
     // When breakpoint definitions change, we need to update the currently
     // selected breakpoint.
+    // 当断点定义发生变化时，我们需要更新当前选择的断点。
     this.updateCurrentBreakpoint_();
 
     // Clone the breakpoints before returning.
+    // 在返回之前克隆断点。
     return assign(this.breakpoints_);
   }
 
   /**
    * Get or set a flag indicating whether or not this player should adjust
    * its UI based on its dimensions.
-   *
+   * 获取或设置一个标志，该标志指示此播放器是否应根据其尺寸调整其UI。
    * @param  {boolean} value
    *         Should be `true` if the player should adjust its UI based on its
    *         dimensions; otherwise, should be `false`.
@@ -4642,7 +4734,7 @@ class Player extends Component {
    */
   responsive(value) {
 
-    // Used as a getter.
+    // 当作gitter的用法
     if (value === undefined) {
       return this.responsive_;
     }
@@ -4650,21 +4742,24 @@ class Player extends Component {
     value = Boolean(value);
     const current = this.responsive_;
 
-    // Nothing changed.
+    // 无事发生
     if (value === current) {
       return;
     }
 
     // The value actually changed, set it.
+    // 实际值改变了，设置它。
     this.responsive_ = value;
 
     // Start listening for breakpoints and set the initial breakpoint if the
     // player is now responsive.
+    // 开始监听断点，如果播放器现在有响应，则设置初始断点。
     if (value) {
       this.on('playerresize', this.updateCurrentBreakpoint_);
       this.updateCurrentBreakpoint_();
 
     // Stop listening for breakpoints if the player is no longer responsive.
+    // 如果播放机不再响应，请停止侦听断点。
     } else {
       this.off('playerresize', this.updateCurrentBreakpoint_);
       this.removeCurrentBreakpoint_();
@@ -4675,7 +4770,7 @@ class Player extends Component {
 
   /**
    * Get current breakpoint name, if any.
-   *
+   * 获取当前断点名称（如果有）。
    * @return {string}
    *         If there is currently a breakpoint set, returns a the key from the
    *         breakpoints object matching it. Otherwise, returns an empty string.
@@ -4686,7 +4781,7 @@ class Player extends Component {
 
   /**
    * Get the current breakpoint class name.
-   *
+   * 获取当前断点类名。
    * @return {string}
    *         The matching class name (e.g. `"vjs-layout-tiny"` or
    *         `"vjs-layout-large"`) for the current breakpoint. Empty string if
@@ -4698,10 +4793,10 @@ class Player extends Component {
 
   /**
    * An object that describes a single piece of media.
-   *
+   * 描述单个媒体的对象。
    * Properties that are not part of this type description will be retained; so,
    * this can be viewed as a generic metadata storage mechanism as well.
-   *
+   * 不属于此类型描述的属性将被保留；因此，这也可以看作是一种通用的元数据存储机制。
    * @see      {@link https://wicg.github.io/mediasession/#the-mediametadata-interface}
    * @typedef  {Object} Player~MediaObject
    *
@@ -4758,11 +4853,13 @@ class Player extends Component {
     this.reset();
 
     // Clone the media object so it cannot be mutated from outside.
+    // 克隆媒体对象，使其无法从外部更改。
     this.cache_.media = mergeOptions(media);
 
     const {artwork, poster, src, textTracks} = this.cache_.media;
 
     // If `artwork` is not given, create it using `poster`.
+    // 如果没有指定“artwork”，请使用“poster”创建它。
     if (!artwork && poster) {
       this.cache_.media.artwork = [{
         src: poster,
@@ -4787,10 +4884,10 @@ class Player extends Component {
 
   /**
    * Get a clone of the current {@link Player~MediaObject} for this player.
-   *
+   * 获取此播放机当前{@link Player~MediaObject}的克隆。
    * If the `loadMedia` method has not been used, will attempt to return a
    * {@link Player~MediaObject} based on the current state of the player.
-   *
+   * 如果尚未使用“loadMedia”方法，将尝试根据播放机的当前状态返回{@link Player~MediaObject}。
    * @return {Player~MediaObject} zzf add
    */
   getMedia() {
@@ -4822,7 +4919,7 @@ class Player extends Component {
 
   /**
    * Gets tag settings
-   *
+   * 获取标题是设置
    * @param {Element} tag
    *        The player tag
    *
@@ -4847,9 +4944,9 @@ class Player extends Component {
     }
 
     // Check if data-setup attr exists.
+    // 检查数据设置属性是否存在。
     if (dataSetup !== null) {
-      // Parse options JSON
-      // If empty string, make it a parsable json object.
+
       const [err, data] = safeParseTuple(dataSetup || '{}');
 
       if (err) {
@@ -4860,7 +4957,7 @@ class Player extends Component {
 
     assign(baseOptions, tagOptions);
 
-    // Get tag children settings
+    // 获取标记子项设置
     if (tag.hasChildNodes()) {
       const children = tag.childNodes;
 
@@ -4882,7 +4979,7 @@ class Player extends Component {
 
   /**
    * Determine whether or not flexbox is supported
-   *
+   * 确定是否支持flexbox
    * @return {boolean}
    *         - true if flexbox is supported
    *         - false if flexbox is not supported
@@ -4892,6 +4989,7 @@ class Player extends Component {
 
     // Note: We don't actually use flexBasis (or flexOrder), but it's one of the more
     // common flex features that we can rely on when checking for flex support.
+    // 注意：我们实际上并没有使用flexBasis（或flexOrder），但它是我们在检查flex支持时可以依赖的更常见的flex特性之一。
     return !('flexBasis' in elem.style ||
             'webkitFlexBasis' in elem.style ||
             'mozFlexBasis' in elem.style ||
@@ -4902,7 +5000,7 @@ class Player extends Component {
 
   /**
    * Set debug mode to enable/disable logs at info level.
-   *
+   * 将调试模式设置为在信息级别启用/禁用日志。
    * @param {boolean} enabled zzf add
    * @return {any} zzf add
    * @fires Player#debugon
@@ -4985,6 +5083,7 @@ TRACK_TYPES.names.forEach(function(name) {
 
     // if we have not yet loadTech_, we create {video,audio,text}Tracks_
     // these will be passed to the tech during loading
+    // 如果我们还没有加载tech，我们将创建{video，audio，text}曲目，这些曲目将在加载过程中传递给tech
     this[props.privateName] = this[props.privateName] || new props.ListClass();
     return this[props.privateName];
   };
@@ -4994,7 +5093,7 @@ TRACK_TYPES.names.forEach(function(name) {
  * Get or set the `Player`'s crossorigin option. For the HTML5 player, this
  * sets the `crossOrigin` property on the `<video>` tag to control the CORS
  * behavior.
- *
+ * 获取或设置“Player”的crossorigin选项。对于HTML5播放器，这将在“<video>”标记上设置“crossOrigin”属性来控制CORS行为。
  * @see [Video Element Attributes]{@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video#attr-crossorigin}
  *
  * @param {string} [value]
@@ -5009,10 +5108,10 @@ Player.prototype.crossorigin = Player.prototype.crossOrigin;
 
 /**
  * Global enumeration of players.
- *
+ * player的全局枚举。
  * The keys are the player IDs and the values are either the {@link Player}
  * instance or `null` for disposed players.
- *
+ * 键是播放器ID，值是{@link player}实例，对于已释放的播放器，值为“null”。
  * @type {Object}
  */
 Player.players = {};
@@ -5023,27 +5122,29 @@ const navigator = window.navigator;
  * Player instance options, surfaced using options
  * options = Player.prototype.options_
  * Make changes in options, not here.
- *
+ * 播放器实例选项，使用选项为Player.prototype.options\在这里，不要改变。
  * @type {Object}
  * @private
  */
 Player.prototype.options_ = {
   // Default order of fallback technology
+  // 回退技术默认顺序
   techOrder: Tech.defaultTechOrder_,
 
   html5: {},
   flash: {},
 
-  // default inactivity timeout
+  // 默认不活跃计数器
   inactivityTimeout: 2000,
 
-  // default playback rates
+  // 默认倍数播放
   playbackRates: [],
   // Add playback rate selection by adding rates
   // 'playbackRates': [0.5, 1, 1.5, 2],
   liveui: false,
 
   // Included control sets
+  // 包含的控制集
   children: [
     'mediaLoader',
     'posterImage',
@@ -5060,9 +5161,11 @@ Player.prototype.options_ = {
   language: navigator && (navigator.languages && navigator.languages[0] || navigator.userLanguage || navigator.language) || 'en',
 
   // locales and their language translations
+  // 区域设置及其语言翻译
   languages: {},
 
   // Default message to show when a video cannot be played.
+  // 无法播放视频时显示的默认消息。
   notSupportedMessage: 'No compatible source was found for this media.',
 
   fullscreen: {
@@ -5078,14 +5181,14 @@ Player.prototype.options_ = {
 [
   /**
    * Returns whether or not the player is in the "ended" state.
-   *
+   * 返回播放机是否处于“结束”状态。
    * @return {Boolean} True if the player is in the ended state, false if not.
    * @method Player#ended
    */
   'ended',
   /**
    * Returns whether or not the player is in the "seeking" state.
-   *
+   * 返回播放机是否处于“正在寻找”状态。
    * @return {Boolean} True if the player is in the seeking state, false if not.
    * @method Player#seeking
    */
@@ -5093,7 +5196,7 @@ Player.prototype.options_ = {
   /**
    * Returns the TimeRanges of the media that are currently available
    * for seeking to.
-   *
+   * 返回当前可用于查找的媒体的时间范围。
    * @return {TimeRanges} the seekable intervals of the media timeline
    * @method Player#seekable
    */
@@ -5101,6 +5204,7 @@ Player.prototype.options_ = {
   /**
    * Returns the current state of network activity for the element, from
    * the codes in the list below.
+   * 从下表中的代码返回元素的网络活动的当前状态。
    * - NETWORK_EMPTY (numeric value 0)
    *   The element has not yet been initialised. All attributes are in
    *   their initial states.
@@ -5123,6 +5227,7 @@ Player.prototype.options_ = {
    * Returns a value that expresses the current state of the element
    * with respect to rendering the current playback position, from the
    * codes in the list below.
+   * 从下表中的代码返回一个值，该值表示元素相对于呈现当前播放位置的当前状态。
    * - HAVE_NOTHING (numeric value 0)
    *   No information regarding the media resource is available.
    * - HAVE_METADATA (numeric value 1)
@@ -5157,14 +5262,14 @@ TECH_EVENTS_RETRIGGER.forEach(function(event) {
 
 /**
  * Fired when the player has initial duration and dimension information
- *
+ * 当player有初始持续时间和维度信息时激发
  * @event Player#loadedmetadata
  * @type {EventTarget~Event}
  */
 
 /**
  * Fired when the player has downloaded data at the current playback position
- *
+ * 当播放机在当前播放位置下载数据时激发
  * @event Player#loadeddata
  * @type {EventTarget~Event}
  */
@@ -5173,24 +5278,24 @@ TECH_EVENTS_RETRIGGER.forEach(function(event) {
  * Fired when the current playback position has changed *
  * During playback this is fired every 15-250 milliseconds, depending on the
  * playback technology in use.
- *
+ * 当前播放位置在播放过程中发生更改时激发此选项每隔15-250毫秒激发一次，具体取决于所使用的播放技术。
  * @event Player#timeupdate
  * @type {EventTarget~Event}
  */
 
 /**
  * Fired when the volume changes
- *
+ * 当音量改变时激发
  * @event Player#volumechange
  * @type {EventTarget~Event}
  */
 
 /**
  * Reports whether or not a player has a plugin available.
- *
+ * 一个播放器是否有可用的插件。
  * This does not report whether or not the plugin has ever been initialized
  * on this player. For that, [usingPlugin]{@link Player#usingPlugin}.
- *
+ * 这不报告插件是否已经在这个播放器上初始化过。
  * @method Player#hasPlugin
  * @param  {string}  name
  *         The name of a plugin.
@@ -5201,10 +5306,10 @@ TECH_EVENTS_RETRIGGER.forEach(function(event) {
 
 /**
  * Reports whether or not a player is using a plugin by name.
- *
+ * 按名称报告播放机是否正在使用插件。
  * For basic plugins, this only reports whether the plugin has _ever_ been
  * initialized on this player.
- *
+ * 对于基本插件，这只报告插件是否已经在这个播放器上初始化过。
  * @method Player#usingPlugin
  * @param  {string} name
  *         The name of a plugin.
