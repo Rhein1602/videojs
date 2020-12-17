@@ -9,7 +9,7 @@ import log from './utils/log';
 import Player from './player';
 
 /**
- * The base plugin name.
+ * 基本插件名称。
  *
  * @private
  * @constant
@@ -18,7 +18,7 @@ import Player from './player';
 const BASE_PLUGIN_NAME = 'plugin';
 
 /**
- * The key on which a player's active plugins cache is stored.
+ * 存储玩家活动插件缓存的密钥。
  *
  * @private
  * @constant
@@ -27,7 +27,7 @@ const BASE_PLUGIN_NAME = 'plugin';
 const PLUGIN_CACHE_KEY = 'activePlugins_';
 
 /**
- * Stores registered plugins in a private space.
+ * 将注册的插件存储在私有空间中。
  *
  * @private
  * @type    {Object}
@@ -35,7 +35,7 @@ const PLUGIN_CACHE_KEY = 'activePlugins_';
 const pluginStorage = {};
 
 /**
- * Reports whether or not a plugin has been registered.
+ * 报告插件是否已注册。
  *
  * @private
  * @param   {string} name
@@ -47,7 +47,7 @@ const pluginStorage = {};
 const pluginExists = (name) => pluginStorage.hasOwnProperty(name);
 
 /**
- * Get a single registered plugin by name.
+ * 按名称获取一个注册的插件。
  *
  * @private
  * @param   {string} name
@@ -59,9 +59,9 @@ const pluginExists = (name) => pluginStorage.hasOwnProperty(name);
 const getPlugin = (name) => pluginExists(name) ? pluginStorage[name] : undefined;
 
 /**
- * Marks a plugin as "active" on a player.
+ * 在播放器上将插件标记为“活动”。
  *
- * Also, ensures that the player has an object for tracking active plugins.
+ * 同时，确保播放器有一个跟踪活动插件的对象。
  *
  * @private
  * @param   {Player} player
@@ -76,7 +76,7 @@ const markPluginAsActive = (player, name) => {
 };
 
 /**
- * Triggers a pair of plugin setup events.
+ * 触发一对插件安装事件。
  *
  * @private
  * @param  {Player} player
@@ -86,8 +86,8 @@ const markPluginAsActive = (player, name) => {
  *         A plugin event hash.
  *
  * @param  {boolean} [before]
- *         If true, prefixes the event name with "before". In other words,
- *         use this to trigger "beforepluginsetup" instead of "pluginsetup".
+ *         如果为true，则在事件名称前面加上“before”。换句话说，
+ * 用这个来触发“beforepluginsetup”而不是“pluginsetup”。
  */
 const triggerSetupEvent = (player, hash, before) => {
   const eventName = (before ? 'before' : '') + 'pluginsetup';
@@ -97,8 +97,7 @@ const triggerSetupEvent = (player, hash, before) => {
 };
 
 /**
- * Takes a basic plugin function and returns a wrapper function which marks
- * on the player that the plugin has been activated.
+ * 一个基本的插件返回一个已经激活的插件函数。
  *
  * @private
  * @param   {string} name
@@ -113,12 +112,10 @@ const triggerSetupEvent = (player, hash, before) => {
 const createBasicPlugin = function(name, plugin) {
   const basicPluginWrapper = function() {
 
-    // We trigger the "beforepluginsetup" and "pluginsetup" events on the player
-    // regardless, but we want the hash to be consistent with the hash provided
-    // for advanced plugins.
+    // 我们在播放器上触发“beforepluginsetup”和“pluginsetup”事件，
+    // 但是我们希望哈希值与为高级插件提供的哈希值一致。
     //
-    // The only potentially counter-intuitive thing here is the `instance` in
-    // the "pluginsetup" event is the value returned by the `plugin` function.
+    // 这里唯一可能违反直觉的是“pluginsetup”事件中的“instance”是“plugin”函数返回的值。
     triggerSetupEvent(this, {name, plugin, instance: null}, true);
 
     const instance = plugin.apply(this, arguments);
@@ -137,8 +134,7 @@ const createBasicPlugin = function(name, plugin) {
 };
 
 /**
- * Takes a plugin sub-class and returns a factory function for generating
- * instances of it.
+ * 获取一个plugin子类并返回一个工厂函数来生成它的实例。
  *
  * This factory function will replace itself with an instance of the requested
  * sub-class of Plugin.
@@ -154,8 +150,7 @@ const createBasicPlugin = function(name, plugin) {
  */
 const createPluginFactory = (name, PluginSubClass) => {
 
-  // Add a `name` property to the plugin prototype so that each plugin can
-  // refer to itself by name.
+  // 向插件原型添加一个“name”属性，这样每个插件都可以通过名称引用自己。
   PluginSubClass.prototype.name = name;
 
   return function(...args) {
@@ -163,7 +158,7 @@ const createPluginFactory = (name, PluginSubClass) => {
 
     const instance = new PluginSubClass(...[this, ...args]);
 
-    // The plugin is replaced by a function that returns the current instance.
+    // 插件被返回当前实例的函数所取代。
     this[name] = () => instance;
 
     triggerSetupEvent(this, instance.getEventHash());
@@ -173,7 +168,7 @@ const createPluginFactory = (name, PluginSubClass) => {
 };
 
 /**
- * Parent class for all advanced plugins.
+ * 所有高级插件的父类.
  *
  * @mixes   module:evented~EventedMixin
  * @mixes   module:stateful~StatefulMixin
@@ -189,7 +184,7 @@ const createPluginFactory = (name, PluginSubClass) => {
 class Plugin {
 
   /**
-   * Creates an instance of this class.
+   * 创建此类的实例。
    *
    * Sub-classes should call `super` to ensure plugins are properly initialized.
    *
@@ -207,19 +202,17 @@ class Plugin {
       this.log = this.player.log.createLogger(this.name);
     }
 
-    // Make this object evented, but remove the added `trigger` method so we
-    // use the prototype version instead.
+    // 使此对象事件化，但删除添加的“trigger”方法，以便改用原型版本。
     evented(this);
     delete this.trigger;
 
     stateful(this, this.constructor.defaultState);
     markPluginAsActive(player, this.name);
 
-    // Auto-bind the dispose method so we can use it as a listener and unbind
-    // it later easily.
+    // 自动绑定dispose方法，以便我们可以将其用作侦听器，并在以后轻松地解除绑定。
     this.dispose = Fn.bind(this, this.dispose);
 
-    // If the player is disposed, dispose the plugin.
+    // 如果player已释放，请释放插件。
     player.on('dispose', this.dispose);
   }
 
@@ -232,8 +225,7 @@ class Plugin {
   }
 
   /**
-   * Each event triggered by plugins includes a hash of additional data with
-   * conventional properties.
+   * 插件触发的每个事件都包含一个具有常规属性的附加数据的哈希。
    *
    * This returns that object or mutates an existing hash.
    *
@@ -251,7 +243,7 @@ class Plugin {
   }
 
   /**
-   * Triggers an event on the plugin object and overrides
+   * 触发插件对象上的事件并重写
    * {@link module:evented~EventedMixin.trigger|EventedMixin.trigger}.
    *
    * @param   {string|Object} event
@@ -269,8 +261,7 @@ class Plugin {
   }
 
   /**
-   * Handles "statechanged" events on the plugin. No-op by default, override by
-   * subclassing.
+   * 处理插件上的“statechanged”事件。默认无操作，重写子类化。
    *
    * @abstract
    * @param    {Event} e
@@ -283,7 +274,7 @@ class Plugin {
   handleStateChanged(e) {}
 
   /**
-   * Disposes a plugin.
+   * 释放一个插件。
    *
    * Subclasses can override this if they want, but for the sake of safety,
    * it's probably best to subscribe the "dispose" event.
@@ -294,7 +285,7 @@ class Plugin {
     const {name, player} = this;
 
     /**
-     * Signals that a advanced plugin is about to be disposed.
+     *发出高级插件即将被释放的信号。
      *
      * @event Plugin#dispose
      * @type  {EventTarget~Event}
@@ -309,13 +300,13 @@ class Plugin {
     player[PLUGIN_CACHE_KEY][name] = false;
     this.player = this.state = null;
 
-    // Finally, replace the plugin name on the player with a new factory
-    // function, so that the plugin is ready to be set up again.
+    // 最后，用一个新的工厂替换播放器上的插件名
+    // 这样插件就可以重新设置了。
     player[name] = createPluginFactory(name, pluginStorage[name]);
   }
 
   /**
-   * Determines if a plugin is a basic plugin (i.e. not a sub-class of `Plugin`).
+   * 确定插件是否为基本插件（即不是“plugin”的子类）。
    *
    * @param   {string|Function} plugin
    *          If a string, matches the name of a plugin. If a function, will be
@@ -331,7 +322,7 @@ class Plugin {
   }
 
   /**
-   * Register a Video.js plugin.
+   * 注册video.js插件。
    *
    * @param   {string} name
    *          The name of the plugin to be registered. Must be a string and
@@ -362,7 +353,7 @@ class Plugin {
 
     pluginStorage[name] = plugin;
 
-    // Add a player prototype method for all sub-classed plugins (but not for
+    // 为所有子类插件添加播放器原型方法 (but not for
     // the base Plugin class).
     if (name !== BASE_PLUGIN_NAME) {
       if (Plugin.isBasic(plugin)) {
@@ -376,7 +367,7 @@ class Plugin {
   }
 
   /**
-   * De-register a Video.js plugin.
+   * 取消注册到视频.js插件。
    *
    * @param  {string} name
    *         The name of the plugin to be de-registered. Must be a string that
@@ -396,7 +387,7 @@ class Plugin {
   }
 
   /**
-   * Gets an object containing multiple Video.js plugins.
+   * 获取包含多个视频.js插件。
    *
    * @param   {Array} [names]
    *          If provided, should be an array of plugin names. Defaults to _all_
@@ -422,7 +413,7 @@ class Plugin {
   }
 
   /**
-   * Gets a plugin's version, if available
+   * 获取插件的版本（如果可用）
    *
    * @param   {string} name
    *          The name of a plugin.
@@ -438,7 +429,7 @@ class Plugin {
 }
 
 /**
- * Gets a plugin by name if it exists.
+ * 按名称获取插件（如果存在）。
  *
  * @static
  * @method   getPlugin
@@ -452,7 +443,7 @@ class Plugin {
 Plugin.getPlugin = getPlugin;
 
 /**
- * The name of the base plugin class as it is registered.
+ * 注册时基插件类的名称。
  *
  * @type {string}
  */
@@ -461,7 +452,7 @@ Plugin.BASE_PLUGIN_NAME = BASE_PLUGIN_NAME;
 Plugin.registerPlugin(BASE_PLUGIN_NAME, Plugin);
 
 /**
- * Documented in player.js
+ * 记录在播放器.js
  *  @param {String} name zzf add
  *  @return {boolean} zzf add
  * @ignore
@@ -471,7 +462,7 @@ Player.prototype.usingPlugin = function(name) {
 };
 
 /**
- * Documented in player.js
+ * 记录在播放器.js
  * @param {String} name zzf add
  *  @return {boolean} zzf add
  * @ignore
@@ -483,30 +474,28 @@ Player.prototype.hasPlugin = function(name) {
 export default Plugin;
 
 /**
- * Signals that a plugin is about to be set up on a player.
+ * 表示即将在播放器上设置插件。
  *
  * @event    Player#beforepluginsetup
  * @type     {Plugin~PluginEventHash}
  */
 
 /**
- * Signals that a plugin is about to be set up on a player - by name. The name
- * is the name of the plugin.
+ * 表示一个插件即将在一个播放器上按名称设置。name是插件的名称。
  *
  * @event    Player#beforepluginsetup:$name
  * @type     {Plugin~PluginEventHash}
  */
 
 /**
- * Signals that a plugin has just been set up on a player.
+ * 表示刚刚在播放器上设置了插件。
  *
  * @event    Player#pluginsetup
  * @type     {Plugin~PluginEventHash}
  */
 
 /**
- * Signals that a plugin has just been set up on a player - by name. The name
- * is the name of the plugin.
+ * 表示一个插件刚刚被设置在一个播放器上-按名称。name是插件的名称。
  *
  * @event    Player#pluginsetup:$name
  * @type     {Plugin~PluginEventHash}
