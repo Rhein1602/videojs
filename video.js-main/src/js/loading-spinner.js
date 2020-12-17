@@ -6,14 +6,14 @@ import * as dom from './utils/dom';
 
 /**
  * A loading spinner for use during waiting/loading events.
- *
+ * 在等待/加载事件期间使用的加载微调器。
  * @extends Component
  */
 class LoadingSpinner extends Component {
 
   /**
    * Create the `LoadingSpinner`s DOM element.
-   *
+   * 创建“LoadingSpinner”的DOM元素。
    * @return {Element}
    *         The dom element that gets created.
    */
