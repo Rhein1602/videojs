@@ -34,7 +34,7 @@ import { use as middlewareUse, TERMINATOR } from './tech/middleware.js';
 import defineLazyProperty from './utils/define-lazy-property.js';
 
 /**
- * Normalize an `id` value by trimming off a leading `#`
+ * 通过删除前导来规范化“id”值`#`
  *
  * @private
  * @param   {string} id
@@ -143,11 +143,11 @@ function videojs(id, options, ready) {
     throw new TypeError('The element or ID supplied is not valid. (videojs)');
   }
 
-  // document.body.contains(el) will only check if el is contained within that one document.
-  // This causes problems for elements in iframes.
-  // Instead, use the element's ownerDocument instead of the global document.
-  // This will make sure that the element is indeed in the dom of that document.
-  // Additionally, check that the document in question has a default view.
+  // document.body.包含（el）将只检查el是否包含在该文档中。
+  // 这会导致iframe中的元素出现问题。
+  // 相反，请使用元素的ownerDocument而不是全局文档。
+  // 这将确保元素确实位于该文档的dom中。
+  // 此外，请检查相关文档是否具有默认视图。
   // If the document is no longer attached to the dom, the defaultView of the document will be null.
   if (!el.ownerDocument.defaultView || !el.ownerDocument.body.contains(el)) {
     log.warn('The element supplied is not included in the DOM');
@@ -166,8 +166,8 @@ function videojs(id, options, ready) {
     options = mergeOptions(options, opts);
   });
 
-  // We get the current "Player" component here in case an integration has
-  // replaced it with a custom player.
+  // 我们在这里得到当前的“播放器”组件，以防集成将其替换为自定义播放器。
+  // 
   const PlayerComponent = Component.getComponent('Player');
 
   player = new PlayerComponent(el, options, ready);
@@ -178,15 +178,14 @@ function videojs(id, options, ready) {
 }
 
 /**
- * An Object that contains lifecycle hooks as keys which point to an array
- * of functions that are run when a lifecycle is triggered
+ * 包含生命周期钩子作为键的对象，这些钩子指向触发生命周期时运行的函数数组
  *
  * @private
  */
 videojs.hooks_ = {};
 
 /**
- * Get a list of hooks for a specific lifecycle
+ * 获取特定生命周期的hook列表
  *
  * @param  {string} type
  *         the lifecyle to get hooks from
@@ -206,7 +205,7 @@ videojs.hooks = function(type, fn) {
 };
 
 /**
- * Add a function hook to a specific videojs lifecycle.
+ * 向特定的videojs生命周期添加函数钩子。
  *
  * @param {string} type
  *        the lifecycle to hook the function to.
@@ -219,7 +218,7 @@ videojs.hook = function(type, fn) {
 };
 
 /**
- * Add a function hook that will only run once to a specific videojs lifecycle.
+ * 添加一个只在特定videojs生命周期中运行一次的函数hook。
  *
  * @param {string} type
  *        the lifecycle to hook the function to.
@@ -239,7 +238,7 @@ videojs.hookOnce = function(type, fn) {
 };
 
 /**
- * Remove a hook from a specific videojs lifecycle.
+ * 从特定的videojs生命周期中移除钩子。
  *
  * @param  {string} type
  *         the lifecycle that the function hooked to
@@ -263,7 +262,7 @@ videojs.removeHook = function(type, fn) {
   return true;
 };
 
-// Add default styles
+// 添加默认样式
 if (window.VIDEOJS_NO_DYNAMIC_STYLE !== true && Dom.isReal()) {
   let style = Dom.$('.vjs-styles-defaults');
 
@@ -287,9 +286,8 @@ if (window.VIDEOJS_NO_DYNAMIC_STYLE !== true && Dom.isReal()) {
   }
 }
 
-// Run Auto-load players
-// You have to wait at least once in case this script is loaded after your
-// video in the DOM (weird behavior only with minified version)
+// 运行自动加载播放器
+// 您必须至少等待一次，以防在DOM中的视频之后加载此脚本 (weird behavior only with minified version)
 setup.autoSetupTimeout(1, videojs);
 
 /**
@@ -300,7 +298,7 @@ setup.autoSetupTimeout(1, videojs);
 videojs.VERSION = version;
 
 /**
- * The global options object. These are the settings that take effect
+ * 全局选项对象。这些是生效的设置
  * if no overrides are specified when the player is created.
  *
  * @type {Object}
@@ -308,7 +306,7 @@ videojs.VERSION = version;
 videojs.options = Player.prototype.options_;
 
 /**
- * Get an object with the currently created players, keyed by player ID
+ * 获取一个对象，该对象包含当前创建的player，由player ID键入
  *
  * @return {Object}
  *         The created players
@@ -316,7 +314,7 @@ videojs.options = Player.prototype.options_;
 videojs.getPlayers = () => Player.players;
 
 /**
- * Get a single player based on an ID or DOM element.
+ * 基于单个元素或基于一个DOM元素的Get。
  *
  * This is useful if you want to check if an element or ID has an associated
  * Video.js player, but not create one if it doesn't.
@@ -349,8 +347,7 @@ videojs.getPlayer = (id) => {
   if (Dom.isEl(tag)) {
     const {player, playerId} = tag;
 
-    // Element may have a `player` property referring to an already created
-    // player instance. If so, return that.
+    // 元素可能具有引用已创建的播放机实例的“player”属性。如果是的话，归还它。
     if (player || players[playerId]) {
       return player || players[playerId];
     }
@@ -358,7 +355,7 @@ videojs.getPlayer = (id) => {
 };
 
 /**
- * Returns an array of all current players.
+ * 返回当前所有player的数组。
  *
  * @return {Array}
  *         An array of all players. The array will be in the order that
@@ -368,14 +365,15 @@ videojs.getPlayer = (id) => {
  */
 videojs.getAllPlayers = () =>
 
-  // Disposed players leave a key with a `null` value, so we need to make sure
-  // we filter those out.
+  // 释放的玩家会留下一个带有“null”值的密钥，因此我们需要确保
+  // 我们过滤掉那些。
   Object.keys(Player.players).map(k => Player.players[k]).filter(Boolean);
 
 videojs.players = Player.players;
 videojs.getComponent = Component.getComponent;
 
 /**
+ * 注册一个组件，以便可以通过名称引用它
  * Register a component so it can referred to by name. Used when adding to other
  * components, either through addChild `component.addChild('myComponent')` or through
  * default children options  `{ children: ['myComponent'] }`.
@@ -404,8 +402,7 @@ videojs.registerTech = Tech.registerTech;
 videojs.use = middlewareUse;
 
 /**
- * An object that can be returned by a middleware to signify
- * that the middleware is being terminated.
+ * 一个对象，它可以由中间件返回，以表示中间件正在被终止。
  *
  * @type {object}
  * @property {object} middleware.TERMINATOR
@@ -446,7 +443,7 @@ videojs.registerPlugin = Plugin.registerPlugin;
 videojs.deregisterPlugin = Plugin.deregisterPlugin;
 
 /**
- * Deprecated method to register a plugin with Video.js
+ * 注册插件的方法已弃用视频.js
  *
  * @deprecated videojs.plugin() is deprecated; use videojs.registerPlugin() instead
  *
@@ -514,7 +511,7 @@ videojs.off = Events.off;
 videojs.trigger = Events.trigger;
 
 /**
- * A cross-browser XMLHttpRequest wrapper.
+ * 一个跨浏览器的XMLHttpRequest包装器。
  *
  * @function
  * @param    {Object} options
