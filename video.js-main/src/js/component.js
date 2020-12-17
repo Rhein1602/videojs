@@ -437,7 +437,7 @@ class Component {
    *         `names` or undefined.
    */
   getDescendant(...names) {
-    // flatten array argument into the main array
+    // 将数组参数展平到主数组中
     names = names.reduce((acc, n) => acc.concat(n), []);
 
     let currentChild = this;
@@ -454,7 +454,7 @@ class Component {
   }
 
   /**
-   * Add a child `Component` inside the current `Component`.
+   * 在当前“Component”中添加子“Component”。
    *
    *
    * @param {string|Component} child
@@ -477,16 +477,16 @@ class Component {
     let component;
     let componentName;
 
-    // If child is a string, create component with options
+    // 如果child是字符串，请使用选项创建组件
     if (typeof child === 'string') {
       componentName = toTitleCase(child);
 
       const componentClassName = options.componentClass || componentName;
 
-      // Set name through options
+      // 通过选项设置名称
       options.name = componentName;
 
-      // Create a new object & element for this controls set
+      // 为此控件集创建新的对象元素（&amp;E）
       // If there's no .player_, this is a player
       const ComponentClass = Component.getComponent(componentClassName);
 
@@ -494,17 +494,14 @@ class Component {
         throw new Error(`Component ${componentClassName} does not exist`);
       }
 
-      // data stored directly on the videojs object may be
-      // misidentified as a component to retain
-      // backwards-compatibility with 4.x. check to make sure the
-      // component class can be instantiated.
+      // 直接存储在videojs对象上的数据可能被错误地标识为组件，以保持与4.x的向后兼容性。请检查以确保组件类可以实例化
       if (typeof ComponentClass !== 'function') {
         return null;
       }
 
       component = new ComponentClass(this.player_ || this, options);
 
-    // child is a component instance
+    // 子对象是组件实例
     } else {
       component = child;
     }
@@ -519,8 +516,7 @@ class Component {
       this.childIndex_[component.id()] = component;
     }
 
-    // If a name wasn't used to create the component, check if we can use the
-    // name function of the component
+    // 如果没有使用名称来创建组件，请检查是否可以使用组件的名称函数
     componentName = componentName || (component.name && toTitleCase(component.name()));
 
     if (componentName) {
@@ -528,14 +524,14 @@ class Component {
       this.childNameIndex_[toLowerCase(componentName)] = component;
     }
 
-    // Add the UI object's element to the container div (box)
-    // Having an element is not required
+    // 将UI对象的元素添加到容器div (box)
+    // 不需要元素
     if (typeof component.el === 'function' && component.el()) {
-      // If inserting before a component, insert before that component's element
+      // 如果在组件之前插入，请在该组件的元素之前插入
       let refNode = null;
 
       if (this.children_[index + 1]) {
-        // Most children are components, but the video tech is an HTML element
+        // 大多数子元素是组件，但是视频技术是一个HTML元素
         if (this.children_[index + 1].el_) {
           refNode = this.children_[index + 1].el_;
         } else if (Dom.isEl(this.children_[index + 1])) {
@@ -546,13 +542,13 @@ class Component {
       this.contentEl().insertBefore(component.el(), refNode);
     }
 
-    // Return so it can stored on parent object if desired.
+    // 返回，以便在需要时将其存储在父对象上。
     return component;
   }
 
   /**
-   * Remove a child `Component` from this `Component`s list of children. Also removes
-   * the child `Component`s element from this `Component`s element.
+   * 从“Component”的子列表中删除子“Component”。
+   * 还将子“Component”的元素从此“Component”的元素中删除。
    *
    * @param {Component} component
    *        The child `Component` to remove.
@@ -594,7 +590,7 @@ class Component {
   }
 
   /**
-   * Add and initialize default child `Component`s based upon options.
+   * 根据选项添加和初始化默认子组件。.
    */
   initChildren() {
     const children = this.options_.children;
@@ -607,34 +603,29 @@ class Component {
         const name = child.name;
         let opts = child.opts;
 
-        // Allow options for children to be set at the parent options
+        // 允许在父选项中设置子级的选项
         // e.g. videojs(id, { controlBar: false });
         // instead of videojs(id, { children: { controlBar: false });
         if (parentOptions[name] !== undefined) {
           opts = parentOptions[name];
         }
 
-        // Allow for disabling default components
+        // 允许禁用默认组件
         // e.g. options['children']['posterImage'] = false
         if (opts === false) {
           return;
         }
 
-        // Allow options to be passed as a simple boolean if no configuration
-        // is necessary.
+        // Allow options to be passed as a simple boolean if no configuration is necessary.
+        // 如果不需要配置，则允许将选项作为简单布尔值传递。
         if (opts === true) {
           opts = {};
         }
 
-        // We also want to pass the original player options
-        // to each component as well so they don't need to
-        // reach back into the player for options later.
+        // 我们还希望将原始的播放器选项传递给每个组件，这样它们就不需要在以后回到播放器中获取选项。
         opts.playerOptions = this.options_.playerOptions;
 
-        // Create and add the child component.
-        // Add a direct reference to the child by name on the parent instance.
-        // If two of the same component are used, different names should be supplied
-        // for each
+        // 创建并添加子组件。在父实例上按名称添加对子级的直接引用。如果使用两个相同的组件，则应为每个组件提供不同的名称
         const newChild = this.addChild(name, opts);
 
         if (newChild) {
@@ -642,7 +633,7 @@ class Component {
         }
       };
 
-      // Allow for an array of children details to passed in the options
+      // 允许在选项中传递子详细信息数组
       let workingChildren;
       const Tech = Component.getComponent('Tech');
 
@@ -679,8 +670,7 @@ class Component {
           return {name, opts};
         })
         .filter((child) => {
-        // we have to make sure that child.name isn't in the techOrder since
-        // techs are registerd as Components but can't aren't compatible
+        // 我们必须确保子级名称不在techOrder中，因为techs注册为组件，但不兼容
         // See https://github.com/videojs/video.js/issues/2772
           const c = Component.getComponent(child.opts.componentClass ||
                                        toTitleCase(child.name));
@@ -693,22 +683,20 @@ class Component {
 
   /**
    * Builds the default DOM class name. Should be overriden by sub-components.
-   *
+   * 生成默认的DOM类名。应该被子组件覆盖。
    * @return {string}
    *         The DOM class name for this object.
    *
    * @abstract
    */
   buildCSSClass() {
-    // Child classes can include a function that does:
+    // 子类可以包含一个函数：
     // return 'CLASS NAME' + this._super();
     return '';
   }
 
   /**
-   * Bind a listener to the component's ready state.
-   * Different from event listeners in that if the ready event has already happened
-   * it will trigger the function immediately.
+   * 将侦听器绑定到组件的就绪状态。与事件侦听器不同的是，如果就绪事件已经发生，它将立即触发函数。
    *@param {Fn} fn
    *         the fn
    *@param {boolean} sync
@@ -730,24 +718,24 @@ class Component {
     if (sync) {
       fn.call(this);
     } else {
-      // Call the function asynchronously by default for consistency
+      // 为保持一致性，默认情况下异步调用函数
       this.setTimeout(fn, 1);
     }
   }
 
   /**
-   * Trigger all the ready listeners for this `Component`.
+   * 触发此“组件”的所有就绪侦听器。
    *
    * @fires Component#ready
    */
   triggerReady() {
     this.isReady_ = true;
 
-    // Ensure ready is triggered asynchronously
+    // 确保以异步方式触发就绪
     this.setTimeout(function() {
       const readyQueue = this.readyQueue_;
 
-      // Reset Ready Queue
+      // 重置就绪队列
       this.readyQueue_ = [];
 
       if (readyQueue && readyQueue.length > 0) {
@@ -756,9 +744,9 @@ class Component {
         }, this);
       }
 
-      // Allow for using event listeners also
+      // 也允许使用事件侦听器
       /**
-       * Triggered when a `Component` is ready.
+       * 当“Component”就绪时触发.
        *
        * @event Component#ready
        * @type {EventTarget~Event}
@@ -768,11 +756,11 @@ class Component {
   }
 
   /**
-   * Find a single DOM element matching a `selector`. This can be within the `Component`s
-   * `contentEl()` or another custom context.
+   * 寻找与“selector”匹配的单个DOM元素。这可以在“Component”中
+   * `contentEl（）`或其他自定义上下文。
    *
    * @param {string} selector
-   *        A valid CSS selector, which will be passed to `querySelector`.
+   *        一个有效的CSS选择器，它将传递给“querySelector”。
    *
    * @param {Element|string} [context=this.contentEl()]
    *        A DOM element within which to query. Can also be a selector string in
@@ -790,8 +778,8 @@ class Component {
   }
 
   /**
-   * Finds all DOM element matching a `selector`. This can be within the `Component`s
-   * `contentEl()` or another custom context.
+   * 查找与“selector”匹配的所有DOM元素。这可以在“Component”中
+   * `contentEl（）`或其他自定义上下文。
    *
    * @param {string} selector
    *        A valid CSS selector, which will be passed to `querySelectorAll`.
@@ -812,7 +800,7 @@ class Component {
   }
 
   /**
-   * Check if a component's element has a CSS class name.
+   * 检查组件的元素是否有CSS类名。
    *
    * @param {string} classToCheck
    *        CSS class name to check.
@@ -826,7 +814,7 @@ class Component {
   }
 
   /**
-   * Add a CSS class name to the `Component`s element.
+   *向“Component”元素添加CSS类名。
    *
    * @param {string} classToAdd
    *        CSS class name to add
@@ -836,7 +824,7 @@ class Component {
   }
 
   /**
-   * Remove a CSS class name from the `Component`s element.
+   * 从“Component”元素中删除CSS类名。
    *
    * @param {string} classToRemove
    *        CSS class name to remove
@@ -846,7 +834,7 @@ class Component {
   }
 
   /**
-   * Add or remove a CSS class name from the component's element.
+   * 在组件的元素中添加或删除CSS类名。
    * - `classToToggle` gets added when {@link Component#hasClass} would return false.
    * - `classToToggle` gets removed when {@link Component#hasClass} would return true.
    *
@@ -861,24 +849,22 @@ class Component {
   }
 
   /**
-   * Show the `Component`s element if it is hidden by removing the
-   * 'vjs-hidden' class name from it.
+   * 如果“Component”元素被隐藏，则删除“vjs hidden”类名。
+   * 
    */
   show() {
     this.removeClass('vjs-hidden');
   }
 
   /**
-   * Hide the `Component`s element if it is currently showing by adding the
-   * 'vjs-hidden` class name to it.
+   * 将“vjs hidden”类名添加到“Component”元素中，以隐藏该元素。
    */
   hide() {
     this.addClass('vjs-hidden');
   }
 
   /**
-   * Lock a `Component`s element in its visible state by adding the 'vjs-lock-showing'
-   * class name to it. Used during fadeIn/fadeOut.
+   * 通过在“vjs”的类中显示“visible”元素，将其添加到`vjs'元素的锁中。在淡入/淡出时使用。
    *
    * @private
    */
@@ -887,9 +873,7 @@ class Component {
   }
 
   /**
-   * Unlock a `Component`s element from its visible state by removing the 'vjs-lock-showing'
-   * class name from it. Used during fadeIn/fadeOut.
-   *
+   * 通过删除“vjs lock showing”类名，将“Component”的元素从其可见状态中解锁。在淡入/淡出时使用。
    * @private
    */
   unlockShowing() {
@@ -897,7 +881,7 @@ class Component {
   }
 
   /**
-   * Get the value of an attribute on the `Component`s element.
+   * 获取“Component”元素的属性值。
    *
    * @param {string} attribute
    *        Name of the attribute to get the value from.
@@ -916,7 +900,7 @@ class Component {
   }
 
   /**
-   * Set the value of an attribute on the `Component`'s element
+   * 设置“Component”元素的属性值
    *
    * @param {string} attribute
    *        Name of the attribute to set.
@@ -931,7 +915,7 @@ class Component {
   }
 
   /**
-   * Remove an attribute from the `Component`s element.
+   * 从“Component”元素中删除属性。
    *
    * @param {string} attribute
    *        Name of the attribute to remove.
@@ -943,7 +927,7 @@ class Component {
   }
 
   /**
-   * Get or set the width of the component based upon the CSS styles.
+   * 根据CSS样式获取或设置组件的宽度。
    * See {@link Component#dimension} for more detailed information.
    *
    * @param {number|string} [num]
@@ -961,7 +945,7 @@ class Component {
   }
 
   /**
-   * Get or set the height of the component based upon the CSS styles.
+   * 根据CSS样式获取或设置组件的高度。
    * See {@link Component#dimension} for more detailed information.
    *
    * @param {number|string} [num]
@@ -979,7 +963,7 @@ class Component {
   }
 
   /**
-   * Set both the width and height of the `Component` element at the same time.
+   * 同时设置“Component”元素的宽度和高度。
    *
    * @param  {number|string} width
    *         Width to set the `Component`s element to.
@@ -994,7 +978,7 @@ class Component {
   }
 
   /**
-   * Get or set width or height of the `Component` element. This is the shared code
+   * 获取或设置“Component”元素的宽度或高度。这是共享代码
    * for the {@link Component#width} and {@link Component#height}.
    *
    * Things to know:
@@ -1023,12 +1007,12 @@ class Component {
    */
   dimension(widthOrHeight, num, skipListeners) {
     if (num !== undefined) {
-      // Set to zero if null or literally NaN (NaN !== NaN)
+      // 如果为null或字面上为NaN（NaN！==NaN）
       if (num === null || num !== num) {
         num = 0;
       }
 
-      // Check if using css width/height (% or px) and adjust
+      // 检查是否使用css宽度/高度（%或px）并调整
       if (('' + num).indexOf('%') !== -1 || ('' + num).indexOf('px') !== -1) {
         this.el_.style[widthOrHeight] = num;
       } else if (num === 'auto') {
@@ -1037,7 +1021,7 @@ class Component {
         this.el_.style[widthOrHeight] = num + 'px';
       }
 
-      // skipListeners allows us to avoid triggering the resize event when setting both width and height
+      // skipListeners允许我们在设置宽度和高度时避免触发resize事件
       if (!skipListeners) {
         /**
          * Triggered when a component is resized.
@@ -1051,29 +1035,29 @@ class Component {
       return;
     }
 
-    // Not setting a value, so getting it
-    // Make sure element exists
+    // 不设定值，所以要获取它
+    // 确保元素存在
     if (!this.el_) {
       return 0;
     }
 
-    // Get dimension value from style
+    // 从样式获取尺寸值
     const val = this.el_.style[widthOrHeight];
     const pxIndex = val.indexOf('px');
 
     if (pxIndex !== -1) {
-      // Return the pixel value with no 'px'
+      // 返回不带“px”的像素值
       return parseInt(val.slice(0, pxIndex), 10);
     }
 
-    // No px so using % or no style was set, so falling back to offsetWidth/height
-    // If component has display:none, offset will return 0
-    // TODO: handle display:none and no dimension style using px
+    // 没有px所以使用%或没有设置样式，所以返回到offsetWidth/height
+    // 如果组件有显示：无，偏移量将返回0
+    // TODO:句柄显示：无和没有使用px的标注样式
     return parseInt(this.el_['offset' + toTitleCase(widthOrHeight)], 10);
   }
 
   /**
-   * Get the computed width or the height of the component's element.
+   * 获取组件元素的计算宽度或高度。
    *
    * Uses `window.getComputedStyle`.
    *
@@ -1093,12 +1077,10 @@ class Component {
 
     computedWidthOrHeight = computedStyle(this.el_, widthOrHeight);
 
-    // remove 'px' from variable and parse as integer
+    // 从变量中删除“px”并将其解析为整数
     computedWidthOrHeight = parseFloat(computedWidthOrHeight);
 
-    // if the computed value is still 0, it's possible that the browser is lying
-    // and we want to check the offset values.
-    // This code also runs wherever getComputedStyle doesn't exist.
+    // 如果计算的值仍然为0，则可能是浏览器在说谎，我们需要检查偏移值。此代码也会在getComputedStyle不存在的地方运行。
     if (computedWidthOrHeight === 0 || isNaN(computedWidthOrHeight)) {
       const rule = `offset${toTitleCase(widthOrHeight)}`;
 
@@ -1109,8 +1091,8 @@ class Component {
   }
 
   /**
-   * An object that contains width and height values of the `Component`s
-   * computed style. Uses `window.getComputedStyle`.
+   * 包含“Component”的宽度和高度值的对象
+   * 计算风格。用途`window.getComputedStyle`.
    *
    * @typedef {Object} Component~DimensionObject
    *
@@ -1122,8 +1104,7 @@ class Component {
    */
 
   /**
-   * Get an object that contains computed width and height values of the
-   * component's element.
+   * 获取一个包含组件元素的计算宽度和高度值的对象。
    *
    * Uses `window.getComputedStyle`.
    *
@@ -1138,7 +1119,7 @@ class Component {
   }
 
   /**
-   * Get the computed width of the component's element.
+   * 获取组件元素的计算宽度。
    *
    * Uses `window.getComputedStyle`.
    *
@@ -1150,7 +1131,7 @@ class Component {
   }
 
   /**
-   * Get the computed height of the component's element.
+   * 获取组件元素的计算高度。
    *
    * Uses `window.getComputedStyle`.
    *
@@ -1162,22 +1143,22 @@ class Component {
   }
 
   /**
-   * Set the focus to this component
+   * 设置此组件的焦点
    */
   focus() {
     this.el_.focus();
   }
 
   /**
-   * Remove the focus from this component
+   * 从该组件中移除焦点
    */
   blur() {
     this.el_.blur();
   }
 
   /**
-   * When this Component receives a `keydown` event which it does not process,
-   *  it passes the event to the Player for handling.
+   * 当此组件接收到不处理的“keydown”事件时，
+   * 它将事件传递给玩家处理。
    *
    * @param {EventTarget~Event} event
    *        The `keydown` event that caused this function to be called.
@@ -1185,8 +1166,7 @@ class Component {
   handleKeyDown(event) {
     if (this.player_) {
 
-      // We only stop propagation here because we want unhandled events to fall
-      // back to the browser.
+      // 我们只在这里停止传播，因为我们希望未处理的事件返回到浏览器。
       event.stopPropagation();
       this.player_.handleKeyDown(event);
     }
@@ -1220,42 +1200,41 @@ class Component {
 
    */
   emitTapEvents() {
-    // Track the start time so we can determine how long the touch lasted
+    // 跟踪开始时间，这样我们就可以确定触摸持续了多长时间
     let touchStart = 0;
     let firstTouch = null;
 
-    // Maximum movement allowed during a touch event to still be considered a tap
-    // Other popular libs use anywhere from 2 (hammer.js) to 15,
-    // so 10 seems like a nice, round number.
+    // 在触摸事件中允许的最大移动量仍然被认为是一个点击。其他流行的lib使用的范围是2(锤子.js)到15，
+    // 所以10看起来是个不错的整数。
     const tapMovementThreshold = 10;
 
-    // The maximum length a touch can be while still being considered a tap
+    // 触碰的最大长度，同时仍被视为轻触
     const touchTimeThreshold = 200;
 
     let couldBeTap;
 
     this.on('touchstart', function(event) {
-      // If more than one finger, don't consider treating this as a click
+      // 如果不止一个手指，不要认为这是一个点击
       if (event.touches.length === 1) {
-        // Copy pageX/pageY from the object
+        // 从对象复制pageX/pageY
         firstTouch = {
           pageX: event.touches[0].pageX,
           pageY: event.touches[0].pageY
         };
-        // Record start time so we can detect a tap vs. "touch and hold"
+        // 记录开始时间，这样我们就可以检测到轻触与“触摸并保持”
         touchStart = window.performance.now();
-        // Reset couldBeTap tracking
+        // 重置couldBeTap跟踪
         couldBeTap = true;
       }
     });
 
     this.on('touchmove', function(event) {
-      // If more than one finger, don't consider treating this as a click
+      // 如果不止一个手指，不要认为这是一个点击
       if (event.touches.length > 1) {
         couldBeTap = false;
       } else if (firstTouch) {
-        // Some devices will throw touchmoves for all but the slightest of taps.
-        // So, if we moved only a small distance, this could still be a tap
+        // 一些设备会抛出所有的触碰动作，只有一点点的触碰。
+        // 所以，如果我们只移动一小段距离，这仍然是一个水龙头
         const xdiff = event.touches[0].pageX - firstTouch.pageX;
         const ydiff = event.touches[0].pageY - firstTouch.pageY;
         const touchDistance = Math.sqrt(xdiff * xdiff + ydiff * ydiff);
@@ -1274,29 +1253,29 @@ class Component {
     this.on('touchleave', noTap);
     this.on('touchcancel', noTap);
 
-    // When the touch ends, measure how long it took and trigger the appropriate
+    // 当触摸结束时，测量所用时间并触发相应的
     // event
     this.on('touchend', function(event) {
       firstTouch = null;
-      // Proceed only if the touchmove/leave/cancel event didn't happen
+      // 仅当触碰未发生/未进行移动时
       if (couldBeTap === true) {
-        // Measure how long the touch lasted
+        // 测量触摸持续了多长时间
         const touchTime = window.performance.now() - touchStart;
 
-        // Make sure the touch was less than the threshold to be considered a tap
+        // 确保触摸低于被视为轻触的阈值
         if (touchTime < touchTimeThreshold) {
-          // Don't let browser turn this into a click
+          // 别让浏览器把它变成点击
           event.preventDefault();
           /**
-           * Triggered when a `Component` is tapped.
+           * 点击“组件”时触发.
            *
            * @event Component#tap
            * @type {EventTarget~Event}
            */
           this.trigger('tap');
-          // It may be good to copy the touchend event object and change the
-          // type to tap, if the other event properties aren't exact after
-          // Events.fixEvent runs (e.g. event.target)
+          // 如果其他事件属性不在之后，
+          // 复制touchend事件对象并将类型更改为tap可能是很好的事件.
+          // fixEvent运行（例如。事件.目标)
         }
       }
     });
@@ -1326,29 +1305,29 @@ class Component {
    * @listens Component#touchcancel
    */
   enableTouchActivity() {
-    // Don't continue if the root player doesn't support reporting user activity
+    // 如果根播放器不支持报告用户活动，则不要继续
     if (!this.player() || !this.player().reportUserActivity) {
       return;
     }
 
-    // listener for reporting that the user is active
+    // 用于报告用户处于活动状态的侦听器
     const report = Fn.bind(this.player(), this.player().reportUserActivity);
 
     let touchHolding;
 
     this.on('touchstart', function() {
       report();
-      // For as long as the they are touching the device or have their mouse down,
-      // we consider them active even if they're not moving their finger or mouse.
-      // So we want to continue to update that they are active
+      // 只要他们触摸设备或按下鼠标，
+      // 我们认为它们是活跃的，即使它们不动手指或鼠标。
+      // 所以我们想继续更新他们是活跃的
       this.clearInterval(touchHolding);
-      // report at the same interval as activityCheck
+      // 以与activityCheck相同的时间间隔报告
       touchHolding = this.setInterval(report, 250);
     });
 
     const touchEnd = function(event) {
       report();
-      // stop the interval that maintains activity if the touch is holding
+      // 如果触摸保持不变，停止保持活动的间隔
       this.clearInterval(touchHolding);
     };
 
@@ -1358,16 +1337,14 @@ class Component {
   }
 
   /**
-   * A callback that has no parameters and is bound into `Component`s context.
-   *
+   * 一个没有参数并绑定到“Component”上下文中的回调。
    * @callback Component~GenericCallback
    * @this Component
    */
 
   /**
-   * Creates a function that runs after an `x` millisecond timeout. This function is a
-   * wrapper around `window.setTimeout`. There are a few reasons to use this one
-   * instead though:
+   *  创建在“x”毫秒超时后运行的函数。这个函数是一个包装器`窗口.setTimeout`.
+   *  不过，有几个理由可以用这个来代替
    * 1. It gets cleared via  {@link Component#clearTimeout} when
    *    {@link Component#dispose} gets called.
    * 2. The function callback will gets turned into a {@link Component~GenericCallback}
@@ -1391,7 +1368,7 @@ class Component {
    * @see [Similar to]{@link https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout}
    */
   setTimeout(fn, timeout) {
-    // declare as variables so they are properly available in timeout function
+    // 声明为变量，以便它们在超时函数中正确可用
     // eslint-disable-next-line
     var timeoutId, disposeFn;
 
@@ -1412,7 +1389,7 @@ class Component {
   }
 
   /**
-   * Clears a timeout that gets created via `window.setTimeout` or
+   * 清除通过创建的超时`窗口.setTimeout`
    * {@link Component#setTimeout}. If you set a timeout via {@link Component#setTimeout}
    * use this function instead of `window.clearTimout`. If you don't your dispose
    * listener will not get cleaned up until {@link Component#dispose}!
@@ -1436,8 +1413,8 @@ class Component {
   }
 
   /**
-   * Creates a function that gets run every `x` milliseconds. This function is a wrapper
-   * around `window.setInterval`. There are a few reasons to use this one instead though.
+   * 创建每隔“x”毫秒运行一次的函数。这个函数是一个包装器`窗口.setInterval`. 
+   * 尽管有几个理由可以用这个来代替。
    * 1. It gets cleared via  {@link Component#clearInterval} when
    *    {@link Component#dispose} gets called.
    * 2. The function callback will be a {@link Component~GenericCallback}
@@ -1468,7 +1445,7 @@ class Component {
   }
 
   /**
-   * Clears an interval that gets created via `window.setInterval` or
+   * 清除通过创建的间隔`窗口.setInterval`
    * {@link Component#setInterval}. If you set an inteval via {@link Component#setInterval}
    * use this function instead of `window.clearInterval`. If you don't your dispose
    * listener will not get cleaned up until {@link Component#dispose}!
@@ -1492,8 +1469,7 @@ class Component {
   }
 
   /**
-   * Queues up a callback to be passed to requestAnimationFrame (rAF), but
-   * with a few extra bonuses:
+   * 将回调排队传递到requestAnimationFrame（rAF），但有一些额外的奖励：
    *
    * - Supports browsers that do not support rAF by falling back to
    *   {@link Component#setTimeout}.
@@ -1517,14 +1493,14 @@ class Component {
    * @see [Similar to]{@link https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame}
    */
   requestAnimationFrame(fn) {
-    // Fall back to using a timer.
+    // 回到使用计时器。
     if (!this.supportsRaf_) {
       return this.setTimeout(fn, 1000 / 60);
     }
 
     this.clearTimersOnDispose_();
 
-    // declare as variables so they are properly available in rAF function
+    // 声明为变量，以便它们在rAF函数中正确可用
     // eslint-disable-next-line
     var id;
     fn = Fn.bind(this, fn);
@@ -1541,9 +1517,7 @@ class Component {
   }
 
   /**
-   * Request an animation frame, but only one named animation
-   * frame will be queued. Another will never be added until
-   * the previous one finishes.
+   * 请求一个动画帧，但只请求一个名为animation的帧帧将排队。不会添加另一个，直到上一个结束了。
    *
    * @param {string} name
    *        The name to give this requestAnimationFrame
@@ -1576,7 +1550,7 @@ class Component {
   }
 
   /**
-   * Cancels a current named animation frame if it exists.
+   * 取消当前已命名动画帧（如果存在）。
    *
    * @param {string} name
    *        The name of the requestAnimationFrame to cancel.
@@ -1591,7 +1565,7 @@ class Component {
   }
 
   /**
-   * Cancels a queued callback passed to {@link Component#requestAnimationFrame}
+   * 取消传递给 {@link Component#requestAnimationFrame}的排队回调
    * (rAF).
    *
    * If you queue an rAF callback via {@link Component#requestAnimationFrame},
@@ -1622,8 +1596,7 @@ class Component {
   }
 
   /**
-   * A function to setup `requestAnimationFrame`, `setTimeout`,
-   * and `setInterval`, clearing on dispose.
+   * 设置“requestAnimationFrame”、“setTimeout”的函数，和“setInterval”，在释放时清除。
    *
    * > Previously each timer added and removed dispose listeners on it's own.
    * For better performance it was decided to batch them all, and use `Set`s
@@ -1655,7 +1628,7 @@ class Component {
   }
 
   /**
-   * Register a `Component` with `videojs` given the name and the component.
+   * 使用给定名称和组件的“videojs”注册“Component”。
    *
    * > NOTE: {@link Tech}s should not be registered as a `Component`. {@link Tech}s
    *         should be registered using {@link Tech.registerTech} or
@@ -1681,7 +1654,7 @@ class Component {
 
     const Tech = Component.getComponent('Tech');
 
-    // We need to make sure this check is only done if Tech has been registered.
+    // 我们需要确保只有在技术已经注册的情况下才进行检查。
     const isTech = Tech && Tech.isTech(ComponentToRegister);
     const isComp = Component === ComponentToRegister ||
       Component.prototype.isPrototypeOf(ComponentToRegister.prototype);
@@ -1710,10 +1683,8 @@ class Component {
       const players = Player.players;
       const playerNames = Object.keys(players);
 
-      // If we have players that were disposed, then their name will still be
-      // in Players.players. So, we must loop through and verify that the value
-      // for each item is not null. This allows registration of the Player component
-      // after all players have been disposed or before any were created.
+      // 如果我们有球员被淘汰，那么他们的名字仍然在player中。 所以，我们必须循环并验证for each item不为空。
+      // 这允许注册播放器组件在所有玩家被释放后或者在任何玩家被创建之前。
       if (players &&
           playerNames.length > 0 &&
           playerNames.map((pname) => players[pname]).every(Boolean)) {
@@ -1728,7 +1699,7 @@ class Component {
   }
 
   /**
-   * Get a `Component` based on the name it was registered with.
+   * 根据注册的名称获取“Component”。
    *
    * @param {string} name
    *        The Name of the component to get.
@@ -1752,9 +1723,9 @@ class Component {
 }
 
 /**
- * Whether or not this component supports `requestAnimationFrame`.
+ * 此组件是否支持“requestAnimationFrame”。
  *
- * This is exposed primarily for testing purposes.
+ * 这主要是为了测试目的而公开的。
  *
  * @private
  * @type {Boolean}
