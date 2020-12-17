@@ -9,9 +9,11 @@ class HtmlTrackElementList {
 
   /**
    * Create an instance of this class.
+   * 创建此类的实例。
    *
    * @param {HtmlTrackElement[]} [trackElements=[]]
    *        A list of `HtmlTrackElement` to instantiate the list with.
+   *        HtmlTrackElement清单，用来实例化清单。
    */
   constructor(trackElements = []) {
     this.trackElements_ = [];
@@ -20,6 +22,7 @@ class HtmlTrackElementList {
      * @memberof HtmlTrackElementList
      * @member {number} length
      *         The current number of `Track`s in the this Trackist.
+     *         此跟踪清单中当前的跟踪数。
      * @instance
      */
     Object.defineProperty(this, 'length', {
@@ -38,6 +41,7 @@ class HtmlTrackElementList {
    *
    * @param {HtmlTrackElement} trackElement
    *        The track element to add to the list.
+   *        要添加到列表中的track元素。
    *
    * @private
    */
@@ -64,9 +68,11 @@ class HtmlTrackElementList {
    *
    * @param {TextTrack} track
    *        The track associated with a track element.
+   *        与轨道元素关联的轨道。
    *
    * @return {HtmlTrackElement|undefined}
    *         The track element that was found or undefined.
+   *         找到或未定义的跟踪元素。
    *
    * @private
    */
@@ -89,6 +95,7 @@ class HtmlTrackElementList {
    *
    * @param {HtmlTrackElement} trackElement
    *        The track element to remove from the list.
+   *        要从列表中删除的track元素。
    *
    * @private
    */
