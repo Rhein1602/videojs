@@ -11,6 +11,8 @@ import HTMLTrackElement from './html-track-element';
 /*
  * This file contains all track properties that are used in
  * player.js, tech.js, html5.js and possibly other techs in the future.
+ *
+ * 此文件包含player.js，tech.js，html5.js和将来可能使用的其他技术中使用的所有轨道属性。
  */
 
 const NORMAL = {

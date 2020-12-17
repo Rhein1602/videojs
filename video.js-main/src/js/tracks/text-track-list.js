@@ -5,6 +5,7 @@ import TrackList from './track-list';
 
 /**
  * The current list of {@link TextTrack} for a media file.
+ * 媒体文件的{@link TextTrack}的当前列表。
  *
  * @see [Spec]{@link https://html.spec.whatwg.org/multipage/embedded-content.html#texttracklist}
  * @extends TrackList
@@ -13,9 +14,11 @@ class TextTrackList extends TrackList {
 
   /**
    * Add a {@link TextTrack} to the `TextTrackList`
+   * 将{@link TextTrack}添加到`TextTrackList`中
    *
    * @param {TextTrack} track
    *        The text track to add to the list.
+   *        要添加到列表的文本轨道。
    *
    * @fires TrackList#addtrack
    */
