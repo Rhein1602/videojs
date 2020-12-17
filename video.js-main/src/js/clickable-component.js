@@ -10,22 +10,23 @@ import keycode from 'keycode';
 /**
  * Component which is clickable or keyboard actionable, but is not a
  * native HTML button.
- *
+ * 可单击或键盘可操作的组件，但不是本机HTML按钮。
  * @extends Component
  */
 class ClickableComponent extends Component {
 
   /**
    * Creates an instance of this class.
-   *
+   * 创建此类的实例。
    * @param  {Player} player
    *         The `Player` that this class should be attached to.
-   *
+   *          这个类应该附加到的“Player”。
    * @param  {Object} [options]
    *         The key/value store of player options.
-   *
+   *        player选项的键值对。
    * @param  {function} [options.clickHandler]
    *         The function to call when the button is clicked / activated
+   *         单击/激活按钮时要调用的函数
    */
   constructor(player, options) {
     super(player, options);
@@ -37,7 +38,7 @@ class ClickableComponent extends Component {
 
   /**
    * Create the `ClickableComponent`s DOM element.
-   *
+   * 创建“ClickableComponent”的DOM元素。
    * @param {string} [tag=div]
    *        The element's node type.
    *
@@ -62,6 +63,7 @@ class ClickableComponent extends Component {
     }
 
     // Add ARIA attributes for clickable element which is not a native HTML button
+    // 为不是本机HTML按钮的可单击元素添加ARIA属性
     attributes = assign({
       role: 'button'
     }, attributes);
@@ -77,6 +79,7 @@ class ClickableComponent extends Component {
 
   dispose() {
     // remove controlTextEl_ on dispose
+    // 处理时移除controlTextEl
     this.controlTextEl_ = null;
 
     super.dispose();
@@ -84,7 +87,7 @@ class ClickableComponent extends Component {
 
   /**
    * Create a control text element on this `ClickableComponent`
-   *
+   * 在此`ClickableComponent上创建控件文本元素`
    * @param {Element} [el]
    *        Parent element for the control text.
    *
@@ -96,6 +99,7 @@ class ClickableComponent extends Component {
       className: 'vjs-control-text'
     }, {
       // let the screen reader user know that the text of the element may change
+      // 让屏幕阅读器用户知道元素的文本可能会更改
       'aria-live': 'polite'
     });
 
@@ -110,7 +114,7 @@ class ClickableComponent extends Component {
 
   /**
    * Get or set the localize text to use for the controls on the `ClickableComponent`.
-   *
+   * 获取或设置用于“ClickableComponent”上的控件的本地化文本。
    * @param {string} [text]
    *        Control text for element.
    *
@@ -131,13 +135,14 @@ class ClickableComponent extends Component {
     Dom.textContent(this.controlTextEl_, localizedText);
     if (!this.nonIconControl) {
       // Set title attribute if only an icon is shown
+      // 仅显示图标时设置标题属性
       el.setAttribute('title', localizedText);
     }
   }
 
   /**
    * Builds the default DOM `className`.
-   *
+   * 生成默认的DOM“className”。
    * @return {string}
    *         The DOM `className` for this object.
    */
@@ -147,6 +152,7 @@ class ClickableComponent extends Component {
 
   /**
    * Enable this `ClickableComponent`
+   * 启用此`ClickableComponent`
    */
   enable() {
     if (!this.enabled_) {
@@ -163,6 +169,7 @@ class ClickableComponent extends Component {
 
   /**
    * Disable this `ClickableComponent`
+   * 禁用此`ClickableComponent`
    */
   disable() {
     this.enabled_ = false;
@@ -179,7 +186,7 @@ class ClickableComponent extends Component {
 
   /**
    * Handles language change in ClickableComponent for the player in components
-   *
+   * 在组件中为播放器处理ClickableComponent中的语言更改
    *
    */
   handleLanguagechange() {
@@ -189,7 +196,7 @@ class ClickableComponent extends Component {
   /**
    * Event handler that is called when a `ClickableComponent` receives a
    * `click` or `tap` event.
-   *
+   * 当“ClickableComponent”接收到“click”或“tap”事件时调用的事件处理程序。
    * @param {EventTarget~Event} event
    *        The `tap` or `click` event that caused this function to be called.
    *
@@ -206,9 +213,9 @@ class ClickableComponent extends Component {
   /**
    * Event handler that is called when a `ClickableComponent` receives a
    * `keydown` event.
-   *
+   * 当“ClickableComponent”接收到“keydown”事件时调用的事件处理程序。
    * By default, if the key is Space or Enter, it will trigger a `click` event.
-   *
+   * 默认情况下，如果键是Space或Enter，它将触发一个“click”事件。
    * @param {EventTarget~Event} event
    *        The `keydown` event that caused this function to be called.
    *
@@ -218,6 +225,7 @@ class ClickableComponent extends Component {
 
     // Support Space or Enter key operation to fire a click event. Also,
     // prevent the event from propagating through the DOM and triggering
+    // 支持空格键或Enter键操作来触发单击事件。另外，防止事件通过DOM传播并触发
     // Player hotkeys.
     if (keycode.isEventKey(event, 'Space') || keycode.isEventKey(event, 'Enter')) {
       event.preventDefault();
@@ -226,6 +234,7 @@ class ClickableComponent extends Component {
     } else {
 
       // Pass keypress handling up for unsupported keys
+      // 对不支持的按键进行按键处理
       super.handleKeyDown(event);
     }
   }
