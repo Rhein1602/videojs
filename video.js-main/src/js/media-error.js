@@ -22,7 +22,7 @@ import {assign, isObject} from './utils/obj';
  */
 function MediaError(value) {
 
-  // Allow redundant calls to this constructor to avoid having `instanceof`
+  // 允许对此构造函数进行冗余调用以避免`
   // checks peppered around the code.
   if (value instanceof MediaError) {
     return value;
@@ -31,12 +31,11 @@ function MediaError(value) {
   if (typeof value === 'number') {
     this.code = value;
   } else if (typeof value === 'string') {
-    // default code is zero, so this is a custom error
+    // 默认代码为零，因此这是一个自定义错误
     this.message = value;
   } else if (isObject(value)) {
 
-    // We assign the `code` property manually because native `MediaError` objects
-    // do not expose it as an own/enumerable property of the object.
+    // 我们手动分配“code”属性，因为本机“MediaError”对象不会将其公开为对象的自身/可枚举属性。
     if (typeof value.code === 'number') {
       this.code = value.code;
     }
@@ -50,15 +49,15 @@ function MediaError(value) {
 }
 
 /**
- * The error code that refers two one of the defined `MediaError` types
+ * 引用两个已定义的“MediaError”类型之一的错误代码
  *
  * @type {Number}
  */
 MediaError.prototype.code = 0;
 
 /**
- * An optional message that to show with the error. Message is not part of the HTML5
- * video spec but allows for more informative custom errors.
+ * 显示错误的可选消息。消息不是HTML5的一部分
+ * 视频规范，但允许更多的信息自定义错误。
  *
  * @type {String}
  */
@@ -76,7 +75,7 @@ MediaError.prototype.message = '';
 MediaError.prototype.status = null;
 
 /**
- * Errors indexed by the W3C standard. The order **CANNOT CHANGE**! See the
+ * W3C标准索引的错误。命令**不能更改**！ See the
  * specification listed under {@link MediaError} for more information.
  *
  * @enum {array}
@@ -111,7 +110,7 @@ MediaError.defaultMessages = {
   5: 'The media is encrypted and we do not have the keys to decrypt it.'
 };
 
-// Add types as properties on MediaError
+// 在MediaError上添加类型作为属性
 // e.g. MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED = 4;
 for (let errNum = 0; errNum < MediaError.errorTypes.length; errNum++) {
   MediaError[MediaError.errorTypes[errNum]] = errNum;
@@ -120,7 +119,7 @@ for (let errNum = 0; errNum < MediaError.errorTypes.length; errNum++) {
 }
 
 // jsdocs for instance/static members added above
-// instance methods use `#` and static methods use `.`
+// 实例方法使用“#”，静态方法使用 `.`
 /**
  * W3C error code for any custom error.
  *
