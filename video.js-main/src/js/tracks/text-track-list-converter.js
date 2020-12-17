@@ -1,6 +1,7 @@
 /**
  * @file text-track-list-converter.js Utilities for capturing text track state and
  * re-creating tracks based on a capture.
+ * text-track-list-converter.js捕获文本轨道状态并基于捕获重新创建轨道的实用程序。
  *
  * @module text-track-list-converter
  */
@@ -8,12 +9,15 @@
 /**
  * Examine a single {@link TextTrack} and return a JSON-compatible javascript object that
  * represents the {@link TextTrack}'s state.
+ * 检查单个{@link TextTrack}并返回一个表示JSON兼容的javascript对象，该对象表示{@link TextTrack}的状态。
  *
  * @param {TextTrack} track
  *        The text track to query.
+ *        要查询的文本轨道。
  *
  * @return {Object}
  *         A serializable javascript representation of the TextTrack.
+ *         TextTrack的可序列化javascript表示形式。
  * @private
  */
 const trackToJson_ = function(track) {
@@ -46,12 +50,17 @@ const trackToJson_ = function(track) {
  * state of all {@link TextTrack}s currently configured. The return array is compatible with
  * {@link text-track-list-converter:jsonToTextTracks}.
  *
+ * 检查一个{@link Tech}并返回一个JSON兼容的javascript数组，该数组表示当前配置的所有{@link TextTrack}的状态。
+ * 返回数组与{@link text-track-list-converter：jsonToTextTracks}兼容。
+ *
  * @param {Tech} tech
  *        The tech object to query
+ *        要查询的技术对象
  *
  * @return {Array}
  *         A serializable javascript representation of the {@link Tech}s
  *         {@link TextTrackList}.
+ *         {@link Tech} s的可序列化javascript表示形式
  */
 const textTracksToJson = function(tech) {
 
@@ -75,13 +84,16 @@ const textTracksToJson = function(tech) {
 /**
  * Create a set of remote {@link TextTrack}s on a {@link Tech} based on an array of javascript
  * object {@link TextTrack} representations.
+ * 根据一组JavaScript对象{@link TextTrack}表示形式，在{@link Tech}上创建一组远程{@link TextTrack}。
  *
  * @param {Array} json
  *        An array of `TextTrack` representation objects, like those that would be
  *        produced by `textTracksToJson`.
+ *        由TextTracks表示对象组成的数组，类似于由textTracksToJson产生的对象。
  *
  * @param {Tech} tech
  *        The `Tech` to create the `TextTrack`s on.
+ *        用于创建TextTrack的技术。
  * @return {Function} zzf add
  */
 const jsonToTextTracks = function(json, tech) {

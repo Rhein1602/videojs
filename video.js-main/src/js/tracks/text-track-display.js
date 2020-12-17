@@ -122,6 +122,8 @@ class TextTrackDisplay extends Component {
     // if a track should show by default and the display hadn't loaded yet.
     // Should probably be moved to an external track loader when we support
     // tracks that don't need a display.
+    //以前在播放器初始化期间调用了此方法，但如果默认情况下应显示轨道且尚未加载显示，则会导致错误。
+    // 当我们支持不需要显示的轨道时，应该将其移动到外部轨道加载器。
     player.ready(Fn.bind(this, function() {
       if (player.tech_ && player.tech_.featuresNativeTextTracks) {
         this.hide();
@@ -146,11 +148,15 @@ class TextTrackDisplay extends Component {
 
   /**
   * Preselect a track following this precedence:
+   * 按照此优先级预选音轨：
   * - matches the previously selected {@link TextTrack}'s language and kind
   * - matches the previously selected {@link TextTrack}'s language only
   * - is the first default captions track
   * - is the first default descriptions track
-  *
+  * -与先前选择的{@link TextTrack}的语言和种类匹配
+  * -仅与先前选择的{@link TextTrack}的语言匹配
+  * -是第一个默认字幕轨道
+  * -是第一个默认描述轨道
   * @listens Player#loadstart
   */
   preselectTrack() {
@@ -170,14 +176,17 @@ class TextTrackDisplay extends Component {
         track.kind in modes
       ) {
         // Always choose the track that matches both language and kind
+        //始终选择与语言和种类都匹配的音轨
         if (track.kind === userPref.kind) {
           preferredTrack = track;
-        // or choose the first track that matches language
+        // or choose the first track that matches languag.
+        // 或选择与语言匹配的第一首音轨
         } else if (!preferredTrack) {
           preferredTrack = track;
         }
 
       // clear everything if offTextTrackMenuItem was clicked
+      // 如果单击offTextTrackMenuItem，则清除所有内容
       } else if (userPref && !userPref.enabled) {
         preferredTrack = null;
         firstDesc = null;
@@ -210,8 +219,13 @@ class TextTrackDisplay extends Component {
   /**
    * Turn display of {@link TextTrack}'s from the current state into the other state.
    * There are only two states:
+   * 将{@link TextTrack}的显示从当前状态转换为其他状态。 只有两种状态：
+   *
    * - 'shown'
    * - 'hidden'
+   *
+   * -"显示"
+   * -"隐藏"
    *
    * @listens Player#loadstart
    */
@@ -225,9 +239,11 @@ class TextTrackDisplay extends Component {
 
   /**
    * Create the {@link Component}'s DOM element.
+   * 创建{@link Component}的DOM元素。
    *
    * @return {Element}
    *         The element that was created.
+   *         创建的元素。
    */
   createEl() {
     return super.createEl('div', {
@@ -240,6 +256,7 @@ class TextTrackDisplay extends Component {
 
   /**
    * Clear all displayed {@link TextTrack}s.
+   * 清除所有显示的{@link TextTrack}。
    */
   clearDisplay() {
     if (typeof window.WebVTT === 'function') {
@@ -250,6 +267,7 @@ class TextTrackDisplay extends Component {
   /**
    * Update the displayed TextTrack when a either a {@link Player#texttrackchange} or
    * a {@link Player#fullscreenchange} is fired.
+   * 触发{@link Player＃texttrackchange}或{@link Player＃fullscreenchange}时，更新显示的TextTrack。
    *
    * @listens Player#texttrackchange
    * @listens Player#fullscreenchange
@@ -278,6 +296,9 @@ class TextTrackDisplay extends Component {
     //  Track display prioritization model: if multiple tracks are 'showing',
     //  display the first 'subtitles' or 'captions' track which is 'showing',
     //  otherwise display the first 'descriptions' track which is 'showing'
+    //  音轨显示优先模型：如果“正在显示”多个音轨，
+    //  显示首个“正在显示”的“字幕”或“字幕”轨道，
+    //  否则显示“正在显示”的第一个“描述”轨道
 
     let descriptionsTrack = null;
     let captionsSubtitlesTrack = null;
@@ -310,9 +331,11 @@ class TextTrackDisplay extends Component {
 
   /**
    * Style {@Link TextTrack} activeCues according to {@Link TextTrackSettings}.
+   * 根据{@Link TextTrackSettings}设置{@Link TextTrack} activeCues的样式。
    *
    * @param {TextTrack} track
    *        Text track object containing active cues to style.
+   *        文本跟踪对象，包含要设置样式的活动提示。
    */
   updateDisplayState(track) {
     const overrides = this.player_.textTrackSettings.getValues();
@@ -396,9 +419,11 @@ class TextTrackDisplay extends Component {
 
   /**
    * Add an {@link TextTrack} to to the {@link Tech}s {@link TextTrackList}.
+   * 将{@link TextTrack}添加到{@link Tech}的{@link TextTrackList}。
    *
    * @param {TextTrack|TextTrack[]} tracks
    *        Text track object or text track array to be added to the list.
+   *        文本轨道对象或文本轨道数组要添加到列表中。
    */
   updateForTrack(tracks) {
     if (!Array.isArray(tracks)) {

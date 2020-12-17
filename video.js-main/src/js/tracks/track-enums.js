@@ -4,6 +4,7 @@
 
 /**
  * All possible `VideoTrackKind`s
+ * 所有可能的`VideoTrackKind`s
  *
  * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-videotrack-kind
  * @typedef VideoTrack~Kind
@@ -20,6 +21,7 @@ export const VideoTrackKind = {
 
 /**
  * All possible `AudioTrackKind`s
+ * 所有可能的`AudioTrackKind`s
  *
  * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-audiotrack-kind
  * @typedef AudioTrack~Kind
@@ -36,6 +38,7 @@ export const AudioTrackKind = {
 
 /**
  * All possible `TextTrackKind`s
+ * 所有可能的`TextTrackKind`s
  *
  * @see https://html.spec.whatwg.org/multipage/embedded-content.html#dom-texttrack-kind
  * @typedef TextTrack~Kind
@@ -51,6 +54,7 @@ export const TextTrackKind = {
 
 /**
  * All possible `TextTrackMode`s
+ * 所有可能的`TextTrackMode`s
  *
  * @see https://html.spec.whatwg.org/multipage/embedded-content.html#texttrackmode
  * @typedef TextTrack~Mode
