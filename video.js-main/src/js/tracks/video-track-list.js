@@ -5,12 +5,15 @@ import TrackList from './track-list';
 
 /**
  * Un-select all other {@link VideoTrack}s that are selected.
+ * 取消选择所有其他{@link VideoTrack}。
  *
  * @param {VideoTrackList} list
  *        list to work on
+ *        工作清单
  *
  * @param {VideoTrack} track
  *        The track to skip
+ *        跳过的轨道
  *
  * @private
  */
@@ -26,6 +29,7 @@ const disableOthers = function(list, track) {
 
 /**
  * The current list of {@link VideoTrack} for a video.
+ * 视频的{@link VideoTrack}当前列表。
  *
  * @see [Spec]{@link https://html.spec.whatwg.org/multipage/embedded-content.html#videotracklist}
  * @extends TrackList
@@ -34,13 +38,16 @@ class VideoTrackList extends TrackList {
 
   /**
    * Create an instance of this class.
+   * 创建此类的实例。
    *
    * @param {VideoTrack[]} [tracks=[]]
    *        A list of `VideoTrack` to instantiate the list with.
+   *        用于实例化列表的`VideoTrack`列表。
    */
   constructor(tracks = []) {
     // make sure only 1 track is enabled
     // sorted from last index to first index
+    // 确保仅启用一个轨道，从最后一个索引到第一个索引排序
     for (let i = tracks.length - 1; i >= 0; i--) {
       if (tracks[i].selected) {
         disableOthers(tracks, tracks[i]);
@@ -54,6 +61,7 @@ class VideoTrackList extends TrackList {
     /**
      * @member {number} VideoTrackList#selectedIndex
      *         The current index of the selected {@link VideoTrack`}.
+     *         所选{@link VideoTrack`}的当前索引。
      */
     Object.defineProperty(this, 'selectedIndex', {
       get() {
@@ -70,9 +78,11 @@ class VideoTrackList extends TrackList {
 
   /**
    * Add a {@link VideoTrack} to the `VideoTrackList`.
+   * 将{@link VideoTrack}添加到“ VideoTrackList”。
    *
    * @param {VideoTrack} track
    *        The VideoTrack to add to the list
+   *        要添加到列表中的VideoTrack
    *
    * @fires TrackList#addtrack
    */
@@ -83,6 +93,7 @@ class VideoTrackList extends TrackList {
 
     super.addTrack(track);
     // native tracks don't have this
+    // 本机音轨没有这个
     if (!track.addEventListener) {
       return;
     }

@@ -9,14 +9,14 @@ import {silencePromise} from './utils/promise';
 import * as browser from './utils/browser.js';
 
 /**
- * A `ClickableComponent` that handles showing the poster image for the player.
+ * 一个“ClickableComponent”，用于显示播放机的海报图像.
  *
  * @extends ClickableComponent
  */
 class PosterImage extends ClickableComponent {
 
   /**
-   * Create an instance of this class.
+   * 创建此类的实例。
    *
    * @param {Player} player
    *        The `Player` that this class should attach to.
@@ -32,7 +32,7 @@ class PosterImage extends ClickableComponent {
   }
 
   /**
-   * Clean up and dispose of the `PosterImage`.
+   * 清理并处理“PosterImage”。
    */
   dispose() {
     this.player().off('posterchange', this.update);
@@ -40,7 +40,7 @@ class PosterImage extends ClickableComponent {
   }
 
   /**
-   * Create the `PosterImage`s DOM element.
+   * 创建`PosterImage`的DOM元素。
    *
    * @return {Element}
    *         The element that gets created.
@@ -49,7 +49,7 @@ class PosterImage extends ClickableComponent {
     const el = Dom.createEl('div', {
       className: 'vjs-poster',
 
-      // Don't want poster to be tabbable.
+      // 不想让海报上有标签。
       tabIndex: -1
     });
 
@@ -62,15 +62,15 @@ class PosterImage extends ClickableComponent {
    * @listens Player#posterchange
    *
    * @param {EventTarget~Event} [event]
-   *        The `Player#posterchange` event that triggered this function.
+   *        触发此函数的“Player\posterchange”事件。
    */
   update(event) {
     const url = this.player().poster();
 
     this.setSrc(url);
 
-    // If there's no poster source we should display:none on this component
-    // so it's not still clickable or right-clickable
+    // 如果没有海报来源，我们应该显示：无打开此组件
+    // 所以它不能点击或右键点击
     if (url) {
       this.show();
     } else {
@@ -79,16 +79,15 @@ class PosterImage extends ClickableComponent {
   }
 
   /**
-   * Set the source of the `PosterImage` depending on the display method.
+   *根据显示方法设置“PosterImage”的源。
    *
    * @param {string} url
-   *        The URL to the source for the `PosterImage`.
+   *       “PosterImage”的源的URL。
    */
   setSrc(url) {
     let backgroundImage = '';
 
-    // Any falsy value should stay as an empty string, otherwise
-    // this will throw an extra error
+    // 任何错误的值都应该保持为空字符串，否则将引发额外的错误
     if (url) {
       backgroundImage = `url("${url}")`;
     }
@@ -108,7 +107,7 @@ class PosterImage extends ClickableComponent {
    +        The `click`, `tap` or `keydown` event that caused this function to be called.
    */
   handleClick(event) {
-    // We don't want a click to trigger playback when controls are disabled
+    // 当控件被禁用时，我们不希望点击触发播放
     if (!this.player_.controls()) {
       return;
     }
@@ -118,9 +117,9 @@ class PosterImage extends ClickableComponent {
                                 this.player_.eme.sessions.length > 0;
 
     if (this.player_.tech(true) &&
-    // We've observed a bug in IE and Edge when playing back DRM content where
-    // calling .focus() on the video element causes the video to go black,
-    // so we avoid it in that specific case
+    // 我们观察到IE和Edge在播放DRM内容时发现了一个bug
+    //，对video元素调用.focus（）会导致视频变黑
+    // 所以我们在具体的情况下就避免了
     !((browser.IE_VERSION || browser.IS_EDGE) && sourceIsEncrypted)) {
       this.player_.tech(true).focus();
     }

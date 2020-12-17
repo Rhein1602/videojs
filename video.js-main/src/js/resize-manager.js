@@ -9,9 +9,10 @@ import Component from './component.js';
 
 /**
  * A Resize Manager. It is in charge of triggering `playerresize` on the player in the right conditions.
- *
+ *调整大小的管理器。它负责在合适的条件下触发playerresize。
  * It'll either create an iframe and use a debounced resize handler on it or use the new {@link https://wicg.github.io/ResizeObserver/|ResizeObserver}.
- *
+ *它要么创建一个iframe并在其上使用一个去抖动的调整处理程序，要么使用新的{@linkhttps://wicg.github.io/ResizeObserver/|ResizeObserver}。
+*
  * If the ResizeObserver is available natively, it will be used. A polyfill can be passed in as an option.
  * If a `playerresize` event is not needed, the ResizeManager component can be removed from the player, see the example below.
  * @example <caption>How to disable the resize manager</caption>
@@ -41,12 +42,12 @@ class ResizeManager extends Component {
   constructor(player, options) {
     let RESIZE_OBSERVER_AVAILABLE = options.ResizeObserver || window.ResizeObserver;
 
-    // if `null` was passed, we want to disable the ResizeObserver
+    // 如果传递了'null'，我们要禁用ResizeObserver
     if (options.ResizeObserver === null) {
       RESIZE_OBSERVER_AVAILABLE = false;
     }
 
-    // Only create an element when ResizeObserver isn't available
+    // 仅在ResizeObserver不可用时创建元素
     const options_ = mergeOptions({
       createEl: !RESIZE_OBSERVER_AVAILABLE,
       reportTouchActivity: false
@@ -79,7 +80,7 @@ class ResizeManager extends Component {
           unloadListener_ = null;
         };
 
-        // safari and edge can unload the iframe before resizemanager dispose
+        // safari和edge可以在resizemanager释放之前卸载iframe
         // we have to dispose of event handlers correctly before that happens
         Events.on(this.el_.contentWindow, 'unload', unloadListener_);
         Events.on(this.el_.contentWindow, 'resize', debouncedHandler_);
@@ -99,18 +100,18 @@ class ResizeManager extends Component {
   }
 
   /**
-   * Called when a resize is triggered on the iframe or a resize is observed via the ResizeObserver
+   * 在iframe上触发resize或通过ResizeObserver观察到resize时调用
    *
    * @fires Player#playerresize
    */
   resizeHandler() {
     /**
-     * Called when the player size has changed
+     * 当播放器大小改变时调用
      *
      * @event Player#playerresize
      * @type {EventTarget~Event}
      */
-    // make sure player is still around to trigger
+    // 确保玩家仍在附近触发
     // prevents this from causing an error after dispose
     if (!this.player_ || !this.player_.trigger) {
       return;
