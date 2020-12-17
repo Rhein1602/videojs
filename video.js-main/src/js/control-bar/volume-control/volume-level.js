@@ -5,7 +5,7 @@ import Component from '../../component.js';
 
 /**
  * Shows volume level
- *
+ *显示音量等级
  * @extends Component
  */
 class VolumeLevel extends Component {
